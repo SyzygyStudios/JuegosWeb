@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(playerRigidBody.velocity.y < 0)
         {
-            playerRigidBody.gravityScale = playerRigidBody.gravityScale * fallGravityScaleMultiplier;
+            playerRigidBody.gravityScale = gravityScale * fallGravityScaleMultiplier;
         }
         else 
         {
