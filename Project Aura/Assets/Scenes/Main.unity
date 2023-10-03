@@ -907,6 +907,7 @@ MonoBehaviour:
   jumpBufferCounter: 0
   fallGravityScaleMultiplier: 1.05
   gravityScale: 10
+  airFrictionMultiplier: 0.9
   jumpForce: 30
 --- !u!70 &1873728164
 CapsuleCollider2D:

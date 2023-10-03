@@ -4,32 +4,56 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed, acceleration, decceleration, coyoteTime, coyoteTimeCounter, jumpBuffer, jumpBufferCounter, fallGravityScaleMultiplier, gravityScale;
-    [SerializeField] private float jumpForce;
-    private bool onAir;
-    private bool jump;
-    private Rigidbody2D playerRigidBody;
-    float horizontalMove;
 
-    // Start is called before the first frame update
+    /// Variables que controlan el movimiento al correr
+    [Header("Run")]
+    [SerializeField] private float speed;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float decceleration;
+
+    /// Variables que controlan el salto
+    [Header("Jump")]
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float fallGravityScaleMultiplier;
+    [SerializeField] private float gravityScale;
+    [SerializeField] private float airFrictionMultiplier;
+
+    [Space(10)]
+    [SerializeField] private float coyoteTime;
+    [SerializeField] private float coyoteTimeCounter;
+
+    [Space(10)]
+    [SerializeField] private float jumpBuffer;
+    [SerializeField] private float jumpBufferCounter;
+
+
+    private bool onAir;
+    private Rigidbody2D playerRigidBody;
+    float horizontalInput, horizontalMove;
+
     void Start()
     {
         playerRigidBody = GetComponent<Rigidbody2D>();
         onAir = false;
     }
+
     void FixedUpdate()
     {
-        if(horizontalMove!=0)
+        if(horizontalInput!=0)
         {
-            //if(onAir) horizontalMove/=1.5f;
-            //playerRigidBody.AddForce(new Vector2(horizontalMove * speed,0f), ForceMode2D.Impulse);
-            /* SISTEMA DE SALTO PROTOTIPO, TENGO QUE MIRAR BIEN COMO CONFIGURARLO */
+            if(onAir) 
+            {
+                horizontalMove = horizontalInput * airFrictionMultiplier;
+            }
+            else
+            {
+                horizontalMove = horizontalInput;
+            }
             float targetSpeed = horizontalMove * speed;
             float speedDiff = targetSpeed - playerRigidBody.velocity.x;
             float accelRate = (Mathf.Abs(targetSpeed) > 0.01f)? acceleration : decceleration;
             float movement = speedDiff * accelRate;
             playerRigidBody.AddForce(movement * Vector2.right, ForceMode2D.Force);
-            /**/
         }
 
         if(jumpBufferCounter>0f)
@@ -50,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
 
         if(onAir)
         {
@@ -67,7 +91,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
- 
+    private void Jump()
+    {
+            if(coyoteTimeCounter > 0f)
+            {
+                Debug.Log("Voy a saltar");
+                playerRigidBody.AddForce(Vector2.up * (jumpForce - playerRigidBody.velocity.y), ForceMode2D.Impulse);
+                coyoteTimeCounter = 0f;
+                jumpBufferCounter = 0f;
+            }
+    }
+
     void OnTriggerEnter2D(Collider2D collision){
         if(collision.tag == "Floor")
         {
@@ -83,16 +117,5 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Salto");
             onAir = true;
         }
-    }
-
-    private void Jump()
-    {
-            if(coyoteTimeCounter > 0f)
-            {
-                Debug.Log("Voy a saltar");
-                playerRigidBody.AddForce(Vector2.up * (jumpForce - playerRigidBody.velocity.y), ForceMode2D.Impulse);
-                coyoteTimeCounter = 0f;
-                jumpBufferCounter = 0f;
-            }
     }
 }
