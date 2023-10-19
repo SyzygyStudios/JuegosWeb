@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 public class ControllerManager : MonoBehaviour
 {
-
-    public void ChangeFullscreen()
+   
+    public void MainMenu()
     {
-        Screen.fullScreen = !Screen.fullScreen;
-        Debug.Log("Fullscreen cambiado a " + Screen.fullScreen);
+        SceneManager.LoadScene("MainMenu");
     }
 }

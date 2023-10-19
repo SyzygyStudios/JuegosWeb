@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -11,9 +12,6 @@ public class MainMenuManager : MonoBehaviour
     public GameObject acceptBottom;
 
 
-    //[SerializeField] float movementQuantity;
-
-    // Start is called before the first frame update
     void Start()
     {
         mainMenu.SetActive(true);
@@ -21,12 +19,6 @@ public class MainMenuManager : MonoBehaviour
         acceptBottom.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-      
-        
-    }
 
     public void Play() 
     {
@@ -40,6 +32,12 @@ public class MainMenuManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Options()
+    {
+        SceneManager.LoadScene("OptionsMenu");
+    }
+
 
 
 
