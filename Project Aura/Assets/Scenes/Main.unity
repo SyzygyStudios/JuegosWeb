@@ -650,7 +650,7 @@ GameObject:
   - component: {fileID: 1389350840}
   - component: {fileID: 1389350839}
   m_Layer: 5
-  m_Name: FullScreenButton
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -723,7 +723,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1027330761}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
-        m_MethodName: ChangeFullscreen
+        m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -901,14 +901,14 @@ MonoBehaviour:
   speed: 20
   acceleration: 7
   decceleration: 7
+  jumpForce: 30
+  fallGravityScaleMultiplier: 1.05
+  gravityScale: 10
+  airFrictionMultiplier: 0.9
   coyoteTime: 0.07
   coyoteTimeCounter: 0
   jumpBuffer: 0.1
   jumpBufferCounter: 0
-  fallGravityScaleMultiplier: 1.05
-  gravityScale: 10
-  airFrictionMultiplier: 0.9
-  jumpForce: 30
 --- !u!70 &1873728164
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1047,9 +1047,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'FullScreen
-
-'
+  m_text: Inicio
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
