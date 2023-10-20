@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float fallGravityScaleMultiplier;
     [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
+    [SerializeField] private float airFrictionMultipliersdsd;
 
     [Space(10)]
     [SerializeField] private float coyoteTime;
