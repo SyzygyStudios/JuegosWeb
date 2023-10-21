@@ -25,20 +25,22 @@ public class PlayerMovement : MonoBehaviour
     [Space(10)]
     [SerializeField] private float coyoteTime;
     [SerializeField] private float coyoteTimeCounter;
-
+    private TrailRenderer tr;
+    
     [Space(10)]
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
 
 
     private bool onAir;
-    private bool isDashing;
-    private bool canDash;
+    [SerializeField] private bool isDashing;
+    [SerializeField] private bool canDash;
     private Rigidbody2D playerRigidBody;
     float horizontalInput, horizontalMove;
 
     void Start()
     {
+        tr = GetComponent<TrailRenderer>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         onAir = false;
     }
@@ -69,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         
         if(isDashing && canDash)
         {
-            canDash = false;
+            isDashing = false;
             StartCoroutine(Dash());
         }
 
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
-        if (Input.GetKeyDown("x") && !isDashing)
+        if (Input.GetKeyDown("x") && canDash)
         {
             isDashing = true;
         }
@@ -121,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     
     private IEnumerator Dash()
     {
-            canDash = false;
+            tr.emitting = true;
             Debug.Log("Voy a dash");
             Debug.Log(playerRigidBody.velocity.normalized);
             var inputX = Input.GetAxisRaw("Horizontal");
@@ -132,7 +134,11 @@ public class PlayerMovement : MonoBehaviour
             playerRigidBody.velocity = new Vector2(inputX,inputY).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
             playerRigidBody.gravityScale = gravityScale;
-            isDashing = false;
+            if (onAir)
+            {
+                canDash = false;
+            }
+            tr.emitting = false;
     }
     
     void OnTriggerEnter2D(Collider2D collision){
