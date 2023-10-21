@@ -19,8 +19,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float fallGravityScaleMultiplier;
     [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
+    
+    /// <summary>
+    ///  Variables que controlan el dash y el rodar
+    /// </summary>
     [SerializeField] private float dashForce;
+    [SerializeField] private float rollForce;
     [SerializeField] private float dashingTime;
+    [SerializeField] private float rollTime;
+    private bool isDashing;
+    private bool canDash;
+    private bool isRolling;
+    private bool canRoll;
 
     [Space(10)]
     [SerializeField] private float coyoteTime;
@@ -35,9 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     private bool onAir;
-    private bool stopCharacter;
-    [SerializeField] private bool isDashing;
-    [SerializeField] private bool canDash;
+    //EN PROCESO //private bool stopCharacter;
     private Rigidbody2D playerRigidBody;
     float horizontalInput, horizontalMove;
 
@@ -47,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
         tr = GetComponent<TrailRenderer>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         onAir = false;
+        canDash = true;
+        canRoll = true;
         doubleJump = 2;
     }
 
@@ -81,6 +91,11 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
         
+        if(isRolling && canRoll)
+        {
+            isRolling = false;
+            StartCoroutine(Roll());
+        }
 
         if(playerRigidBody.velocity.y < 0 && !isDashing)
         {
@@ -103,10 +118,13 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (Input.GetAxisRaw("Horizontal") == 0)
-        {
-            stopCharacter = true;
-        }
+        
+        
+        ///EN PROCESO
+        ////if (Input.GetAxisRaw("Horizontal") == 0)
+        ////{
+        ////    stopCharacter = true;
+        ////}
 
         if(onAir)
         {
@@ -124,6 +142,10 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("x") && canDash)
         {
             isDashing = true;
+        }
+        if (Input.GetKeyDown("z") && canRoll && !onAir)
+        {
+            isRolling = true;
         }
     }
 
@@ -166,6 +188,27 @@ public class PlayerMovement : MonoBehaviour
                 canDash = false;
             }
             tr.emitting = false;
+    }
+    
+    private IEnumerator Roll()
+    {
+        tr.emitting = true;
+        Debug.Log("Voy a roll");
+        Debug.Log(playerRigidBody.velocity.normalized);
+        var inputX = Input.GetAxisRaw("Horizontal");
+        playerRigidBody.gravityScale = 0;
+        playerRigidBody.totalForce = new Vector2(0, 0);
+        playerRigidBody.velocity = new Vector2(0, 0);
+        playerRigidBody.velocity = new Vector2(inputX,0).normalized * rollForce;
+        this.GetComponent<CapsuleCollider2D>().size /= 2;
+        yield return new WaitForSeconds(rollTime);
+        this.GetComponent<CapsuleCollider2D>().size *= 2;
+        playerRigidBody.gravityScale = gravityScale;
+        if (onAir)
+        {
+            canDash = false;
+        }
+        tr.emitting = false;
     }
     
     void PreserveMomentumOnImpact()
