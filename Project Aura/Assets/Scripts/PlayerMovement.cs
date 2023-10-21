@@ -30,9 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [Space(10)]
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
+    [SerializeField] private int doubleJump;
+    private Vector2 lastVelocity;
 
 
     private bool onAir;
+    private bool stopCharacter;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool canDash;
     private Rigidbody2D playerRigidBody;
@@ -40,13 +43,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        lastVelocity = new Vector2();
         tr = GetComponent<TrailRenderer>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         onAir = false;
+        doubleJump = 2;
     }
 
     void FixedUpdate()
     {
+        lastVelocity = playerRigidBody.velocity;
         if(horizontalInput!=0 && !isDashing)
         {
             if(onAir) 
@@ -64,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
             playerRigidBody.AddForce(movement * Vector2.right, ForceMode2D.Force);
         }
 
-        if(jumpBufferCounter>0f && !isDashing)
+        if(jumpBufferCounter>0f && !isDashing && doubleJump>0)
         {
             Jump();
         }
@@ -74,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
             isDashing = false;
             StartCoroutine(Dash());
         }
+        
 
         if(playerRigidBody.velocity.y < 0 && !isDashing)
         {
@@ -83,6 +90,12 @@ public class PlayerMovement : MonoBehaviour
         {
             playerRigidBody.gravityScale = gravityScale;
         }
+
+        //if (stopCharacter && jumpBufferCounter<=0)
+        //{
+        //    stopCharacter = false;
+        //    if(!onAir) playerRigidBody.velocity = Vector2.zero;
+        //}
         
         
     }
@@ -90,6 +103,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (Input.GetAxisRaw("Horizontal") == 0)
+        {
+            stopCharacter = true;
+        }
 
         if(onAir)
         {
@@ -112,8 +129,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (coyoteTimeCounter > 0f)
+        Debug.Log("SALTO");
+        if (onAir)
         {
+            doubleJump--;
+            playerRigidBody.totalForce = Vector2.zero;
+            Debug.Log("Voy a saltar");
+            playerRigidBody.AddForce(Vector2.up * (jumpForce*1.1f - playerRigidBody.velocity.y), ForceMode2D.Impulse);
+            coyoteTimeCounter = 0f;
+            jumpBufferCounter = 0f;
+        }else if (coyoteTimeCounter > 0f)
+        {
+            doubleJump--;
             Debug.Log("Voy a saltar");
             playerRigidBody.AddForce(Vector2.up * (jumpForce - playerRigidBody.velocity.y), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
@@ -141,9 +168,17 @@ public class PlayerMovement : MonoBehaviour
             tr.emitting = false;
     }
     
+    void PreserveMomentumOnImpact()
+    {
+        if (lastVelocity.y < -5)
+            playerRigidBody.velocity = new Vector2(lastVelocity.x, playerRigidBody.velocity.y);
+    }
+    
     void OnTriggerEnter2D(Collider2D collision){
         if(collision.tag == "Floor")
         {
+            PreserveMomentumOnImpact();
+            doubleJump = 2;
             Debug.Log("Toco suelo");
             onAir = false;
             canDash = true;
