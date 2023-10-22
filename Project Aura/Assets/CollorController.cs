@@ -32,4 +32,10 @@ public class CollorController : MonoBehaviour
             _hoverColor = 3;
         }
     }
+
+    public void GrabColor()
+    {
+        Debug.Log("Asigno el " + _hoverColor);
+        GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
+    }
 }

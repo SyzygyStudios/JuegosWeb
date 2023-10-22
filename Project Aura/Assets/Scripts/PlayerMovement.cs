@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration;
     [SerializeField] private float decceleration;
     private float _horizontalInput, _horizontalMove;
-
+    public Joystick joystick;
     /// Variables que controlan el salto
     [Header("Jump")]
     [SerializeField] private float jumpForce;
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     //Variables generales para el control del personaje
     private bool _onAir;
     private Rigidbody2D _rb;
-    private int _activeColor;
+    [SerializeField] private int _activeColor;
 
     void Start()
     {
@@ -117,9 +117,15 @@ public class PlayerMovement : MonoBehaviour
     {
         
         //SE COMPTRUEBA MEDIANTE BOOLEANOS SI SE CUMPLEN LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS//
-        
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-        
+        if (Input.GetAxisRaw("Horizontal") != 0)
+        {
+            _horizontalInput = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            _horizontalInput = joystick.Horizontal;
+        }
+
         if(_onAir)
         {
             coyoteTimeCounter-= Time.deltaTime;
@@ -127,24 +133,38 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKeyDown("w"))
         {
-            jumpBufferCounter = jumpBuffer;
-        }
-        else
-        {
-            jumpBufferCounter -= Time.deltaTime;
+            ActivateJump();
         }
         
-        if (Input.GetKeyDown("q") && _canDash && _activeColor == 2)
+        if (Input.GetKeyDown("q"))
+        {
+            ActivateAbility();
+        }
+        
+        if (Input.GetKeyDown("q"))
+        {
+            ActivateAbility();
+        }
+        
+        jumpBufferCounter -= Time.deltaTime;
+    }
+
+    public void ActivateJump()
+    {
+        jumpBufferCounter = jumpBuffer;
+    }
+
+    public void ActivateAbility()
+    {
+        if (_canDash && _activeColor == 2)
         {
             _startDash = true;
-        }
-        
-        if (Input.GetKeyDown("q") && _canRoll && !_onAir && _activeColor == 3)
+        }else if (_canRoll && !_onAir && _activeColor == 3)
         {
             _startRoll = true;
         }
     }
-
+    
     private void Run()
     {
         if (_onAir)
