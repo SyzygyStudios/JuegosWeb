@@ -41,6 +41,6 @@ public class SelectNick : MonoBehaviour
     public void accept()
     {
         PlayerPrefs.SetString("name",inputText.text);
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("SelectLevel");
     }
 }
