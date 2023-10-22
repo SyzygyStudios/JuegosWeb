@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerMovement : MonoBehaviour
@@ -149,6 +150,13 @@ public class PlayerMovement : MonoBehaviour
             canDash = true;
             coyoteTimeCounter = coyoteTime;
         }
+
+        if(collision.tag == "Door")
+        {
+            Debug.Log("Toco puerta");
+            SceneManager.LoadScene("Main");
+            
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision){
@@ -158,4 +166,6 @@ public class PlayerMovement : MonoBehaviour
             onAir = true;
         }
     }
+
+   
 }

@@ -194,7 +194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Aceptar
+  m_Text: Elegir nivel
 --- !u!222 &131561464
 CanvasRenderer:
   m_ObjectHideFlags: 0
