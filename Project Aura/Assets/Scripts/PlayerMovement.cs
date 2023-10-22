@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     //Variables generales para el control del personaje
     private bool _onAir;
     private Rigidbody2D _rb;
+    private int _activeColor;
 
     void Start()
     {
@@ -71,12 +72,12 @@ public class PlayerMovement : MonoBehaviour
     {
         //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
         
-        if(_horizontalInput!=0 && !_isDashing)
+        if(_horizontalInput!=0 && !_isDashing && !_isRolling)
         {
             Run();
         }
 
-        if(jumpBufferCounter>0f && !_isDashing && doubleJump>0)
+        if(jumpBufferCounter>0f && !_isDashing && !_isRolling && doubleJump>0)
         {
             Jump();
         }
@@ -133,12 +134,12 @@ public class PlayerMovement : MonoBehaviour
             jumpBufferCounter -= Time.deltaTime;
         }
         
-        if (Input.GetKeyDown("x") && _canDash)
+        if (Input.GetKeyDown("q") && _canDash && _activeColor == 2)
         {
             _startDash = true;
         }
         
-        if (Input.GetKeyDown("z") && _canRoll && !_onAir)
+        if (Input.GetKeyDown("q") && _canRoll && !_onAir && _activeColor == 3)
         {
             _startRoll = true;
         }
@@ -177,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
         //CASO 2: O BIEN SE HA DEJADO CAER Y HA PASADO EL COYOTE TIME, O YA HA SALTADO 1 VEZ, SEA CUAL SEA REALIZARÁ SOLO UN SALTO
         else if (doubleJump <= 2)
         {
+            if (doubleJump == 1 && _activeColor != 1) return;
             doubleJump = 0;
             _rb.totalForce = Vector2.zero;
             _rb.AddForce(Vector2.up * (jumpForce * 1.1f - _rb.velocity.y),
@@ -241,5 +243,10 @@ public class PlayerMovement : MonoBehaviour
         {
             _onAir = true;
         }
+    }
+
+    public void SetColor(int color)
+    {
+        _activeColor = color;
     }
 }
