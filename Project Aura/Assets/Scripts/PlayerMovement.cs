@@ -142,10 +142,10 @@ public class PlayerMovement : MonoBehaviour
             ActivateAbility();
         }
         
-        if (Input.GetKeyDown("q"))
+        /*if (Input.GetKeyDown("q"))
         {
             ActivateAbility();
-        }
+        }*/
         
         jumpBufferCounter -= Time.deltaTime;
     }
