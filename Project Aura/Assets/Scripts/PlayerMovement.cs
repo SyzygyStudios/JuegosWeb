@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float acceleration;
     [SerializeField] private float decceleration;
+    private float _horizontalInput, _horizontalMove;
 
     /// Variables que controlan el salto
     [Header("Jump")]
@@ -20,113 +21,105 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
     
-    /// <summary>
-    ///  Variables que controlan el dash y el rodar
-    /// </summary>
-    [SerializeField] private float dashForce;
-    [SerializeField] private float rollForce;
-    [SerializeField] private float dashingTime;
-    [SerializeField] private float rollTime;
-    private bool isDashing;
-    private bool canDash;
-    private bool isRolling;
-    private bool canRoll;
-
     [Space(10)]
     [SerializeField] private float coyoteTime;
     [SerializeField] private float coyoteTimeCounter;
-    private TrailRenderer tr;
+    private TrailRenderer _tr;
     
     [Space(10)]
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
     [SerializeField] private int doubleJump;
-    private Vector2 lastVelocity;
+    private Vector2 _lastVelocity;
+    
+    
+    ///  Variables que controlan el dash y el rodar
+    [Header("Dash")]
+    [SerializeField] private float dashForce;
+    [SerializeField] private float dashingTime;
+    private bool _isDashing;
+    private bool _canDash;
+    private bool _startDash;
+    
+    [Header("Roll")]
+    [SerializeField] private float rollForce;
+    [SerializeField] private float rollTime;
+    private bool _isRolling;
+    private bool _canRoll;
+    private bool _startRoll;
 
-
-    private bool onAir;
-    //EN PROCESO //private bool stopCharacter;
-    private Rigidbody2D playerRigidBody;
-    float horizontalInput, horizontalMove;
+    //Variables generales para el control del personaje
+    private bool _onAir;
+    private Rigidbody2D _rb;
 
     void Start()
     {
-        lastVelocity = new Vector2();
-        tr = GetComponent<TrailRenderer>();
-        playerRigidBody = GetComponent<Rigidbody2D>();
-        onAir = false;
-        canDash = true;
-        canRoll = true;
+        _lastVelocity = new Vector2();
+        _tr = GetComponent<TrailRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+        _onAir = false;
+        _canDash = true;
+        _isDashing = false;
+        _startDash = false;
+        _canRoll = true;
+        _isRolling = false;
+        _startRoll = false;
         doubleJump = 2;
     }
 
     void FixedUpdate()
     {
-        lastVelocity = playerRigidBody.velocity;
-        if(horizontalInput!=0 && !isDashing)
+        //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
+        
+        if(_horizontalInput!=0 && !_isDashing)
         {
-            if(onAir) 
-            {
-                horizontalMove = horizontalInput * airFrictionMultiplier;
-            }
-            else
-            {
-                horizontalMove = horizontalInput;
-            }
-            float targetSpeed = horizontalMove * speed;
-            float speedDiff = targetSpeed - playerRigidBody.velocity.x;
-            float accelRate = (Mathf.Abs(targetSpeed) > 0.01f)? acceleration : decceleration;
-            float movement = speedDiff * accelRate;
-            playerRigidBody.AddForce(movement * Vector2.right, ForceMode2D.Force);
+            Run();
         }
 
-        if(jumpBufferCounter>0f && !isDashing && doubleJump>0)
+        if(jumpBufferCounter>0f && !_isDashing && doubleJump>0)
         {
             Jump();
         }
         
-        if(isDashing && canDash)
+        if(_startDash && _canDash)
         {
-            isDashing = false;
+            _startDash = false;
             StartCoroutine(Dash());
         }
         
-        if(isRolling && canRoll)
+        if(_startRoll && _canRoll)
         {
-            isRolling = false;
+            _startRoll = false;
             StartCoroutine(Roll());
         }
-
-        if(playerRigidBody.velocity.y < 0 && !isDashing)
-        {
-            playerRigidBody.gravityScale = gravityScale * fallGravityScaleMultiplier;
-        }
-        else if(!isDashing)
-        {
-            playerRigidBody.gravityScale = gravityScale;
-        }
-
-        //if (stopCharacter && jumpBufferCounter<=0)
-        //{
-        //    stopCharacter = false;
-        //    if(!onAir) playerRigidBody.velocity = Vector2.zero;
-        //}
         
+        //FALL SCALE MULTIPLIER: AUMENTA LA GRAVEDAD AL CAER, PARA DAR MEJOR SENSACION//
+        if(_rb.velocity.y < 0 && !_isDashing)
+        {
+            _rb.gravityScale = gravityScale * fallGravityScaleMultiplier;
+        }
+        else if(!_isDashing)
+        {
+            _rb.gravityScale = gravityScale;
+        }
+        
+        //VARIABLES MANTENER EL MOMENTUM TANTO SALTANDO COMO AL CAER//
+        if (_onAir)
+        {
+            PreserveMomentum();
+        }
+        _lastVelocity = _rb.velocity;
         
     }
 
     void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
         
+        //SE COMPTRUEBA MEDIANTE BOOLEANOS SI SE CUMPLEN LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS//
         
-        ///EN PROCESO
-        ////if (Input.GetAxisRaw("Horizontal") == 0)
-        ////{
-        ////    stopCharacter = true;
-        ////}
-
-        if(onAir)
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        
+        if(_onAir)
         {
             coyoteTimeCounter-= Time.deltaTime;
         }
@@ -139,32 +132,55 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
-        if (Input.GetKeyDown("x") && canDash)
+        
+        if (Input.GetKeyDown("x") && _canDash)
         {
-            isDashing = true;
+            _startDash = true;
         }
-        if (Input.GetKeyDown("z") && canRoll && !onAir)
+        
+        if (Input.GetKeyDown("z") && _canRoll && !_onAir)
         {
-            isRolling = true;
+            _startRoll = true;
         }
     }
 
-    private void Jump()
+    private void Run()
     {
-        Debug.Log("SALTO");
-        if (onAir)
+        if (_onAir)
+        {
+            _horizontalMove = _horizontalInput * airFrictionMultiplier;
+        }
+        else
+        {
+            _horizontalMove = _horizontalInput;
+        }
+
+        float targetSpeed = _horizontalMove * speed;
+        float speedDiff = targetSpeed - _rb.velocity.x;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
+        float movement = speedDiff * accelRate;
+        _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    }
+
+    private void Jump()
+    {   
+        
+        //CASO 1: REALIZA SALTO DENTRO DEL COYOTE TIME (DESDE EL SUELO) VA A PODER REALIZAR DOS SALTOS SIMULTANEOS EN EL AIRE
+        if (coyoteTimeCounter > 0f)
         {
             doubleJump--;
-            playerRigidBody.totalForce = Vector2.zero;
             Debug.Log("Voy a saltar");
-            playerRigidBody.AddForce(Vector2.up * (jumpForce*1.1f - playerRigidBody.velocity.y), ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.up * (jumpForce - _rb.velocity.y), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
-        }else if (coyoteTimeCounter > 0f)
+        }
+        //CASO 2: O BIEN SE HA DEJADO CAER Y HA PASADO EL COYOTE TIME, O YA HA SALTADO 1 VEZ, SEA CUAL SEA REALIZARÁ SOLO UN SALTO
+        else if (doubleJump <= 2)
         {
-            doubleJump--;
-            Debug.Log("Voy a saltar");
-            playerRigidBody.AddForce(Vector2.up * (jumpForce - playerRigidBody.velocity.y), ForceMode2D.Impulse);
+            doubleJump = 0;
+            _rb.totalForce = Vector2.zero;
+            _rb.AddForce(Vector2.up * (jumpForce * 1.1f - _rb.velocity.y),
+                ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
@@ -172,68 +188,58 @@ public class PlayerMovement : MonoBehaviour
     
     private IEnumerator Dash()
     {
-            tr.emitting = true;
-            Debug.Log("Voy a dash");
-            Debug.Log(playerRigidBody.velocity.normalized);
+            _tr.emitting = true;
             var inputX = Input.GetAxisRaw("Horizontal");
             var inputY = Input.GetAxisRaw("Vertical");
-            playerRigidBody.gravityScale = 0;
-            playerRigidBody.totalForce = new Vector2(0, 0);
-            playerRigidBody.velocity = new Vector2(0, 0);
-            playerRigidBody.velocity = new Vector2(inputX,inputY).normalized * dashForce;
+            _isDashing = true;
+            _rb.gravityScale = 0;
+            _rb.totalForce = new Vector2(0, 0);
+            _rb.velocity = new Vector2(inputX,inputY).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
-            playerRigidBody.gravityScale = gravityScale;
-            if (onAir)
+            _rb.gravityScale = gravityScale;
+            if (_onAir)
             {
-                canDash = false;
+                _canDash = false;
             }
-            tr.emitting = false;
+            _tr.emitting = false;
+            _isDashing = false;
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator Roll()
     {
-        tr.emitting = true;
-        Debug.Log("Voy a roll");
-        Debug.Log(playerRigidBody.velocity.normalized);
-        var inputX = Input.GetAxisRaw("Horizontal");
-        playerRigidBody.gravityScale = 0;
-        playerRigidBody.totalForce = new Vector2(0, 0);
-        playerRigidBody.velocity = new Vector2(0, 0);
-        playerRigidBody.velocity = new Vector2(inputX,0).normalized * rollForce;
-        this.GetComponent<CapsuleCollider2D>().size /= 2;
+        _isRolling = true;
+        _rb.totalForce = new Vector2(0, 0);
+        _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
+        GetComponent<CapsuleCollider2D>().size /= 2;
         yield return new WaitForSeconds(rollTime);
-        this.GetComponent<CapsuleCollider2D>().size *= 2;
-        playerRigidBody.gravityScale = gravityScale;
-        if (onAir)
-        {
-            canDash = false;
-        }
-        tr.emitting = false;
+        GetComponent<CapsuleCollider2D>().size *= 2;
+        _isRolling = false;
     }
     
-    void PreserveMomentumOnImpact()
+    void PreserveMomentum()
     {
-        if (lastVelocity.y < -5)
-            playerRigidBody.velocity = new Vector2(lastVelocity.x, playerRigidBody.velocity.y);
+        if (_lastVelocity.y < -5)
+            _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
     }
     
     void OnTriggerEnter2D(Collider2D collision){
-        if(collision.tag == "Floor")
+        
+        //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
+        if(collision.CompareTag("Floor"))
         {
-            PreserveMomentumOnImpact();
+            PreserveMomentum();
             doubleJump = 2;
-            Debug.Log("Toco suelo");
-            onAir = false;
-            canDash = true;
+            _onAir = false;
+            _canDash = true;
             coyoteTimeCounter = coyoteTime;
         }
     }
 
     void OnTriggerExit2D(Collider2D collision){
-        if(collision.tag == "Floor")
+        if(collision.CompareTag("Floor"))
         {
-            Debug.Log("Salto");
-            onAir = true;
+            _onAir = true;
         }
     }
 }

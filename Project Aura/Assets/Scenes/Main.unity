@@ -905,15 +905,16 @@ MonoBehaviour:
   jumpForce: 30
   fallGravityScaleMultiplier: 1.05
   gravityScale: 10
-  airFrictionMultiplier: 0.9
+  airFrictionMultiplier: 0.71
   dashForce: 50
+  rollForce: 30
   dashingTime: 0.01
+  rollTime: 0.2
   coyoteTime: 0.07
   coyoteTimeCounter: 0
   jumpBuffer: 0.1
   jumpBufferCounter: 0
-  isDashing: 0
-  canDash: 0
+  doubleJump: 0
 --- !u!70 &1873728164
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
