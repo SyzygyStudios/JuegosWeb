@@ -33,6 +33,7 @@ public class SelectNick : MonoBehaviour
 
         if (Nick.text.Length > 3)
         {
+
             Light.color = Color.green;
             acceptbutton.SetActive(true);
         }

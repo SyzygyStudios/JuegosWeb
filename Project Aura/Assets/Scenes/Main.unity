@@ -1707,7 +1707,19 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 144468011}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 1387749630899797669, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
+=======
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 1695004828}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: airFrictionMultiplier
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+>>>>>>> Stashed changes
       propertyPath: m_Name
       value: ControllButtons
       objectReference: {fileID: 0}
