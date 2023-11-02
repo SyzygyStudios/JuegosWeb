@@ -20,7 +20,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
-    [SerializeField] private float fallGravityScaleMultiplier;
+    [SerializeField] private float fallGravityMultiplier;
+    [SerializeField] private float jumpCutGravityMultiplier;
+    private bool _jumpCut;
     
     [Space(10)]
     [SerializeField] private float coyoteTime;
@@ -72,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
         
         if(_horizontalInput!=0 && !_isDashing && !_isRolling)
         {
@@ -96,15 +97,26 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Roll());
         }
         
-        //FALL SCALE MULTIPLIER: AUMENTA LA GRAVEDAD AL CAER, PARA DAR MEJOR SENSACION//
+        //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
         if(_rb.velocity.y < 0 && !_isDashing)
         {
-            _rb.gravityScale = gravityScale * fallGravityScaleMultiplier;
+            _rb.gravityScale = gravityScale * fallGravityMultiplier;
         }
         else if(!_isDashing)
         {
             _rb.gravityScale = gravityScale;
         }
+        if(_jumpCut && _rb.velocity.y>0)
+        {
+            _rb.velocity -= (new Vector2(0, _rb.velocity.y/jumpCutGravityMultiplier));
+        }
+        //if(_jumpCut && _onAir)
+        //{
+        //    _rb.gravityScale = gravityScale* jumpCutGravityMultiplier;
+        //}else if(!_isDashing)
+        //{
+        //    _rb.gravityScale = gravityScale;
+        //} 
         
         _lastVelocity = _rb.velocity;
         
@@ -131,6 +143,10 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown("w"))
         {
             ActivateJump();
+        }
+        if(Input.GetKeyUp("w"))
+        {
+            _jumpCut = true;
         }
         
         if (Input.GetKeyDown("q"))
@@ -187,32 +203,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {   
-        DisableForces();
-        //CASO 1: REALIZA SALTO DENTRO DEL COYOTE TIME (DESDE EL SUELO) VA A PODER REALIZAR DOS SALTOS SIMULTANEOS EN EL AIRE
         if (coyoteTimeCounter > 0f)
         {
+            _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
             _rb.AddForce(Vector2.up * (jumpForce), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
-        //CASO 2: O BIEN SE HA DEJADO CAER Y HA PASADO EL COYOTE TIME, O YA HA SALTADO 1 VEZ, SEA CUAL SEA REALIZARÁ SOLO UN SALTO
         else if (doubleJump <= 2)
         {
             if (doubleJump == 1 && _activeColor != 1) return;
+            _jumpCut = false;
             doubleJump = 0;
-            _rb.AddForce(Vector2.up * (jumpForce),
+            _rb.AddForce(Vector2.up * (jumpForce - _rb.velocity.y),
                 ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
-        EnableForces();
+        PreserveMomentum();
     }
     
     private IEnumerator Dash()
     {
-            DisableForces();
+            _rb.totalForce = Vector2.zero;
             _isDashing = true;
             _tr.emitting = true;
             var inputX = Input.GetAxisRaw("Horizontal");
@@ -227,43 +242,34 @@ public class PlayerMovement : MonoBehaviour
             }
             _tr.emitting = false;
             _isDashing = false;
-            EnableForces();
+
     }
     
     // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator Roll()
     {
-        DisableForces();
+        _rb.totalForce = Vector2.zero;
         _isRolling = true;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
         GetComponent<CapsuleCollider2D>().size /= 2;
         yield return new WaitForSeconds(rollTime);
         GetComponent<CapsuleCollider2D>().size *= 2;
         _isRolling = false;
-        EnableForces();
     }
     
     void PreserveMomentum()
     {
         _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
     }
-
-    void DisableForces()
-    {
-        _rb.gravityScale = 0f;
-        _rb.totalForce = Vector2.zero;
-    }
     
-    void EnableForces()
-    {
-        _rb.gravityScale = gravityScale;
-    }
+    
     
     void OnTriggerEnter2D(Collider2D collision){
         
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
         if(collision.CompareTag("Floor"))
         {
+            _rb.gravityScale = gravityScale;
             PreserveMomentum();
             doubleJump = 2;
             airMove = false;

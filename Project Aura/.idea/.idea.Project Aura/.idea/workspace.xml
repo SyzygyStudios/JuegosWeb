@@ -35,7 +35,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -97,7 +97,7 @@
       <workItem from="1697927886612" duration="3613000" />
       <workItem from="1697967968229" duration="5303000" />
       <workItem from="1697992687548" duration="2000" />
-      <workItem from="1698923211639" duration="5104000" />
+      <workItem from="1698923211639" duration="13147000" />
     </task>
     <servers />
   </component>

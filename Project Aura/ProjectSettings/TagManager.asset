@@ -8,6 +8,7 @@ TagManager:
   - RedPower
   - BluePower
   - YellowPower
+  - Door
   layers:
   - Default
   - TransparentFX
