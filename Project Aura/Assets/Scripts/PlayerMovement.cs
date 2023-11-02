@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerMovement : MonoBehaviour
@@ -137,10 +138,10 @@ public class PlayerMovement : MonoBehaviour
             ActivateAbility();
         }
         
-        if (Input.GetKeyDown("q"))
+        /*if (Input.GetKeyDown("q"))
         {
             ActivateAbility();
-        }
+        }*/
         
         jumpBufferCounter -= Time.deltaTime;
     }
@@ -269,6 +270,10 @@ public class PlayerMovement : MonoBehaviour
             _onAir = false;
             _canDash = true;
             coyoteTimeCounter = coyoteTime;
+        }
+        if(collision.CompareTag("Door"))
+        {
+            SceneManager.LoadScene("Main");
         }
     }
 
