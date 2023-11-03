@@ -55,7 +55,10 @@ public class PlayerMovement : MonoBehaviour
     private bool _onAir;
     private bool airMove;
     private Rigidbody2D _rb;
+    private float abilityCooldownCounter;
+    [SerializeField] private float abilityCooldown;
     [SerializeField] private int _activeColor;
+    
 
     void Start()
     {
@@ -160,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
         }*/
         
         jumpBufferCounter -= Time.deltaTime;
+        abilityCooldownCounter += Time.deltaTime;
     }
 
     public void ActivateJump()
@@ -169,12 +173,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void ActivateAbility()
     {
-        if (_canDash && _activeColor == 2)
+        if (abilityCooldownCounter > abilityCooldown)
         {
-            _startDash = true;
-        }else if (_canRoll && !_onAir && _activeColor == 3)
-        {
-            _startRoll = true;
+            if (_canDash && _activeColor == 2)
+            {
+                _startDash = true;
+                abilityCooldownCounter = 0;
+            }
+            else if (_canRoll && !_onAir && _activeColor == 3)
+            {
+                _startRoll = true;
+                abilityCooldownCounter = 0;
+            }
         }
     }
     
@@ -233,16 +243,17 @@ public class PlayerMovement : MonoBehaviour
             var inputX = Input.GetAxisRaw("Horizontal");
             var inputY = Input.GetAxisRaw("Vertical");
             _rb.gravityScale = 0f;
-            _rb.velocity = new Vector2(inputX,inputY).normalized * dashForce;
+            _rb.velocity = new Vector2(inputX, inputY).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
             _rb.gravityScale = gravityScale;
             if (_onAir)
             {
                 _canDash = false;
             }
+
             _tr.emitting = false;
             _isDashing = false;
-
+            
     }
     
     // ReSharper disable Unity.PerformanceAnalysis
