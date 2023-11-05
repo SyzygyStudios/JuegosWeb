@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -33,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
     [SerializeField] private int doubleJump;
+    [SerializeField] private Transform floorCheck;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private Transform roofCheck;
     private Vector2 _lastVelocity;
     
     
@@ -52,24 +56,30 @@ public class PlayerMovement : MonoBehaviour
     private bool _startRoll;
 
     //Variables generales para el control del personaje
-    private bool _onAir;
-    private bool airMove;
+    [SerializeField] private bool _grounded;
     private Rigidbody2D _rb;
     private float abilityCooldownCounter;
     [SerializeField] private float abilityCooldown;
     [SerializeField] private int _activeColor;
-    
+    [SerializeField] private LayerMask floorLayer;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private bool _startGravity;
+    [SerializeField] private bool airMove;
+    [SerializeField] private bool _canGravity;
+    [SerializeField] private float gravitySign;
+
 
     void Start()
     {
         _lastVelocity = new Vector2();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
-        _onAir = false;
+        _grounded = false;
         _canDash = true;
         _isDashing = false;
         _startDash = false;
         _canRoll = true;
+        _canGravity = true;
         _isRolling = false;
         _startRoll = false;
         doubleJump = 2;
@@ -100,6 +110,13 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Roll());
         }
         
+        if(_startGravity && _canGravity)
+        {
+            _startGravity = false;
+            _canGravity = false;
+            StartCoroutine(Gravity());
+        }
+        
         //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
         if(_rb.velocity.y < 0 && !_isDashing)
         {
@@ -109,18 +126,31 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.gravityScale = gravityScale;
         }
-        if(_jumpCut && _rb.velocity.y>0)
+
+        if (gravitySign > 0)
         {
-            _rb.velocity -= (new Vector2(0, _rb.velocity.y/jumpCutGravityMultiplier));
+            if (_jumpCut && _rb.velocity.y > 0 && _canGravity)
+            {
+                _rb.velocity -= (new Vector2(0,
+                    (_rb.velocity.y / jumpCutGravityMultiplier)));
+            }
         }
-        //if(_jumpCut && _onAir)
+        else
+        {
+            if (_jumpCut && _rb.velocity.y < 0 && _canGravity)
+            {
+                _rb.velocity -= (new Vector2(0,
+                    (_rb.velocity.y / jumpCutGravityMultiplier)));
+            }
+        }
+        //if(_jumpCut && !_grounded)
         //{
         //    _rb.gravityScale = gravityScale* jumpCutGravityMultiplier;
         //}else if(!_isDashing)
         //{
         //    _rb.gravityScale = gravityScale;
         //} 
-        
+       
         _lastVelocity = _rb.velocity;
         
     }
@@ -138,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
             _horizontalInput = joystick.Horizontal;
         }
 
-        if(_onAir)
+        if(!_grounded)
         {
             coyoteTimeCounter-= Time.deltaTime;
         }
@@ -157,13 +187,32 @@ public class PlayerMovement : MonoBehaviour
             ActivateAbility();
         }
         
+        if (Input.GetKeyDown("r"))
+        {
+            SetColor(4);
+            ActivateAbility();
+        }
+        
         /*if (Input.GetKeyDown("q"))
         {
             ActivateAbility();
         }*/
-        
+        if (gravitySign > 0)
+        {
+            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(0f, 0f), 0, floorLayer);
+        }
+        else
+        {
+            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0f, 0f), 0, floorLayer);
+        }
+
+        if (_grounded)
+        {
+            _canGravity = true;
+        }
         jumpBufferCounter -= Time.deltaTime;
         abilityCooldownCounter += Time.deltaTime;
+        gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
     }
 
     public void ActivateJump()
@@ -180,9 +229,14 @@ public class PlayerMovement : MonoBehaviour
                 _startDash = true;
                 abilityCooldownCounter = 0;
             }
-            else if (_canRoll && !_onAir && _activeColor == 3)
+            else if (_canRoll && _grounded && _activeColor == 3)
             {
                 _startRoll = true;
+                abilityCooldownCounter = 0;
+            }else if (_activeColor == 4)
+            {
+                Debug.Log("Se ha pulsado para ejecutar gravedad");
+                _startGravity = true;
                 abilityCooldownCounter = 0;
             }
         }
@@ -190,25 +244,31 @@ public class PlayerMovement : MonoBehaviour
     
     private void Run()
     {
-        if (_onAir)
+        if (!_grounded)
         {
             _horizontalMove = _horizontalInput * airFrictionMultiplier;
             if (_rb.velocity.x < 0 && _horizontalMove > 0 || _rb.velocity.x > 0 && _horizontalMove < 0 || airMove)
             {
-                _horizontalMove = _horizontalMove / 2;
                 airMove = true;
+                _horizontalMove = _horizontalMove / 1.5f;
             }
         }
         else
         {
             _horizontalMove = _horizontalInput;
         }
-
         float targetSpeed = _horizontalMove * speed;
         float speedDiff = targetSpeed - _rb.velocity.x;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
         float movement = speedDiff * accelRate;
         _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    }
+    
+    private IEnumerator Gravity()
+    {
+        Debug.Log("Se ejecuta gravedad");
+        gravityScale = -gravityScale;
+        yield return new WaitForSeconds(1);
     }
 
     private void Jump()
@@ -218,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
             _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
-            _rb.AddForce(Vector2.up * (jumpForce), ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
@@ -227,12 +287,16 @@ public class PlayerMovement : MonoBehaviour
             if (doubleJump == 1 && _activeColor != 1) return;
             _jumpCut = false;
             doubleJump = 0;
-            _rb.AddForce(Vector2.up * (jumpForce - _rb.velocity.y),
+            _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
         PreserveMomentum();
+    }
+    
+    private void WallJump()
+    {   
     }
     
     private IEnumerator Dash()
@@ -243,10 +307,9 @@ public class PlayerMovement : MonoBehaviour
             var inputX = Input.GetAxisRaw("Horizontal");
             var inputY = Input.GetAxisRaw("Vertical");
             _rb.gravityScale = 0f;
-            _rb.velocity = new Vector2(inputX, inputY).normalized * dashForce;
+            _rb.velocity = new Vector2(inputX, inputY * gravitySign).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
-            _rb.gravityScale = gravityScale;
-            if (_onAir)
+            if (!_grounded)
             {
                 _canDash = false;
             }
@@ -280,27 +343,19 @@ public class PlayerMovement : MonoBehaviour
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
         if(collision.CompareTag("Floor"))
         {
-            _rb.gravityScale = gravityScale;
+            airMove = false;
             PreserveMomentum();
             doubleJump = 2;
-            airMove = false;
-            _onAir = false;
             _canDash = true;
             coyoteTimeCounter = coyoteTime;
+            _canGravity = true;
         }
         if(collision.CompareTag("Door"))
         {
             SceneManager.LoadScene("Main");
         }
     }
-
-    void OnTriggerExit2D(Collider2D collision){
-        if(collision.CompareTag("Floor"))
-        {
-            _onAir = true;
-        }
-    }
-
+    
     public void SetColor(int color)
     {
         _activeColor = color;
