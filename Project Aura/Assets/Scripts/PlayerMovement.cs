@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private bool airMove;
     private Rigidbody2D _rb;
     private float abilityCooldownCounter;
+    private Animator animator;
 
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
@@ -87,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _lastVelocity = new Vector2();
@@ -108,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
         if(_horizontalInput!=0 && !_isDashing && !_isRolling && !_isWallJumping && !_isBombJumping)
         {
             Run();
+            animator.SetBool("_isRunning", true);
+        }
+        else
+        {
+            animator.SetBool("_isRunning", false);
         }
         
         //SALTAR
