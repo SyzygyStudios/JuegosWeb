@@ -9,22 +9,33 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PlayerMovement : MonoBehaviour
 {
+        
+    [Header("General Variables")]
+    //Variables generales para el control del personaje
+    [SerializeField] private LayerMask floorLayer;
+    [SerializeField] private float abilityCooldown;
+    [SerializeField]private float gravityScale;
+    private bool _grounded;
+    private int _activeColor;
+    private bool airMove;
+    private Rigidbody2D _rb;
+    private float abilityCooldownCounter;
 
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
     [SerializeField] private float speed;
     [SerializeField] private float acceleration;
     [SerializeField] private float decceleration;
+    [SerializeField] Joystick joystick;
     private float _horizontalInput, _horizontalMove;
-    public Joystick joystick;
+    
     /// Variables que controlan el salto
     [Header("Jump")]
     [SerializeField] private float jumpForce;
-    [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
     [SerializeField] private float fallGravityMultiplier;
     [SerializeField] private float jumpCutGravityMultiplier;
-    [SerializeField] private bool _jumpCut;
+    private bool _jumpCut;
     
     [Space(10)]
     [SerializeField] private float coyoteTime;
@@ -34,18 +45,18 @@ public class PlayerMovement : MonoBehaviour
     [Space(10)]
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
-    [SerializeField] private int doubleJump;
     [SerializeField] private Transform floorCheck;
     [SerializeField] private Transform roofCheck;
+    private int doubleJump;
     private Vector2 _lastVelocity;
     
     [Header("Wall Jump")]
     [SerializeField] private float wallSlideSpeed;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private bool _isWallTouch;
     [SerializeField] private Vector2 wallJumpForce;
     [SerializeField] private float wallJumpDuration;
+    private bool _isWallTouch;
     private bool _startWallJumping;
     private bool _isWallJumping;
     private bool _isSliding;
@@ -64,31 +75,26 @@ public class PlayerMovement : MonoBehaviour
     private bool _isRolling;
     private bool _canRoll;
     private bool _startRoll;
-
-    //Variables generales para el control del personaje
-    [SerializeField] private bool _grounded;
-    private Rigidbody2D _rb;
-    private float abilityCooldownCounter;
-    [SerializeField] private float abilityCooldown;
-    [SerializeField] private int _activeColor;
-    [SerializeField] private LayerMask floorLayer;
+    
+    [Header ("Gravity Ability")]
     [SerializeField] private bool _startGravity;
-    [SerializeField] private bool airMove;
-    [SerializeField] private bool _canGravity;
     [SerializeField] private float gravitySign;
-
+    
+    [Header ("Bomb Jump")]
+    [SerializeField] private float bombJumpVelocity;
+    private bool _isBombJumping;
+    private bool _startBombJump;
 
     void Start()
     {
-        _lastVelocity = new Vector2();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
+        _lastVelocity = new Vector2();
         _grounded = false;
         _canDash = true;
         _isDashing = false;
         _startDash = false;
         _canRoll = true;
-        _canGravity = true;
         _isRolling = false;
         _startRoll = false;
         doubleJump = 2;
@@ -97,15 +103,21 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         
-        if(_horizontalInput!=0 && !_isDashing && !_isRolling && !_isWallJumping)
+        //CORRER
+        
+        if(_horizontalInput!=0 && !_isDashing && !_isRolling && !_isWallJumping && !_isBombJumping)
         {
             Run();
         }
+        
+        //SALTAR
 
-        if(jumpBufferCounter>0f && !_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping)
+        if(jumpBufferCounter>0f && !_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping && !_isBombJumping)
         {
             Jump();
         }
+        
+        //DASH
         
         if(_startDash && _canDash)
         {
@@ -113,29 +125,43 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
         
+        //RODAR
+        
         if(_startRoll && _canRoll)
         {
             _startRoll = false;
             StartCoroutine(Roll());
         }
         
-        if(_startGravity && _canGravity)
+        //GRAVEDAD
+        
+        if(_startGravity && _grounded)
         {
             _startGravity = false;
-            _canGravity = false;
             StartCoroutine(Gravity());
         }
+        
+        //SALTO BOMBA
+        
+        if(_startBombJump && !_grounded)
+        {
+            _startBombJump = false;
+            BombJump();
+        }
+        
+        //DESLIZAR POR PARED
 
         if (_isSliding && gravityScale>0)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
         }
-        
-        if (_isSliding && gravityScale<0)
+        else if (_isSliding && gravityScale<0)
         {
             Debug.Log("Me deslizo");
             _rb.velocity = new Vector2(_rb.velocity.x, wallSlideSpeed);
         }
+        
+        //WALL JUMP
         
         if (_startWallJumping)
         {
@@ -143,19 +169,21 @@ public class PlayerMovement : MonoBehaviour
             _startWallJumping = false;
         }
         
-        //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
-        if(_rb.velocity.y < 0 && !_isDashing)
+        //CONTROL DE GRAVEDAD AL CAER
+        if (_rb.velocity.y < 0 && !_isDashing)
         {
             _rb.gravityScale = gravityScale * fallGravityMultiplier;
         }
-        else if(!_isDashing)
+        else if (!_isDashing)
         {
             _rb.gravityScale = gravityScale;
         }
 
+        //CONTROL DE ALTURA DE SALTO
+        
         if (gravitySign > 0)
         {
-            if (_jumpCut && _rb.velocity.y > 0 && _canGravity)
+            if (_jumpCut && _rb.velocity.y > 0 && _grounded)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
@@ -163,21 +191,18 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (_jumpCut && _rb.velocity.y < 0 && _canGravity)
+            if (_jumpCut && _rb.velocity.y < 0 && _grounded)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
             }
         }
-       
-        _lastVelocity = _rb.velocity;
         
     }
 
     void Update()
     {
         
-        //SE COMPTRUEBA MEDIANTE BOOLEANOS SI SE CUMPLEN LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS//
         if (Input.GetAxisRaw("Horizontal") != 0)
         {
             _horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -205,14 +230,15 @@ public class PlayerMovement : MonoBehaviour
         {
             ActivateJump();
         }
+        
         if(Input.GetKeyDown("w") && _isSliding)
         {
-            _startWallJumping = true;
+            ActivateWallJump();
         }
         
         if(Input.GetKeyUp("w") && !_isSliding)
         {
-            _jumpCut = true;
+            ActivateJumpCut();
         }
         
         if (Input.GetKeyDown("q"))
@@ -220,35 +246,14 @@ public class PlayerMovement : MonoBehaviour
             ActivateAbility();
         }
         
-        if (Input.GetKeyDown("r"))
-        {
-            SetColor(4);
-            ActivateAbility();
-        }
-        
-        /*if (Input.GetKeyDown("q"))
-        {
-            ActivateAbility();
-        }*/
-        if (gravitySign > 0)
-        {
-            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(1f, .1f), 0, floorLayer);
-        }
-        else
-        {
-            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(1f, .1f), 0, floorLayer);
-        }
-        
-        _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
 
-        if (_grounded)
-        {
-            _canGravity = true;
-        }
+        GroundCheck();
+        WallCheck();
+        
         jumpBufferCounter -= Time.deltaTime;
         abilityCooldownCounter += Time.deltaTime;
         gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
-
+        _lastVelocity = _rb.velocity;
         Flip();
     }
 
@@ -257,6 +262,16 @@ public class PlayerMovement : MonoBehaviour
         jumpBufferCounter = jumpBuffer;
     }
 
+    public void ActivateWallJump()
+    {   
+        _startWallJumping = true;
+    }
+
+    public void ActivateJumpCut()
+    {
+        _jumpCut = true;
+    }
+    
     public void ActivateAbility()
     {
         if (abilityCooldownCounter > abilityCooldown)
@@ -270,10 +285,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 _startRoll = true;
                 abilityCooldownCounter = 0;
-            }else if (_activeColor == 4)
+            }
+            else if (_activeColor == 5)
             {
-                Debug.Log("Se ha pulsado para ejecutar gravedad");
                 _startGravity = true;
+                abilityCooldownCounter = 0;
+            }
+            else if (_activeColor == 4)
+            {
+                _startBombJump = true;
                 abilityCooldownCounter = 0;
             }
         }
@@ -301,13 +321,6 @@ public class PlayerMovement : MonoBehaviour
         _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
     
-    private IEnumerator Gravity()
-    {
-        Debug.Log("Se ejecuta gravedad");
-        gravityScale = -gravityScale;
-        yield return new WaitForSeconds(1);
-    }
-
     private void Jump()
     {
         if (coyoteTimeCounter > 0f)
@@ -330,6 +343,13 @@ public class PlayerMovement : MonoBehaviour
             jumpBufferCounter = 0f;
         }
         PreserveMomentum();
+    }
+    
+    private IEnumerator Gravity()
+    {
+        Debug.Log("Se ejecuta gravedad");
+        gravityScale = -gravityScale;
+        yield return new WaitForSeconds(1);
     }
 
     private IEnumerator WallJump()
@@ -364,23 +384,45 @@ public class PlayerMovement : MonoBehaviour
             
     }
     
-    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator Roll()
     {
-        _rb.totalForce = Vector2.zero;
         _isRolling = true;
+        _rb.totalForce = Vector2.zero;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
         GetComponent<CapsuleCollider2D>().size /= 2;
         yield return new WaitForSeconds(rollTime);
         GetComponent<CapsuleCollider2D>().size *= 2;
         _isRolling = false;
     }
+
+    private void BombJump()
+    {
+        _isBombJumping = true;
+        _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
+    }
     
-    void PreserveMomentum()
+    private void PreserveMomentum()
     {
         _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
     }
 
+    private void GroundCheck()
+    {
+        if (gravitySign > 0)
+        {
+            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(1f, .1f), 0, floorLayer);
+        }
+        else
+        {
+            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(1f, .1f), 0, floorLayer);
+        }
+    }
+
+    private void WallCheck()
+    {
+        _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
+    }
+    
     private void Flip()
     {
         if (_rb.velocity.x > 3 && transform.localScale.x < 0)
@@ -390,20 +432,27 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         }
-}
+} 
 
     void OnTriggerEnter2D(Collider2D collision){
         
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
-        if(collision.CompareTag("Floor"))
+        if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
         {
+            PreserveMomentum();
+            if (_isBombJumping)
+            {
+                _isBombJumping = false;
+                if(collision.CompareTag("ShatteredFloor"))
+                {
+                    collision.gameObject.GetComponent<ShatteredFloor>().Break();
+                }
+            }
             _jumpCut = false;
             airMove = false;
-            PreserveMomentum();
-            doubleJump = 2;
             _canDash = true;
             coyoteTimeCounter = coyoteTime;
-            _canGravity = true;
+            doubleJump = 2;
         }
         if(collision.CompareTag("Door"))
         {
