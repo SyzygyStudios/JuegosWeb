@@ -25,8 +25,6 @@ public class PlayerMovement : MonoBehaviour
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
     [SerializeField] private float speed;
-    [SerializeField] private float acceleration;
-    [SerializeField] private float decceleration;
     [SerializeField] Joystick joystick;
     private float _horizontalInput, _horizontalMove;
     
@@ -49,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform floorCheck;
     [SerializeField] private Transform roofCheck;
     private int doubleJump;
-    private Vector2 _lastVelocity;
     
     [Header("Wall Jump")]
     [SerializeField] private float wallSlideSpeed;
@@ -91,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
-        _lastVelocity = new Vector2();
         _grounded = false;
         _canDash = true;
         _isDashing = false;
@@ -150,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         
         //SALTO BOMBA
         
-        if(_startBombJump && !_grounded)
+        if(_startBombJump)
         {
             _startBombJump = false;
             BombJump();
@@ -210,14 +206,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetAxisRaw("Horizontal") != 0)
-        {
-            _horizontalInput = Input.GetAxisRaw("Horizontal");
-        }
-        else
-        {
-            _horizontalInput = joystick.Horizontal;
-        }
+        _horizontalInput = Input.GetAxisRaw("Horizontal") != 0 ? Input.GetAxisRaw("Horizontal") : joystick.Horizontal;
 
         if(!_grounded)
         {
@@ -260,7 +249,6 @@ public class PlayerMovement : MonoBehaviour
         jumpBufferCounter -= Time.deltaTime;
         abilityCooldownCounter += Time.deltaTime;
         gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
-        _lastVelocity = _rb.velocity;
         Flip();
     }
 
@@ -321,11 +309,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _horizontalMove = _horizontalInput;
         }
-        float targetSpeed = _horizontalMove * speed;
-        float speedDiff = targetSpeed - _rb.velocity.x;
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
-        float movement = speedDiff * accelRate;
-        _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+        _rb.velocity = new Vector2(_horizontalMove * speed, _rb.velocity.y);
     }
     
     private void Jump()
@@ -349,7 +333,6 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
         }
-        PreserveMomentum();
     }
     
     private IEnumerator Gravity()
@@ -404,13 +387,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void BombJump()
     {
-        _isBombJumping = true;
-        _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
-    }
-    
-    private void PreserveMomentum()
-    {
-        _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
+        if (!_grounded)
+        {
+            _isBombJumping = true;
+            _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
+        }
     }
 
     private void GroundCheck()
@@ -446,7 +427,6 @@ public class PlayerMovement : MonoBehaviour
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
         if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
         {
-            PreserveMomentum();
             if (_isBombJumping)
             {
                 _isBombJumping = false;
