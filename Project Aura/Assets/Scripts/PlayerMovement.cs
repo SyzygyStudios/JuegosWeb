@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
     [SerializeField] private float speed;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float decceleration;
     [SerializeField] Joystick joystick;
     private float _horizontalInput, _horizontalMove;
     
@@ -54,10 +56,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Vector2 wallJumpForce;
     [SerializeField] private float wallJumpDuration;
+    [SerializeField] private float checkTime;
     private bool _isWallTouch;
     private bool _startWallJumping;
     private bool _isWallJumping;
     private bool _isSliding;
+    private bool _lastWallCheck;
     
     ///  Variables que controlan el dash y el rodar
     [Header("Dash")]
@@ -82,6 +86,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bombJumpVelocity;
     private bool _isBombJumping;
     private bool _startBombJump;
+    private float _lastVelocity;
+    private bool _lastGrounded;
 
     void Start()
     {
@@ -213,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter-= Time.deltaTime;
         }
 
-        if (!_grounded && _isWallTouch && _horizontalInput!=0)
+        if (!_grounded && _isWallTouch && _horizontalInput!=0 && _activeColor == 6 )
         {
             _isSliding = true;
         }
@@ -249,6 +255,7 @@ public class PlayerMovement : MonoBehaviour
         jumpBufferCounter -= Time.deltaTime;
         abilityCooldownCounter += Time.deltaTime;
         gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
+        _lastVelocity = _rb.velocity.x;
         Flip();
     }
 
@@ -309,7 +316,11 @@ public class PlayerMovement : MonoBehaviour
         {
             _horizontalMove = _horizontalInput;
         }
-        _rb.velocity = new Vector2(_horizontalMove * speed, _rb.velocity.y);
+        float targetSpeed = _horizontalMove * speed;
+        float speedDiff = targetSpeed - _rb.velocity.x;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
+        float movement = speedDiff * accelRate;
+        _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
     
     private void Jump()
@@ -322,6 +333,7 @@ public class PlayerMovement : MonoBehaviour
             _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
+            PreserveMomentum();
         }
         else if (doubleJump <= 2)
         {
@@ -332,6 +344,7 @@ public class PlayerMovement : MonoBehaviour
                 ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
+            PreserveMomentum();
         }
     }
     
@@ -408,7 +421,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallCheck()
     {
+        if (_lastWallCheck != wallCheck)
+        {
+            StartCoroutine(WallCheckChange());
+        }
+    }
+
+    private IEnumerator WallCheckChange()
+    {
+        yield return new WaitForSeconds(checkTime);
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
+    }
+    
+    private void PreserveMomentum()
+    {
+        _rb.velocity = new Vector2(_lastVelocity, _rb.velocity.y);
     }
     
     private void Flip()
@@ -445,8 +472,17 @@ public class PlayerMovement : MonoBehaviour
         {
             SceneManager.LoadScene("Main");
         }
+        
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
+        {
+            PreserveMomentum();
+        }
+    }
+
     public void SetColor(int color)
     {
         _activeColor = color;

@@ -2291,12 +2291,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: speed
-      value: 8.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1695004828}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: gravitySign
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: gravityScale
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: wallJumpForce.x
       value: 15
@@ -2306,8 +2314,16 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: coyoteTimeCounter
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: jumpBufferCounter
+      value: -10.682443
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: airFrictionMultiplier
-      value: 0.9
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
@@ -2364,6 +2380,10 @@ PrefabInstance:
     - target: {fileID: 6854628838149677694, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961085188341208340, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: m_Mass
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
