@@ -133,7 +133,7 @@ Transform:
   - {fileID: 4126645312261126430}
   - {fileID: 6264716886048165482}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -281,7 +281,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0019649565, y: -0.2431702}
+  m_Offset: {x: 0.0019649565, y: -0.20403747}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -292,7 +292,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.94561785, y: 1.0780262}
+  m_Size: {x: 0.94561785, y: 1.2447656}
   m_EdgeRadius: 0
 --- !u!114 &4725720138314404003
 MonoBehaviour:
@@ -310,34 +310,36 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   abilityCooldown: 0.5
-  gravityScale: 10
+  gravityScale: 9
+  _grounded: 0
   speed: 20
   acceleration: 7
   decceleration: 7
   joystick: {fileID: 0}
   jumpForce: 30
-  airFrictionMultiplier: 0.71
+  airFrictionMultiplier: 0.75
   fallGravityMultiplier: 1.1
   jumpCutGravityMultiplier: 1.7
   coyoteTime: 0.1
-  coyoteTimeCounter: 0
+  coyoteTimeCounter: 0.1
   jumpBuffer: 0.1
-  jumpBufferCounter: 0
+  jumpBufferCounter: -10.682443
   floorCheck: {fileID: 2477194473812046812}
   roofCheck: {fileID: 6264716886048165482}
   wallSlideSpeed: 1
+  wallJumpDuration: 0.1
+  checkTime: 0
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
+  wallJumpForce: {x: 15, y: 15}
   wallCheck: {fileID: 4126645312261126430}
-  wallJumpForce: {x: 20, y: 25}
-  wallJumpDuration: 0.1
   dashForce: 50
   dashingTime: 0.01
   rollForce: 30
   rollTime: 0.2
   _startGravity: 0
-  gravitySign: 0
+  gravitySign: 1
   bombJumpVelocity: 20
 --- !u!114 &6031276666922060388
 MonoBehaviour:

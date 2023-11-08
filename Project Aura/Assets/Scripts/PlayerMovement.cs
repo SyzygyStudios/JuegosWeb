@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _grounded;
     private int _activeColor;
     private float abilityCooldownCounter;
-    private float _lastVelocity;
+    private Vector2 _lastVelocity;
     private bool airMove;
     private Rigidbody2D _rb;
     private Animator animator;
@@ -102,11 +102,11 @@ public class PlayerMovement : MonoBehaviour
         if(_horizontalInput!=0)
         {
             Run();
-            animator.SetBool("_isRunning", true);
+            animator.SetBool("isRunning", true);
         }
         else
         {
-            animator.SetBool("_isRunning", false);
+            animator.SetBool("isRunning", false);
         }
         
         //SALTAR
@@ -244,11 +244,12 @@ public class PlayerMovement : MonoBehaviour
 
         GroundCheck();
         WallCheck();
+        AnimationHandler();
         
         jumpBufferCounter -= Time.deltaTime;
         abilityCooldownCounter += Time.deltaTime;
         gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
-        _lastVelocity = _rb.velocity.x;
+        _lastVelocity = _rb.velocity;
         Flip();
     }
     
@@ -336,6 +337,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (coyoteTimeCounter > 0f)
         {
+            TakeOfAnimation();
             _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
@@ -347,6 +349,7 @@ public class PlayerMovement : MonoBehaviour
         else if (doubleJump <= 2)
         {
             if (doubleJump == 1 && _activeColor != 1) return;
+            TakeOfAnimation();
             _jumpCut = false;
             doubleJump = 0;
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
@@ -491,7 +494,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void PreserveMomentum()
     {
-        _rb.velocity = new Vector2(_lastVelocity, _rb.velocity.y);
+        _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
     }
     
     private void Flip()
@@ -509,6 +512,50 @@ public class PlayerMovement : MonoBehaviour
     {
         _activeColor = color;
     }
+
+    private void FallingAnimation()
+    {
+        animator.SetTrigger("isFalling");
+    }
+    
+    private void AscendingAnimation()
+    {
+        animator.SetTrigger("isAscending");
+    }
+    
+    private void TakeOfAnimation()
+    {
+        animator.SetTrigger("isTakeingOf");
+    }
+    
+    private void MidAirAnimation()
+    {
+        animator.SetTrigger("isMidAir");
+    }
+    
+    private void LandingAnimation()
+    {
+        animator.SetTrigger("isLanding");
+    }
+
+    private void AnimationHandler()
+    {
+        if (_lastVelocity.y < 1 && _rb.velocity.y > 1)
+        {
+            AscendingAnimation();
+        }
+
+        if (_lastVelocity.y > -5 && _rb.velocity.y < -5 && !_grounded)
+        {
+            FallingAnimation();
+        }
+
+        if (_lastVelocity.y > 5 && _rb.velocity.y < 5)
+        {
+            Debug.Log("Estoy en medio del aire");
+            MidAirAnimation();
+        }
+    }
     
     void OnTriggerEnter2D(Collider2D collision){
         
@@ -523,6 +570,7 @@ public class PlayerMovement : MonoBehaviour
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
                 }
             }
+            LandingAnimation();
             doubleJump = 2;
             _canDash = true;
             _jumpCut = false;
