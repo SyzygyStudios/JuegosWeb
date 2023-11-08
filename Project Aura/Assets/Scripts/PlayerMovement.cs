@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask floorLayer;
     [SerializeField] private float abilityCooldown;
     [SerializeField]private float gravityScale;
-    private bool _grounded;
+    [SerializeField] private bool _grounded;
     private int _activeColor;
     private bool airMove;
     private Rigidbody2D _rb;
@@ -68,8 +68,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashForce;
     [SerializeField] private float dashingTime;
     private bool _isDashing;
-    private bool _canDash;
-    private bool _startDash;
+    [SerializeField] private bool _canDash;
+    [SerializeField] private bool _startDash;
     
     [Header("Roll")]
     [SerializeField] private float rollForce;
@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isBombJumping;
     private bool _startBombJump;
     private float _lastVelocity;
-    private bool _lastGrounded;
+    [SerializeField] private bool _lastGrounded;
 
     void Start()
     {
@@ -192,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (gravitySign > 0)
         {
-            if (_jumpCut && _rb.velocity.y > 0 && _grounded)
+            if (_jumpCut && _rb.velocity.y > 0 && !_grounded && !_isSliding && !_isWallJumping)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (_jumpCut && _rb.velocity.y < 0 && _grounded)
+            if (_jumpCut && _rb.velocity.y < 0 && !_grounded && !_isSliding && !_isWallJumping)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
@@ -228,17 +228,17 @@ public class PlayerMovement : MonoBehaviour
             _isSliding = false;
         }
 
-        if(Input.GetKeyDown("w") && !_isSliding)
+        if(Input.GetKeyDown("space") && !_isSliding)
         {
             ActivateJump();
         }
         
-        if(Input.GetKeyDown("w") && _isSliding)
+        if(Input.GetKeyDown("space") && _isSliding)
         {
             ActivateWallJump();
         }
         
-        if(Input.GetKeyUp("w") && !_isSliding)
+        if(Input.GetKeyUp("space") && !_isSliding)
         {
             ActivateJumpCut();
         }
@@ -369,20 +369,21 @@ public class PlayerMovement : MonoBehaviour
     
     private IEnumerator Dash()
     {
-            _rb.totalForce = Vector2.zero;
+        float prevGravityScale = gravityScale;
+        gravityScale = 0;
             _isDashing = true;
             _tr.emitting = true;
             var inputX = Input.GetAxisRaw("Horizontal");
-            var inputY = Input.GetAxisRaw("Vertical");
-            _rb.gravityScale = 0f;
-            _rb.velocity = new Vector2(inputX, inputY * gravitySign).normalized * dashForce;
+            _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
             if (!_grounded)
             {
+                Debug.Log("ESTOY EN EL AIRE");
                 _canDash = false;
             }
 
             _tr.emitting = false;
+            gravityScale = prevGravityScale;
             _isDashing = false;
             
     }
@@ -462,23 +463,23 @@ public class PlayerMovement : MonoBehaviour
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
                 }
             }
+            doubleJump = 2;
+            _canDash = true;
             _jumpCut = false;
             airMove = false;
-            _canDash = true;
             coyoteTimeCounter = coyoteTime;
-            doubleJump = 2;
         }
         if(collision.CompareTag("Door"))
         {
             SceneManager.LoadScene("Main");
         }
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
+            doubleJump = 2;
             PreserveMomentum();
         }
     }
