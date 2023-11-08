@@ -14,13 +14,15 @@ public class PlayerMovement : MonoBehaviour
     //Variables generales para el control del personaje
     [SerializeField] private LayerMask floorLayer;
     [SerializeField] private float abilityCooldown;
-    [SerializeField]private float gravityScale;
+    [SerializeField] private float gravityScale;
     [SerializeField] private bool _grounded;
     private int _activeColor;
+    private float abilityCooldownCounter;
+    private float _lastVelocity;
     private bool airMove;
     private Rigidbody2D _rb;
-    private float abilityCooldownCounter;
     private Animator animator;
+    
 
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
@@ -52,24 +54,24 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Wall Jump")]
     [SerializeField] private float wallSlideSpeed;
-    [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private Vector2 wallJumpForce;
     [SerializeField] private float wallJumpDuration;
     [SerializeField] private float checkTime;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Vector2 wallJumpForce;
+    [SerializeField] private Transform wallCheck;
     private bool _isWallTouch;
     private bool _startWallJumping;
     private bool _isWallJumping;
     private bool _isSliding;
-    private bool _lastWallCheck;
+    private bool _changingWall;
     
     ///  Variables que controlan el dash y el rodar
     [Header("Dash")]
     [SerializeField] private float dashForce;
     [SerializeField] private float dashingTime;
+    private bool _canDash;
+    private bool _startDash;
     private bool _isDashing;
-    [SerializeField] private bool _canDash;
-    [SerializeField] private bool _startDash;
     
     [Header("Roll")]
     [SerializeField] private float rollForce;
@@ -86,22 +88,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bombJumpVelocity;
     private bool _isBombJumping;
     private bool _startBombJump;
-    private float _lastVelocity;
-    [SerializeField] private bool _lastGrounded;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        _tr = GetComponent<TrailRenderer>();
-        _rb = GetComponent<Rigidbody2D>();
-        _grounded = false;
-        _canDash = true;
-        _isDashing = false;
-        _startDash = false;
-        _canRoll = true;
-        _isRolling = false;
-        _startRoll = false;
-        doubleJump = 2;
+        InitializeVariables();
     }
 
     void FixedUpdate()
@@ -109,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         
         //CORRER
         
-        if(_horizontalInput!=0 && !_isDashing && !_isRolling && !_isWallJumping && !_isBombJumping)
+        if(_horizontalInput!=0)
         {
             Run();
             animator.SetBool("_isRunning", true);
@@ -121,14 +111,14 @@ public class PlayerMovement : MonoBehaviour
         
         //SALTAR
 
-        if(jumpBufferCounter>0f && !_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping && !_isBombJumping)
+        if(jumpBufferCounter>0f)
         {
             Jump();
         }
         
         //DASH
         
-        if(_startDash && _canDash)
+        if(_startDash)
         {
             _startDash = false;
             StartCoroutine(Dash());
@@ -136,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
         
         //RODAR
         
-        if(_startRoll && _canRoll)
+        if(_startRoll)
         {
             _startRoll = false;
             StartCoroutine(Roll());
@@ -144,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
         
         //GRAVEDAD
         
-        if(_startGravity && _grounded)
+        if(_startGravity)
         {
             _startGravity = false;
             StartCoroutine(Gravity());
@@ -158,6 +148,14 @@ public class PlayerMovement : MonoBehaviour
             BombJump();
         }
         
+        //WALL JUMP
+        
+        if (_startWallJumping)
+        {
+            _startWallJumping = false;
+            StartCoroutine(WallJump());
+        }
+        
         //DESLIZAR POR PARED
 
         if (_isSliding && gravityScale>0)
@@ -166,16 +164,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (_isSliding && gravityScale<0)
         {
-            Debug.Log("Me deslizo");
             _rb.velocity = new Vector2(_rb.velocity.x, wallSlideSpeed);
-        }
-        
-        //WALL JUMP
-        
-        if (_startWallJumping)
-        {
-            StartCoroutine(WallJump());
-            _startWallJumping = false;
         }
         
         //CONTROL DE GRAVEDAD AL CAER
@@ -192,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (gravitySign > 0)
         {
-            if (_jumpCut && _rb.velocity.y > 0 && !_grounded && !_isSliding && !_isWallJumping)
+            if (_jumpCut && _rb.velocity.y > 0 && !_grounded)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
@@ -200,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (_jumpCut && _rb.velocity.y < 0 && !_grounded && !_isSliding && !_isWallJumping)
+            if (_jumpCut && _rb.velocity.y < 0 && !_grounded)
             {
                 _rb.velocity -= (new Vector2(0,
                     (_rb.velocity.y / jumpCutGravityMultiplier)));
@@ -211,8 +200,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
-        _horizontalInput = Input.GetAxisRaw("Horizontal") != 0 ? Input.GetAxisRaw("Horizontal") : joystick.Horizontal;
+        if (CanRun())
+        {
+            _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
+                ? Input.GetAxisRaw("Horizontal")
+                : joystick.Horizontal;
+        }
 
         if(!_grounded)
         {
@@ -228,24 +221,24 @@ public class PlayerMovement : MonoBehaviour
             _isSliding = false;
         }
 
-        if(Input.GetKeyDown("space") && !_isSliding)
+        if(Input.GetKeyDown("space") && CanJump())
         {
             ActivateJump();
         }
         
-        if(Input.GetKeyDown("space") && _isSliding)
+        if(Input.GetKeyDown("space") && CanWallJump())
         {
             ActivateWallJump();
-        }
-        
-        if(Input.GetKeyUp("space") && !_isSliding)
-        {
-            ActivateJumpCut();
         }
         
         if (Input.GetKeyDown("q"))
         {
             ActivateAbility();
+        }
+        
+        if(Input.GetKeyUp("space") && !_grounded)
+        {
+            ActivateJumpCut();
         }
         
 
@@ -257,6 +250,22 @@ public class PlayerMovement : MonoBehaviour
         gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
         _lastVelocity = _rb.velocity.x;
         Flip();
+    }
+    
+    private void InitializeVariables()
+    {
+        animator = GetComponent<Animator>();
+        _tr = GetComponent<TrailRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+        _grounded = false;
+        _canDash = true;
+        _isDashing = false;
+        _startDash = false;
+        _canRoll = true;
+        _isRolling = false;
+        _startRoll = false;
+        _changingWall = false;
+        doubleJump = 2;
     }
 
     public void ActivateJump()
@@ -278,22 +287,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (abilityCooldownCounter > abilityCooldown)
         {
-            if (_canDash && _activeColor == 2)
+            if (CanDash())
             {
                 _startDash = true;
                 abilityCooldownCounter = 0;
             }
-            else if (_canRoll && _grounded && _activeColor == 3)
+            else if (CanRoll())
             {
                 _startRoll = true;
                 abilityCooldownCounter = 0;
             }
-            else if (_activeColor == 5)
+            else if (CanGravity())
             {
                 _startGravity = true;
                 abilityCooldownCounter = 0;
             }
-            else if (_activeColor == 4)
+            else if (CanBombJump())
             {
                 _startBombJump = true;
                 abilityCooldownCounter = 0;
@@ -361,7 +370,19 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("WallJump");
         doubleJump--;
         gravityScale = 0;
-        _rb.AddForce(new Vector2(wallJumpForce.x * -(transform.localScale.x), wallJumpForce.y), ForceMode2D.Impulse);
+        if (!_changingWall)
+        {
+            _rb.totalForce = Vector2.zero;
+            _rb.AddForce(new Vector2(wallJumpForce.x * -(transform.localScale.x), wallJumpForce.y),
+                ForceMode2D.Impulse);
+        }
+        else
+        {
+            _rb.totalForce = Vector2.zero;
+            _rb.AddForce(new Vector2(wallJumpForce.x * (transform.localScale.x), wallJumpForce.y),
+                ForceMode2D.Impulse);
+        }
+
         yield return new WaitForSeconds(wallJumpDuration);
         gravityScale = 10;
         _isWallJumping = false;
@@ -401,28 +422,60 @@ public class PlayerMovement : MonoBehaviour
 
     private void BombJump()
     {
-        if (!_grounded)
-        {
-            _isBombJumping = true;
-            _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
-        }
+        _isBombJumping = true;
+        _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
     }
 
+    private bool CanRun()
+    {
+        return !_isDashing && !_isRolling && !_isBombJumping;
+    }
+
+    private bool CanJump()
+    {
+        return (!_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping && !_isBombJumping && !_isSliding);
+    }
+    
+    private bool CanGravity()
+    {
+        return _canDash && _activeColor == 5;
+    }
+    
+    private bool CanWallJump()
+    {
+        return _isSliding;
+    }
+    
+    private bool CanDash()
+    {
+        return _canDash && _activeColor == 2;
+    }
+    
+    private bool CanRoll()
+    {
+        return _canRoll && _grounded && _activeColor == 3;
+    }
+    
+    private bool CanBombJump()
+    {
+        return !_grounded && _activeColor == 4;
+    }
+    
     private void GroundCheck()
     {
         if (gravitySign > 0)
         {
-            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(1f, .1f), 0, floorLayer);
+            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
         }
         else
         {
-            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(1f, .1f), 0, floorLayer);
+            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
         }
     }
 
     private void WallCheck()
     {
-        if (_lastWallCheck != wallCheck)
+        if (_isWallTouch != Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer))
         {
             StartCoroutine(WallCheckChange());
         }
@@ -430,7 +483,9 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WallCheckChange()
     {
+        _changingWall = true;
         yield return new WaitForSeconds(checkTime);
+        _changingWall = false;
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
     }
     
@@ -449,7 +504,12 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         }
 } 
-
+    
+    public void SetColor(int color)
+    {
+        _activeColor = color;
+    }
+    
     void OnTriggerEnter2D(Collider2D collision){
         
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
@@ -479,13 +539,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
-            doubleJump = 2;
             PreserveMomentum();
         }
     }
-
-    public void SetColor(int color)
-    {
-        _activeColor = color;
-    }
+    
 }
