@@ -523,31 +523,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingAnimation()
     {
+        animator.SetBool("isFalling", true);
         animator.SetBool("isMidAir", false);
         animator.SetBool("isAscending", false);
-        animator.SetBool("isFalling", false);
-        animator.SetBool("isFalling", true);
     }
     
     private void AscendingAnimation()
     {
-        animator.SetBool("isMidAir", false);
-        animator.SetBool("isAscending", false);
-        animator.SetBool("isFalling", false);
         animator.SetBool("isAscending", true);
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isFalling", false);
     }
     
     private void TakeOfAnimation()
     {
+        Debug.Log("Despego");
         animator.SetTrigger("isTakeingOf");
     }
     
     private void MidAirAnimation()
     {
-        animator.SetBool("isMidAir", false);
+        animator.SetBool("isMidAir", true);
         animator.SetBool("isAscending", false);
         animator.SetBool("isFalling", false);
-        animator.SetBool("isMidAir", true);
     }
     
     private void LandingAnimation()
@@ -564,19 +562,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimationHandler()
     {
-        if (_lastVelocity.y < 1 && _rb.velocity.y > 1 && !_grounded)
+        if (_rb.velocity.y > 0 && !_grounded)
         {
             AscendingAnimation();
         }
 
-        if (_lastVelocity.y > -5 && _rb.velocity.y < -5 && !_grounded)
+        if (_rb.velocity.y < -2 && !_grounded)
         {
             FallingAnimation();
         }
 
-        if (_lastVelocity.y > 5 && _rb.velocity.y < 5 && !_grounded)
+        if (_rb.velocity.y > -2 && _rb.velocity.y < 2 && !_grounded)
         {
-            Debug.Log("Estoy en medio del aire");
             MidAirAnimation();
         }
 
