@@ -1,26 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class PlayerMovement : MonoBehaviour
 {
+        
+    [Header("General Variables")]
+    //Variables generales para el control del personaje
+    [SerializeField] private LayerMask floorLayer;
+    [SerializeField] private float abilityCooldown;
+    [SerializeField] private float gravityScale;
+    [SerializeField] private bool _grounded;
+    private int _activeColor;
+    private float abilityCooldownCounter;
+    private Vector2 _lastVelocity;
+    private bool airMove;
+    private Rigidbody2D _rb;
+    private Animator animator;
+    
 
     /// Variables que controlan el movimiento al correr
     [Header("Run")]
     [SerializeField] private float speed;
     [SerializeField] private float acceleration;
     [SerializeField] private float decceleration;
+    [SerializeField] Joystick joystick;
     private float _horizontalInput, _horizontalMove;
-    public Joystick joystick;
+    
     /// Variables que controlan el salto
     [Header("Jump")]
     [SerializeField] private float jumpForce;
-    [SerializeField] private float fallGravityScaleMultiplier;
-    [SerializeField] private float gravityScale;
     [SerializeField] private float airFrictionMultiplier;
+    [SerializeField] private float fallGravityMultiplier;
+    [SerializeField] private float jumpCutGravityMultiplier;
+    private bool _jumpCut;
     
     [Space(10)]
     [SerializeField] private float coyoteTime;
@@ -30,17 +48,30 @@ public class PlayerMovement : MonoBehaviour
     [Space(10)]
     [SerializeField] private float jumpBuffer;
     [SerializeField] private float jumpBufferCounter;
-    [SerializeField] private int doubleJump;
-    private Vector2 _lastVelocity;
+    [SerializeField] private Transform floorCheck;
+    [SerializeField] private Transform roofCheck;
+    private int doubleJump;
     
+    [Header("Wall Jump")]
+    [SerializeField] private float wallSlideSpeed;
+    [SerializeField] private float wallJumpDuration;
+    [SerializeField] private float checkTime;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Vector2 wallJumpForce;
+    [SerializeField] private Transform wallCheck;
+    private bool _isWallTouch;
+    private bool _startWallJumping;
+    private bool _isWallJumping;
+    private bool _isSliding;
+    private bool _changingWall;
     
     ///  Variables que controlan el dash y el rodar
     [Header("Dash")]
     [SerializeField] private float dashForce;
     [SerializeField] private float dashingTime;
-    private bool _isDashing;
     private bool _canDash;
     private bool _startDash;
+    private bool _isDashing;
     
     [Header("Roll")]
     [SerializeField] private float rollForce;
@@ -48,93 +79,158 @@ public class PlayerMovement : MonoBehaviour
     private bool _isRolling;
     private bool _canRoll;
     private bool _startRoll;
-
-    //Variables generales para el control del personaje
-    private bool _onAir;
-    private Rigidbody2D _rb;
-    [SerializeField] private int _activeColor;
+    
+    [Header ("Gravity Ability")]
+    [SerializeField] private bool _startGravity;
+    [SerializeField] private float gravitySign;
+    
+    [Header ("Bomb Jump")]
+    [SerializeField] private float bombJumpVelocity;
+    private bool _isBombJumping;
+    private bool _startBombJump;
+    private bool landing;
+    private bool _lastGrounded;
 
     void Start()
     {
-        _lastVelocity = new Vector2();
-        _tr = GetComponent<TrailRenderer>();
-        _rb = GetComponent<Rigidbody2D>();
-        _onAir = false;
-        _canDash = true;
-        _isDashing = false;
-        _startDash = false;
-        _canRoll = true;
-        _isRolling = false;
-        _startRoll = false;
-        doubleJump = 2;
+        InitializeVariables();
     }
 
     void FixedUpdate()
     {
-        //SI LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS SE CUMPLEN SE EJECUTAN//
         
-        if(_horizontalInput!=0 && !_isDashing && !_isRolling)
+        //CORRER
+        
+        if(_horizontalInput!=0)
         {
             Run();
+            animator.SetBool("isRunning", true);
         }
+        else
+        {
+            animator.SetBool("isRunning", false);
+        }
+        
+        //SALTAR
 
-        if(jumpBufferCounter>0f && !_isDashing && !_isRolling && doubleJump>0)
+        if(jumpBufferCounter>0f)
         {
             Jump();
         }
         
-        if(_startDash && _canDash)
+        //DASH
+        
+        if(_startDash)
         {
             _startDash = false;
             StartCoroutine(Dash());
         }
         
-        if(_startRoll && _canRoll)
+        //RODAR
+        
+        if(_startRoll)
         {
             _startRoll = false;
             StartCoroutine(Roll());
         }
         
-        //FALL SCALE MULTIPLIER: AUMENTA LA GRAVEDAD AL CAER, PARA DAR MEJOR SENSACION//
-        if(_rb.velocity.y < 0 && !_isDashing)
+        //GRAVEDAD
+        
+        if(_startGravity)
         {
-            _rb.gravityScale = gravityScale * fallGravityScaleMultiplier;
+            _startGravity = false;
+            StartCoroutine(Gravity());
         }
-        else if(!_isDashing)
+        
+        //SALTO BOMBA
+        
+        if(_startBombJump)
+        {
+            _startBombJump = false;
+            BombJump();
+        }
+        
+        //WALL JUMP
+        
+        if (_startWallJumping)
+        {
+            _startWallJumping = false;
+            StartCoroutine(WallJump());
+        }
+        
+        //DESLIZAR POR PARED
+
+        if (_isSliding && gravityScale>0)
+        {
+            _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
+        }
+        else if (_isSliding && gravityScale<0)
+        {
+            _rb.velocity = new Vector2(_rb.velocity.x, wallSlideSpeed);
+        }
+        
+        //CONTROL DE GRAVEDAD AL CAER
+        if (_rb.velocity.y < 0 && !_isDashing)
+        {
+            _rb.gravityScale = gravityScale * fallGravityMultiplier;
+        }
+        else if (!_isDashing)
         {
             _rb.gravityScale = gravityScale;
         }
+
+        //CONTROL DE ALTURA DE SALTO
         
-        //VARIABLES MANTENER EL MOMENTUM TANTO SALTANDO COMO AL CAER//
-        if (_onAir)
+        if (gravitySign > 0)
         {
-            PreserveMomentum();
+            if (_jumpCut && _rb.velocity.y > 0 && !_grounded)
+            {
+                _rb.velocity -= (new Vector2(0,
+                    (_rb.velocity.y / jumpCutGravityMultiplier)));
+            }
         }
-        _lastVelocity = _rb.velocity;
+        else
+        {
+            if (_jumpCut && _rb.velocity.y < 0 && !_grounded)
+            {
+                _rb.velocity -= (new Vector2(0,
+                    (_rb.velocity.y / jumpCutGravityMultiplier)));
+            }
+        }
         
     }
 
     void Update()
     {
-        
-        //SE COMPTRUEBA MEDIANTE BOOLEANOS SI SE CUMPLEN LAS CONDICIONES PARA LOS DISTINTOS MOVIMIENTOS//
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        if (CanRun())
         {
-            _horizontalInput = Input.GetAxisRaw("Horizontal");
-        }
-        else
-        {
-            _horizontalInput = joystick.Horizontal;
+            _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
+                ? Input.GetAxisRaw("Horizontal")
+                : joystick.Horizontal;
         }
 
-        if(_onAir)
+        if(!_grounded)
         {
             coyoteTimeCounter-= Time.deltaTime;
         }
 
-        if(Input.GetKeyDown("w"))
+        if (!_grounded && _isWallTouch && _horizontalInput!=0 && _activeColor == 6 )
+        {
+            _isSliding = true;
+        }
+        else
+        {
+            _isSliding = false;
+        }
+
+        if(Input.GetKeyDown("space") && CanJump())
         {
             ActivateJump();
+        }
+        
+        if(Input.GetKeyDown("space") && CanWallJump())
+        {
+            ActivateWallJump();
         }
         
         if (Input.GetKeyDown("q"))
@@ -142,12 +238,37 @@ public class PlayerMovement : MonoBehaviour
             ActivateAbility();
         }
         
-        /*if (Input.GetKeyDown("q"))
+        if(Input.GetKeyUp("space") && !_grounded)
         {
-            ActivateAbility();
-        }*/
+            ActivateJumpCut();
+        }
+        
+
+        GroundCheck();
+        WallCheck();
+        AnimationHandler();
         
         jumpBufferCounter -= Time.deltaTime;
+        abilityCooldownCounter += Time.deltaTime;
+        gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
+        _lastVelocity = _rb.velocity;
+        Flip();
+    }
+    
+    private void InitializeVariables()
+    {
+        animator = GetComponent<Animator>();
+        _tr = GetComponent<TrailRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+        _grounded = false;
+        _canDash = true;
+        _isDashing = false;
+        _startDash = false;
+        _canRoll = true;
+        _isRolling = false;
+        _startRoll = false;
+        _changingWall = false;
+        doubleJump = 2;
     }
 
     public void ActivateJump()
@@ -155,106 +276,330 @@ public class PlayerMovement : MonoBehaviour
         jumpBufferCounter = jumpBuffer;
     }
 
+    public void ActivateWallJump()
+    {   
+        _startWallJumping = true;
+    }
+
+    public void ActivateJumpCut()
+    {
+        _jumpCut = true;
+    }
+    
     public void ActivateAbility()
     {
-        if (_canDash && _activeColor == 2)
+        if (abilityCooldownCounter > abilityCooldown)
         {
-            _startDash = true;
-        }else if (_canRoll && !_onAir && _activeColor == 3)
-        {
-            _startRoll = true;
+            if (CanDash())
+            {
+                _startDash = true;
+                abilityCooldownCounter = 0;
+            }
+            else if (CanRoll())
+            {
+                _startRoll = true;
+                abilityCooldownCounter = 0;
+            }
+            else if (CanGravity())
+            {
+                _startGravity = true;
+                abilityCooldownCounter = 0;
+            }
+            else if (CanBombJump())
+            {
+                _startBombJump = true;
+                abilityCooldownCounter = 0;
+            }
         }
     }
     
     private void Run()
     {
-        if (_onAir)
+        if (!_grounded)
         {
             _horizontalMove = _horizontalInput * airFrictionMultiplier;
+            if (_rb.velocity.x < 0 && _horizontalMove > 0 || _rb.velocity.x > 0 && _horizontalMove < 0 || airMove)
+            {
+                airMove = true;
+                _horizontalMove = _horizontalMove / 1.5f;
+            }
         }
         else
         {
             _horizontalMove = _horizontalInput;
         }
-
         float targetSpeed = _horizontalMove * speed;
         float speedDiff = targetSpeed - _rb.velocity.x;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
         float movement = speedDiff * accelRate;
         _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
-
+    
     private void Jump()
-    {   
-        
-        //CASO 1: REALIZA SALTO DENTRO DEL COYOTE TIME (DESDE EL SUELO) VA A PODER REALIZAR DOS SALTOS SIMULTANEOS EN EL AIRE
+    {
         if (coyoteTimeCounter > 0f)
         {
+            TakeOfAnimation();
+            _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
-            _rb.AddForce(Vector2.up * (jumpForce - _rb.velocity.y), ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
+            PreserveMomentum();
         }
-        //CASO 2: O BIEN SE HA DEJADO CAER Y HA PASADO EL COYOTE TIME, O YA HA SALTADO 1 VEZ, SEA CUAL SEA REALIZARÁ SOLO UN SALTO
         else if (doubleJump <= 2)
         {
             if (doubleJump == 1 && _activeColor != 1) return;
+            _jumpCut = false;
             doubleJump = 0;
-            _rb.totalForce = Vector2.zero;
-            _rb.AddForce(Vector2.up * (jumpForce * 1.1f - _rb.velocity.y),
+            _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
+            PreserveMomentum();
         }
+    }
+    
+    private IEnumerator Gravity()
+    {
+        Debug.Log("Se ejecuta gravedad");
+        gravityScale = -gravityScale;
+        yield return new WaitForSeconds(1);
+    }
+
+    private IEnumerator WallJump()
+    {
+        _isWallJumping = true;
+        Debug.Log("WallJump");
+        doubleJump--;
+        gravityScale = 0;
+        if (!_changingWall)
+        {
+            _rb.totalForce = Vector2.zero;
+            _rb.AddForce(new Vector2(wallJumpForce.x * -(transform.localScale.x), wallJumpForce.y),
+                ForceMode2D.Impulse);
+        }
+        else
+        {
+            _rb.totalForce = Vector2.zero;
+            _rb.AddForce(new Vector2(wallJumpForce.x * (transform.localScale.x), wallJumpForce.y),
+                ForceMode2D.Impulse);
+        }
+
+        yield return new WaitForSeconds(wallJumpDuration);
+        gravityScale = 10;
+        _isWallJumping = false;
     }
     
     private IEnumerator Dash()
     {
+        float prevGravityScale = gravityScale;
+        gravityScale = 0;
+            _isDashing = true;
             _tr.emitting = true;
             var inputX = Input.GetAxisRaw("Horizontal");
-            var inputY = Input.GetAxisRaw("Vertical");
-            _isDashing = true;
-            _rb.gravityScale = 0;
-            _rb.totalForce = new Vector2(0, 0);
-            _rb.velocity = new Vector2(inputX,inputY).normalized * dashForce;
+            _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
             yield return new WaitForSeconds(dashingTime);
-            _rb.gravityScale = gravityScale;
-            if (_onAir)
+            if (!_grounded)
             {
+                Debug.Log("ESTOY EN EL AIRE");
                 _canDash = false;
             }
+
             _tr.emitting = false;
+            gravityScale = prevGravityScale;
             _isDashing = false;
+            
     }
     
-    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator Roll()
     {
         _isRolling = true;
-        _rb.totalForce = new Vector2(0, 0);
+        _rb.totalForce = Vector2.zero;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
         GetComponent<CapsuleCollider2D>().size /= 2;
         yield return new WaitForSeconds(rollTime);
         GetComponent<CapsuleCollider2D>().size *= 2;
         _isRolling = false;
     }
-    
-    void PreserveMomentum()
+
+    private void BombJump()
     {
-        if (_lastVelocity.y < -5)
-            _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
+        _isBombJumping = true;
+        _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
+    }
+
+    private bool CanRun()
+    {
+        return !_isDashing && !_isRolling && !_isBombJumping;
+    }
+
+    private bool CanJump()
+    {
+        return (!_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping && !_isBombJumping && !_isSliding);
+    }
+    
+    private bool CanGravity()
+    {
+        return _canDash && _activeColor == 5;
+    }
+    
+    private bool CanWallJump()
+    {
+        return _isSliding;
+    }
+    
+    private bool CanDash()
+    {
+        return _canDash && _activeColor == 2;
+    }
+    
+    private bool CanRoll()
+    {
+        return _canRoll && _grounded && _activeColor == 3;
+    }
+    
+    private bool CanBombJump()
+    {
+        return !_grounded && _activeColor == 4;
+    }
+    
+    private void GroundCheck()
+    {
+        if (gravitySign > 0)
+        {
+            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
+        }
+        else
+        {
+            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
+        }
+
+        if (!_lastGrounded && _grounded)
+        {
+            landing = true;
+        }
+
+        _lastGrounded = _grounded;
+    }
+
+    private void WallCheck()
+    {
+        if (_isWallTouch != Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer))
+        {
+            StartCoroutine(WallCheckChange());
+        }
+    }
+
+    private IEnumerator WallCheckChange()
+    {
+        _changingWall = true;
+        yield return new WaitForSeconds(checkTime);
+        _changingWall = false;
+        _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
+    }
+    
+    private void PreserveMomentum()
+    {
+        _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
+    }
+    
+    private void Flip()
+    {
+        if (_rb.velocity.x > 3 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        }else if(_rb.velocity.x < -3 && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        }
+} 
+    
+    public void SetColor(int color)
+    {
+        _activeColor = color;
+    }
+
+    private void FallingAnimation()
+    {
+        animator.SetBool("isFalling", true);
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isAscending", false);
+    }
+    
+    private void AscendingAnimation()
+    {
+        animator.SetBool("isAscending", true);
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isFalling", false);
+    }
+    
+    private void TakeOfAnimation()
+    {
+        Debug.Log("Despego");
+        animator.SetTrigger("isTakeingOf");
+    }
+    
+    private void MidAirAnimation()
+    {
+        animator.SetBool("isMidAir", true);
+        animator.SetBool("isAscending", false);
+        animator.SetBool("isFalling", false);
+    }
+    
+    private void LandingAnimation()
+    {
+        if (landing)
+        {
+            animator.SetBool("isMidAir", false);
+            animator.SetBool("isAscending", false);
+            animator.SetBool("isFalling", false);
+            animator.SetTrigger("isLanding");
+            landing = false;
+        }
+    }
+
+    private void AnimationHandler()
+    {
+        if (_rb.velocity.y > 0 && !_grounded)
+        {
+            AscendingAnimation();
+        }
+
+        if (_rb.velocity.y < -2 && !_grounded)
+        {
+            FallingAnimation();
+        }
+
+        if (_rb.velocity.y > -2 && _rb.velocity.y < 2 && !_grounded)
+        {
+            MidAirAnimation();
+        }
+
+        if (_grounded)
+        {
+            LandingAnimation();
+        }
     }
     
     void OnTriggerEnter2D(Collider2D collision){
         
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
-        if(collision.CompareTag("Floor"))
+        if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
         {
-            PreserveMomentum();
+            if (_isBombJumping)
+            {
+                _isBombJumping = false;
+                if(collision.CompareTag("ShatteredFloor"))
+                {
+                    collision.gameObject.GetComponent<ShatteredFloor>().Break();
+                }
+            }
             doubleJump = 2;
-            _onAir = false;
             _canDash = true;
+            _jumpCut = false;
+            airMove = false;
             coyoteTimeCounter = coyoteTime;
         }
         if(collision.CompareTag("Door"))
@@ -263,15 +608,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision){
-        if(collision.CompareTag("Floor"))
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
-            _onAir = true;
+            PreserveMomentum();
         }
     }
-
-    public void SetColor(int color)
-    {
-        _activeColor = color;
-    }
+    
 }

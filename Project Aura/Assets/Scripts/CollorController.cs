@@ -26,10 +26,25 @@ public class CollorController : MonoBehaviour
             Debug.Log("Toco el rojo");
             _hoverColor = 2;
         }
+        else if (other.CompareTag("GreenPower"))
+        {
+            Debug.Log("Toco el verde");
+            _hoverColor = 3;
+        }
+        else if (other.CompareTag("CianPower"))
+        {
+            Debug.Log("Toco el cian");
+            _hoverColor = 4;
+        }
+        else if (other.CompareTag("PurplePower"))
+        {
+            Debug.Log("Toco el magenta");
+            _hoverColor = 5;
+        }
         else if (other.CompareTag("YellowPower"))
         {
             Debug.Log("Toco el amarillo");
-            _hoverColor = 3;
+            _hoverColor = 6;
         }
     }
 

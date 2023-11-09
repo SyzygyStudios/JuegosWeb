@@ -8,6 +8,11 @@ TagManager:
   - RedPower
   - BluePower
   - YellowPower
+  - Door
+  - ShatteredFloor
+  - CianPower
+  - PurplePower
+  - GreenPower
   layers:
   - Default
   - TransparentFX
@@ -16,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Floor
-  - 
+  - Wall
   - 
   - 
   - 
