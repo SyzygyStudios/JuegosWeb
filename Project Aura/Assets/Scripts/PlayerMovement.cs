@@ -88,6 +88,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bombJumpVelocity;
     private bool _isBombJumping;
     private bool _startBombJump;
+    private bool landing;
+    private bool _lastGrounded;
 
     void Start()
     {
@@ -349,7 +351,6 @@ public class PlayerMovement : MonoBehaviour
         else if (doubleJump <= 2)
         {
             if (doubleJump == 1 && _activeColor != 1) return;
-            TakeOfAnimation();
             _jumpCut = false;
             doubleJump = 0;
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
@@ -474,6 +475,13 @@ public class PlayerMovement : MonoBehaviour
         {
             _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
         }
+
+        if (!_lastGrounded && _grounded)
+        {
+            landing = true;
+        }
+
+        _lastGrounded = _grounded;
     }
 
     private void WallCheck()
@@ -515,12 +523,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingAnimation()
     {
-        animator.SetTrigger("isFalling");
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isAscending", false);
+        animator.SetBool("isFalling", false);
+        animator.SetBool("isFalling", true);
     }
     
     private void AscendingAnimation()
     {
-        animator.SetTrigger("isAscending");
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isAscending", false);
+        animator.SetBool("isFalling", false);
+        animator.SetBool("isAscending", true);
     }
     
     private void TakeOfAnimation()
@@ -530,17 +544,27 @@ public class PlayerMovement : MonoBehaviour
     
     private void MidAirAnimation()
     {
-        animator.SetTrigger("isMidAir");
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isAscending", false);
+        animator.SetBool("isFalling", false);
+        animator.SetBool("isMidAir", true);
     }
     
     private void LandingAnimation()
     {
-        animator.SetTrigger("isLanding");
+        if (landing)
+        {
+            animator.SetBool("isMidAir", false);
+            animator.SetBool("isAscending", false);
+            animator.SetBool("isFalling", false);
+            animator.SetTrigger("isLanding");
+            landing = false;
+        }
     }
 
     private void AnimationHandler()
     {
-        if (_lastVelocity.y < 1 && _rb.velocity.y > 1)
+        if (_lastVelocity.y < 1 && _rb.velocity.y > 1 && !_grounded)
         {
             AscendingAnimation();
         }
@@ -550,10 +574,15 @@ public class PlayerMovement : MonoBehaviour
             FallingAnimation();
         }
 
-        if (_lastVelocity.y > 5 && _rb.velocity.y < 5)
+        if (_lastVelocity.y > 5 && _rb.velocity.y < 5 && !_grounded)
         {
             Debug.Log("Estoy en medio del aire");
             MidAirAnimation();
+        }
+
+        if (_grounded)
+        {
+            LandingAnimation();
         }
     }
     
@@ -570,7 +599,6 @@ public class PlayerMovement : MonoBehaviour
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
                 }
             }
-            LandingAnimation();
             doubleJump = 2;
             _canDash = true;
             _jumpCut = false;
