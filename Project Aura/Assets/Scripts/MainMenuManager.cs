@@ -52,7 +52,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play() 
     {
-        SceneManager.LoadScene("SelectLevel");
+        mainMenu.SetActive(false);
 
     }
 

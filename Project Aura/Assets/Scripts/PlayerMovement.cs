@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool airMove;
     private Rigidbody2D _rb;
     private Animator animator;
+    private bool movement = false;
     
 
     /// Variables que controlan el movimiento al correr
@@ -94,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         InitializeVariables();
+        
     }
 
     void FixedUpdate()
@@ -202,47 +204,49 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (CanRun())
+        if (movement ||  SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
         {
-            _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
-                ? Input.GetAxisRaw("Horizontal")
-                : joystick.Horizontal;
-        }
+            if (CanRun())
+            {
+                _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
+                    ? Input.GetAxisRaw("Horizontal")
+                    : joystick.Horizontal;
+            }
 
-        if(!_grounded)
-        {
-            coyoteTimeCounter-= Time.deltaTime;
-        }
+            if (!_grounded)
+            {
+                coyoteTimeCounter -= Time.deltaTime;
+            }
 
-        if (!_grounded && _isWallTouch && _horizontalInput!=0 && _activeColor == 6 )
-        {
-            _isSliding = true;
-        }
-        else
-        {
-            _isSliding = false;
-        }
+            if (!_grounded && _isWallTouch && _horizontalInput != 0 && _activeColor == 6)
+            {
+                _isSliding = true;
+            }
+            else
+            {
+                _isSliding = false;
+            }
 
-        if(Input.GetKeyDown("space") && CanJump())
-        {
-            ActivateJump();
+            if (Input.GetKeyDown("space") && CanJump())
+            {
+                ActivateJump();
+            }
+
+            if (Input.GetKeyDown("space") && CanWallJump())
+            {
+                ActivateWallJump();
+            }
+
+            if (Input.GetKeyDown("q"))
+            {
+                ActivateAbility();
+            }
+
+            if (Input.GetKeyUp("space") && !_grounded)
+            {
+                ActivateJumpCut();
+            }
         }
-        
-        if(Input.GetKeyDown("space") && CanWallJump())
-        {
-            ActivateWallJump();
-        }
-        
-        if (Input.GetKeyDown("q"))
-        {
-            ActivateAbility();
-        }
-        
-        if(Input.GetKeyUp("space") && !_grounded)
-        {
-            ActivateJumpCut();
-        }
-        
 
         GroundCheck();
         WallCheck();
@@ -615,5 +619,12 @@ public class PlayerMovement : MonoBehaviour
             PreserveMomentum();
         }
     }
+
+    public void Play()
+    {
+        movement = true;
+    }
+
+   
     
 }

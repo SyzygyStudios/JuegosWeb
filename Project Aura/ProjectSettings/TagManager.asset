@@ -50,3 +50,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 4195506007
+    locked: 0
+  - name: Floor
+    uniqueID: 2167150013
+    locked: 0
+  - name: Player
+    uniqueID: 1345915745
+    locked: 0
