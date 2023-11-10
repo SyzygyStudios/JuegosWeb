@@ -604,7 +604,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if(collision.CompareTag("Door"))
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Mundo_1.1");
         }
     }
 
