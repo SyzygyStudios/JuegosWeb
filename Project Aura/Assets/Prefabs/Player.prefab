@@ -133,7 +133,7 @@ Transform:
   - {fileID: 4126645312261126430}
   - {fileID: 6264716886048165482}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -316,7 +316,7 @@ MonoBehaviour:
   acceleration: 7
   decceleration: 7
   joystick: {fileID: 0}
-  jumpForce: 30
+  jumpForce: 33
   airFrictionMultiplier: 0.75
   fallGravityMultiplier: 1.1
   jumpCutGravityMultiplier: 1.7
@@ -353,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d1e4a3b41735d258af05400a043f73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 5821956469837696787}
 --- !u!96 &6252471641858354788
 TrailRenderer:
   serializedVersion: 3
