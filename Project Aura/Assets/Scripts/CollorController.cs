@@ -25,6 +25,7 @@ public class CollorController : MonoBehaviour
         _yellow = new Color(255f/255f, 217f/255f, 0);
         _cyan = new Color(56f/255f, 243f/255f, 243f/255f);
         _magenta = new Color(184f/255f, 56f/255f, 231f/255f);
+        _auxColor = Color.white;
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         _originalColor = _spriteRenderer.color;
         _finalColor = _originalColor;
@@ -36,8 +37,11 @@ public class CollorController : MonoBehaviour
         if (Input.GetKeyDown("e"))
         {
             _finalColor = _auxColor;
-            Debug.Log("Asigno el " + _hoverColor);
-            GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
+            if (_hoverColor >= 1 && _hoverColor <= 6)
+            {
+                Debug.Log("Asigno el " + _hoverColor);
+                GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -77,6 +81,14 @@ public class CollorController : MonoBehaviour
             Debug.Log("Toco el amarillo");
             _auxColor = _yellow;
             _hoverColor = 6;
+        }
+        else if (other.CompareTag("Water"))
+        {
+            Debug.Log("Toco la cascada");
+            _auxColor = Color.white;
+            _finalColor = Color.white;
+            _hoverColor = 0;
+            GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
         }
     }
 }

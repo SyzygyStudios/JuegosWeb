@@ -13,6 +13,7 @@ TagManager:
   - CianPower
   - PurplePower
   - GreenPower
+  - Water
   layers:
   - Default
   - TransparentFX

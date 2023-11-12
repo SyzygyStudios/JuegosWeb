@@ -519,6 +519,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetColor(int color)
     {
         _activeColor = color;
+        if (_activeColor == 0)
+        {
+            gravityScale = Mathf.Abs(gravityScale);
+        }
     }
 
     private void FallingAnimation()
