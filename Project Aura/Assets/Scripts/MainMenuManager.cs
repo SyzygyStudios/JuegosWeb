@@ -52,7 +52,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play() 
     {
-        mainMenu.SetActive(false);
+        //mainMenu.SetActive(false);
 
     }
 
