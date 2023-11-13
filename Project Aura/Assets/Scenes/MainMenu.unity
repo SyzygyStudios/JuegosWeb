@@ -2632,7 +2632,7 @@ GameObject:
   - component: {fileID: 1636984179}
   - component: {fileID: 1636984177}
   - component: {fileID: 1636984180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capa1
   m_TagString: Floor
   m_Icon: {fileID: 0}
