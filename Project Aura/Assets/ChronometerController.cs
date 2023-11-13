@@ -26,6 +26,11 @@ public class ChronometerController : MonoBehaviour
     {
         _timeElapsed = 0;
     }
+    
+    public float GetTimer()
+    {
+        return _timeElapsed;
+    }
 
     public void PrintTimer()
     {
