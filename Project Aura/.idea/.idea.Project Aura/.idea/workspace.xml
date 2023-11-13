@@ -14,7 +14,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/InteractionsController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/ChronometerController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -111,7 +111,7 @@
       <workItem from="1699618408548" duration="1139000" />
       <workItem from="1699705001569" duration="2571000" />
       <workItem from="1699789280315" duration="2436000" />
-      <workItem from="1699875900175" duration="667000" />
+      <workItem from="1699875900175" duration="3194000" />
     </task>
     <servers />
   </component>
