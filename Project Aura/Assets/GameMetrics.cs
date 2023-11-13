@@ -13,8 +13,8 @@ public class GameMetrics : MonoBehaviour
         
     }
 
-    private LevelMetrics[] levels;
-    private int _currentLevel;
+    [SerializeField] private LevelMetrics[] levels;
+    [SerializeField] private int _currentLevel;
     private int _jumpsInCurrent;
     private int _starsInCurrent;
     private ChronometerController chronometer;

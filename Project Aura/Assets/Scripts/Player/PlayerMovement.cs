@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool airMove;
     private Rigidbody2D _rb;
     private Animator animator;
+    private GameMetrics _gameMetrics;
     
 
     /// Variables que controlan el movimiento al correr
@@ -257,6 +258,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void InitializeVariables()
     {
+        _gameMetrics = FindObjectOfType<GameMetrics>();
         animator = GetComponent<Animator>();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
@@ -344,6 +346,7 @@ public class PlayerMovement : MonoBehaviour
             doubleJump--;
             Debug.Log("Voy a saltar");
             _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
+            _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
             PreserveMomentum();
@@ -355,6 +358,7 @@ public class PlayerMovement : MonoBehaviour
             doubleJump = 0;
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
+            _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
             PreserveMomentum();
