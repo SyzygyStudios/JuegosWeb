@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4785561161373744794}
   - component: {fileID: 7342614921129928752}
   - component: {fileID: 6373335629354853438}
+  - component: {fileID: 450664147658318598}
   m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: Floor
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6898690873003504658
 SpriteRenderer:
@@ -128,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalMovement: 5
   speed: 2
+  isMoving: 0
 --- !u!61 &6373335629354853438
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -173,3 +175,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.12, y: 2.0326056}
   m_EdgeRadius: 0
+--- !u!114 &450664147658318598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6394812567811588203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c46dead787f15c478b0aad573128c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

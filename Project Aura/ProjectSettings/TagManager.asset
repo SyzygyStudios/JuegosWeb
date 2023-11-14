@@ -15,6 +15,7 @@ TagManager:
   - GreenPower
   - Water
   - Lever
+  - Star
   layers:
   - Default
   - TransparentFX

@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 6031276666922060388}
   - component: {fileID: 6252471641858354788}
   - component: {fileID: 1222746055315363573}
+  - component: {fileID: 3557024596924447824}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -133,7 +134,7 @@ Transform:
   - {fileID: 4126645312261126430}
   - {fileID: 6264716886048165482}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -335,7 +336,7 @@ MonoBehaviour:
   wallJumpForce: {x: 15, y: 15}
   wallCheck: {fileID: 4126645312261126430}
   dashForce: 50
-  dashingTime: 0.01
+  dashingTime: 0.02
   rollForce: 30
   rollTime: 0.2
   _startGravity: 0
@@ -488,3 +489,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3557024596924447824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953809306714862941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb939016a11bafa49a676cd49a9d6587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
