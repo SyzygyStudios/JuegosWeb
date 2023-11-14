@@ -81,4 +81,22 @@ public class GameMetrics : MonoBehaviour
     {
         return worldsCompleted;
     }
+
+    public void SaveData()
+    {
+        SaveSystem.SaveData(this);
+    }
+
+    public void LoadData()
+    {
+        GameData data = SaveSystem.LoadData();
+        for (int i = 0; i < 16; i++)
+        {
+            levels[i]._completed = data._completed[i];
+            levels[i]._jumpsMade = data._jumpsMade[i];
+            levels[i]._starsCollected = data._startsCollected[i];
+            levels[i]._timeCompletion = data._timeCompletion[i];
+        }
+        worldsCompleted = data._worldsCompleted;
+    }
 }

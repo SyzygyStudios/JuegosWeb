@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class GameData
 {
     public int _worldsCompleted;
@@ -19,9 +21,8 @@ public class GameData
             _jumpsMade[i] = gameMetrics.GetJumpsLevel(i);
             _startsCollected[i] = gameMetrics.GetStarsLevel(i);
             _timeCompletion[i] = gameMetrics.GetTimeLevel(i);
-
-            _worldsCompleted = gameMetrics.GetWorldsCompleted();
         }
+        _worldsCompleted = gameMetrics.GetWorldsCompleted();
     }
     
 }
