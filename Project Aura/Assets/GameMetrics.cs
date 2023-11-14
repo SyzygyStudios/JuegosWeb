@@ -56,4 +56,29 @@ public class GameMetrics : MonoBehaviour
     {
         _starsInCurrent++;
     }
+
+    public bool GetCompletedLevel(int i)
+    {
+        return levels[i]._completed;
+    }
+    
+    public int GetJumpsLevel(int i)
+    {
+        return levels[i]._jumpsMade;
+    }
+    
+    public int GetStarsLevel(int i)
+    {
+        return levels[i]._starsCollected;
+    }
+    
+    public float GetTimeLevel(int i)
+    {
+        return levels[i]._timeCompletion;
+    }
+
+    public int GetWorldsCompleted()
+    {
+        return worldsCompleted;
+    }
 }

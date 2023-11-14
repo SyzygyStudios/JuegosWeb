@@ -171,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //CONTROL DE GRAVEDAD AL CAER
-        if (_rb.velocity.y < 0 && !_isDashing)
+        if (_rb.velocity.y < 0 && !_isDashing && !_grounded)
         {
             _rb.gravityScale = gravityScale * fallGravityMultiplier;
         }
@@ -485,6 +485,14 @@ public class PlayerMovement : MonoBehaviour
             landing = true;
         }
 
+        if (!_lastGrounded && _grounded)
+        {
+            doubleJump = 2;
+            _canDash = true;
+            _jumpCut = false;
+            airMove = false;
+            coyoteTimeCounter = coyoteTime;
+        }
         _lastGrounded = _grounded;
     }
 
@@ -607,11 +615,6 @@ public class PlayerMovement : MonoBehaviour
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
                 }
             }
-            doubleJump = 2;
-            _canDash = true;
-            _jumpCut = false;
-            airMove = false;
-            coyoteTimeCounter = coyoteTime;
         }
         if(collision.CompareTag("Door"))
         {
