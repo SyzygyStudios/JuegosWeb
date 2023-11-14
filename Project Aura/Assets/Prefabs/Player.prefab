@@ -133,7 +133,7 @@ Transform:
   - {fileID: 4126645312261126430}
   - {fileID: 6264716886048165482}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -334,7 +334,7 @@ MonoBehaviour:
     m_Bits: 128
   wallJumpForce: {x: 15, y: 15}
   wallCheck: {fileID: 4126645312261126430}
-  dashForce: 50
+  dashForce: 80
   dashingTime: 0.01
   rollForce: 30
   rollTime: 0.2
