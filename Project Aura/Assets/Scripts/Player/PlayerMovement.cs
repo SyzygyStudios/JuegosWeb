@@ -87,10 +87,10 @@ public class PlayerMovement : MonoBehaviour
     
     [Header ("Bomb Jump")]
     [SerializeField] private float bombJumpVelocity;
-    private bool _isBombJumping;
-    private bool _startBombJump;
-    private bool landing;
-    private bool _lastGrounded;
+    [SerializeField] private bool _isBombJumping;
+    [SerializeField] private bool _startBombJump;
+    [SerializeField] private bool landing;
+    [SerializeField] private bool _lastGrounded;
 
     void Start()
     {
@@ -607,6 +607,7 @@ public class PlayerMovement : MonoBehaviour
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
         if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
         {
+            Debug.Log("He colisionado con "+ collision.tag);
             if (_isBombJumping)
             {
                 _isBombJumping = false;
