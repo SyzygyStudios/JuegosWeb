@@ -290,7 +290,7 @@ MonoBehaviour:
     m_Bits: 64
   wallJumpForce: {x: 20, y: 40}
   wallCheck: {fileID: 4126645312261126430}
-  dashForce: 50
+  dashForce: 70
   dashingTime: 0.02
   rollForce: 30
   rollTime: 0.2
