@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameMetrics : MonoBehaviour
 {
-    struct LevelMetrics
+    struct WorldMetrics
     {
         public bool _completed;
         public int _jumpsMade;
@@ -13,38 +13,30 @@ public class GameMetrics : MonoBehaviour
         
     }
 
-    [SerializeField] private LevelMetrics[] levels;
-    [SerializeField] private int _currentLevel;
+    private WorldMetrics[] worlds;
     private int _jumpsInCurrent;
     private int _starsInCurrent;
     private ChronometerController chronometer;
-    
     private int _currentWorld;
-    private int worldsCompleted;
     
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         chronometer = FindObjectOfType<ChronometerController>();
-        levels = new LevelMetrics[16];
+        worlds = new WorldMetrics[6];
     }
     
     public void CompleteLevel()
     {
-        levels[_currentLevel]._timeCompletion = chronometer.GetTimer();
-        levels[_currentLevel]._jumpsMade = _jumpsInCurrent;
-        levels[_currentLevel]._starsCollected = _starsInCurrent;
-        levels[_currentLevel]._completed = true;
-    }
-    
-    public void CompleteWorld()
-    {
-        worldsCompleted++;
+        worlds[_currentWorld]._timeCompletion = chronometer.GetTimer();
+        worlds[_currentWorld]._jumpsMade = _jumpsInCurrent;
+        worlds[_currentWorld]._starsCollected = _starsInCurrent;
+        worlds[_currentWorld]._completed = true;
     }
 
     public void SetLevel(int lvl)
     {
-        _currentLevel = lvl;
+        _currentWorld = lvl;
     }
 
     public void AddJump()
@@ -57,30 +49,26 @@ public class GameMetrics : MonoBehaviour
         _starsInCurrent++;
     }
 
-    public bool GetCompletedLevel(int i)
+    public bool GetCompletedWorld(int i)
     {
-        return levels[i]._completed;
+        return worlds[i]._completed;
     }
     
-    public int GetJumpsLevel(int i)
+    public int GetJumpsWorld(int i)
     {
-        return levels[i]._jumpsMade;
+        return worlds[i]._jumpsMade;
     }
     
-    public int GetStarsLevel(int i)
+    public int GetStarsWorld(int i)
     {
-        return levels[i]._starsCollected;
+        return worlds[i]._starsCollected;
     }
     
-    public float GetTimeLevel(int i)
+    public float GetTimeWorld(int i)
     {
-        return levels[i]._timeCompletion;
+        return worlds[i]._timeCompletion;
     }
-
-    public int GetWorldsCompleted()
-    {
-        return worldsCompleted;
-    }
+    
 
     public void SaveData()
     {
@@ -92,11 +80,10 @@ public class GameMetrics : MonoBehaviour
         GameData data = SaveSystem.LoadData();
         for (int i = 0; i < 16; i++)
         {
-            levels[i]._completed = data._completed[i];
-            levels[i]._jumpsMade = data._jumpsMade[i];
-            levels[i]._starsCollected = data._startsCollected[i];
-            levels[i]._timeCompletion = data._timeCompletion[i];
+            worlds[i]._completed = data._completed[i];
+            worlds[i]._jumpsMade = data._jumpsMade[i];
+            worlds[i]._starsCollected = data._startsCollected[i];
+            worlds[i]._timeCompletion = data._timeCompletion[i];
         }
-        worldsCompleted = data._worldsCompleted;
     }
 }

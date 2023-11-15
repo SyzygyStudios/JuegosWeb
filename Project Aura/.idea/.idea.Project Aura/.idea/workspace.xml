@@ -15,6 +15,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/ChronometerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/LevelText.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -116,7 +117,7 @@
       <workItem from="1699910008561" duration="1401000" />
       <workItem from="1699958917594" duration="5735000" />
       <workItem from="1699994468336" duration="903000" />
-      <workItem from="1700049617417" duration="3241000" />
+      <workItem from="1700049617417" duration="5893000" />
     </task>
     <servers />
   </component>

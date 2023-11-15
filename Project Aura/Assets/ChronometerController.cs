@@ -7,7 +7,8 @@ using TMPro;
 public class ChronometerController : MonoBehaviour
 {
 
-    private float _timeElapsed;
+    private int _timeElapsed;
+    private int _prevTime;
     [SerializeField] private TextMeshProUGUI textSeconds;
     [SerializeField] private TextMeshProUGUI textMinutes;
 
@@ -18,8 +19,13 @@ public class ChronometerController : MonoBehaviour
 
     void Update()
     {
-        _timeElapsed += Time.deltaTime;
-        PrintTimer();
+        _timeElapsed += (int) Time.deltaTime;
+        if (_prevTime != _timeElapsed)
+        {
+            PrintTimer();
+        }
+
+        _prevTime = _timeElapsed;
     }
 
     public void ResetTimer()
@@ -41,8 +47,6 @@ public class ChronometerController : MonoBehaviour
             _seconds -= 60;
             _minutes += 1;
         }
-        Debug.Log(_seconds);
-        Debug.Log(_minutes);
         if (_minutes < 10)
         {
             textMinutes.text = ("0") + _minutes;
