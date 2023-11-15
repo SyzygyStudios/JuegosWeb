@@ -3709,6 +3709,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasOpcions
       objectReference: {fileID: 0}
+    - target: {fileID: 983819044583577621, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1586001596425997800, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3793,10 +3797,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2035434705767310110, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3146103216164797132, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: mainMenu
       value: 
       objectReference: {fileID: 342272570}
+    - target: {fileID: 6935950330196995160, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8866507837153984946, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
