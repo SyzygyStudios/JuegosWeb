@@ -272,7 +272,7 @@ MonoBehaviour:
   acceleration: 7
   decceleration: 7
   joystick: {fileID: 0}
-  jumpForce: 33
+  jumpForce: 35
   airFrictionMultiplier: 0.75
   fallGravityMultiplier: 1.1
   jumpCutGravityMultiplier: 1.7
@@ -283,12 +283,12 @@ MonoBehaviour:
   floorCheck: {fileID: 2477194473812046812}
   roofCheck: {fileID: 6264716886048165482}
   wallSlideSpeed: 1
-  wallJumpDuration: 0.1
-  checkTime: 0
+  wallJumpDuration: 0.15
+  checkTime: 0.05
   wallLayer:
     serializedVersion: 2
-    m_Bits: 128
-  wallJumpForce: {x: 15, y: 15}
+    m_Bits: 64
+  wallJumpForce: {x: 20, y: 40}
   wallCheck: {fileID: 4126645312261126430}
   dashForce: 50
   dashingTime: 0.02
