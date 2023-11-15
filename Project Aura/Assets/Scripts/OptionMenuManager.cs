@@ -9,14 +9,17 @@ public class OptionMenuManager : MonoBehaviour
 {
 
     public Slider sliderVolume;
-    public float sliderValueVolume;
+    public float ValueVolume;
     public Image imageMute;
 
     public Slider sliderShine;
-    public float sliderValueShine;
+    public float ValueShine;
     public Image panelShine;
 
     public Toggle toggle;
+
+    public GameObject opcionsMenu;
+    public GameObject mainMenu;
 
 
     void Start()
@@ -40,16 +43,16 @@ public class OptionMenuManager : MonoBehaviour
 
     public void ChangeSliderVolume(float value)
     {
-        sliderValueVolume = value;
-        PlayerPrefs.SetFloat("volumenAudio", sliderValueVolume);
+        ValueVolume = value;
+        PlayerPrefs.SetFloat("volumenAudio", ValueVolume);
         AudioListener.volume = sliderVolume.value;
         imMute();
     }
 
     public void ChangeSliderShine(float value)
     {
-        sliderValueShine = value;
-        PlayerPrefs.SetFloat("brillo", sliderValueShine);
+        ValueShine = value;
+        PlayerPrefs.SetFloat("brillo", ValueShine);
         panelShine.color = new Color(panelShine.color.r, panelShine.color.g, panelShine.color.b, sliderShine.value);
     }
 
@@ -61,7 +64,7 @@ public class OptionMenuManager : MonoBehaviour
 
     public void imMute()
     {
-        if(sliderValueVolume == 0)
+        if(ValueVolume == 0)
         {
            imageMute.enabled = true;
         }
@@ -74,6 +77,8 @@ public class OptionMenuManager : MonoBehaviour
 
     public void Return()
     {
-        SceneManager.LoadScene("MainMenu");
+        opcionsMenu.SetActive(false);
+        mainMenu.SetActive(true);
+        //SceneManager.LoadScene("MainMenu");
     }
 }

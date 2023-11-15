@@ -13,8 +13,10 @@ public class MainMenuManager : MonoBehaviour
     
 
     public GameObject mainMenu;
+    public GameObject opcionsMenu;
     public GameObject canvaNick;
     public GameObject acceptBottom;
+   
 
     private bool Bot = false;
     
@@ -63,7 +65,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void Options()
     {
-        SceneManager.LoadScene("OptionsMenu");
+        opcionsMenu.SetActive(true);
+        mainMenu.SetActive(false);
+        //SceneManager.LoadScene("OptionsMenu");
     }
 
     public void accept()
