@@ -1006,7 +1006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbeb8ea396cd02e418dd5a83d154fa1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentLevel: 0
 --- !u!4 &1198504372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5247542671824056147, guid: 0735fb3d230956544818fb2d3921338b, type: 3}
@@ -2008,26 +2007,6 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1695004828}
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: checkTime
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: wallSlideSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: wallJumpForce.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: wallJumpForce.y
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: wallJumpDuration
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
       value: Player

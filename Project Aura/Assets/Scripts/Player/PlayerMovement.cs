@@ -477,6 +477,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            Debug.Log("Compruebo techo");
             _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
         }
 
