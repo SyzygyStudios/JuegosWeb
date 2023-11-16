@@ -422,9 +422,9 @@ public class PlayerMovement : MonoBehaviour
         _isRolling = true;
         _rb.totalForce = Vector2.zero;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
-        GetComponent<CapsuleCollider2D>().size /= 2;
+        GetComponent<BoxCollider2D>().size /= 2;
         yield return new WaitForSeconds(rollTime);
-        GetComponent<CapsuleCollider2D>().size *= 2;
+        GetComponent<BoxCollider2D>().size *= 2;
         _isRolling = false;
     }
 
