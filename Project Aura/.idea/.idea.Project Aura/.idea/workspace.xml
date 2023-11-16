@@ -14,7 +14,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/CollorController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/ChronometerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/LevelText.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -106,8 +107,18 @@
       <workItem from="1699310135073" duration="1613000" />
       <workItem from="1699441965573" duration="9784000" />
       <workItem from="1699472962232" duration="5898000" />
-      <workItem from="1699525817186" duration="4125000" />
-      <workItem from="1699608833819" duration="46000" />
+      <workItem from="1699525817186" duration="5040000" />
+      <workItem from="1699616875286" duration="106000" />
+      <workItem from="1699618408548" duration="1139000" />
+      <workItem from="1699705001569" duration="2571000" />
+      <workItem from="1699789280315" duration="2436000" />
+      <workItem from="1699875900175" duration="3788000" />
+      <workItem from="1699904948017" duration="3035000" />
+      <workItem from="1699910008561" duration="1401000" />
+      <workItem from="1699958917594" duration="5735000" />
+      <workItem from="1699994468336" duration="903000" />
+      <workItem from="1700049617417" duration="5893000" />
+      <workItem from="1700143633178" duration="1396000" />
     </task>
     <servers />
   </component>
