@@ -17,7 +17,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SelectLevel.unity
     guid: c5510b17deaf8f845a17780919043e56
-  - enabled: 0
-    path: Assets/Scenes/Mundo_1.1.unity
-    guid: 200530443b6255848bcb515f5cfb750c
+  - enabled: 1
+    path: Assets/Scenes/Mundo 1.unity
+    guid: d3a9c81220b75744eaaf6149c27eee7e
+  - enabled: 1
+    path: Assets/Scenes/Mundo 2.unity
+    guid: bf1a875c5107431498161aea06ec0a96
+  - enabled: 1
+    path: Assets/Scenes/Mundo 3.unity
+    guid: 061b61ee13aa09446a763bc43c3d445a
+  - enabled: 1
+    path: Assets/Scenes/Mundo 4.unity
+    guid: 8c92141404ba3524e9e8fa81b10c6ad7
+  - enabled: 1
+    path: Assets/Scenes/Mundo 5.unity
+    guid: 455fcbcf62baea64985865ed014b69e1
+  - enabled: 1
+    path: Assets/Scenes/Mundo 6.unity
+    guid: 1526836958415de439f78281d21780cd
   m_configObjects: {}

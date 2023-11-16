@@ -618,10 +618,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        if(collision.CompareTag("Door"))
-        {
-            SceneManager.LoadScene("Mundo_1.1");
-        }
+        //if(collision.CompareTag("Door"))
+        //{
+            //SceneManager.LoadScene("Mundo_1.1");
+        //}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
