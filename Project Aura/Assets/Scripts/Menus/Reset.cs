@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SelectController : MonoBehaviour
+public class Reset : MonoBehaviour
 {
-    public int scene;
-    //public GameObject Text;
-
-    private void Start()
-    {
-        //Text.SetActive(false);
-    }
+    public int sceneIndex;
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.CompareTag("Player"))
         {
             //Text.SetActive(true);
 
-            SceneManager.LoadScene(scene);
+            SceneManager.LoadScene(sceneIndex);
         }
     }
 }

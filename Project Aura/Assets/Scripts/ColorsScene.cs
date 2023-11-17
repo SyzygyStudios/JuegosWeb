@@ -12,8 +12,6 @@ public class ColorsScene : MonoBehaviour
     private bool purple = false;
     
 
-    public GameObject color;
-
     Scene scene;
 
     // Start is called before the first frame update

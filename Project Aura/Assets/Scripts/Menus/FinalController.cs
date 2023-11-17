@@ -2,16 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class FinalController : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D other)
+    public GameObject Menu;
+    public void accept()
     {
-        if (other.collider.CompareTag("Player"))
-        {
-            //Text.SetActive(true);
 
-            SceneManager.LoadScene("SelectLevel");
+        SceneManager.LoadScene("SelectLevel");
+
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Contacto");
+        if (other.CompareTag("Player"))
+        {
+            Menu.SetActive(true);
+            
         }
     }
 }
