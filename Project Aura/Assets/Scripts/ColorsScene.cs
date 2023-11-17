@@ -10,9 +10,9 @@ public class ColorsScene : MonoBehaviour
     private bool red = false;
     private bool yellow = false;
     private bool purple = false;
-    private bool cian = false;
-
     
+
+    public GameObject color;
 
     Scene scene;
 
@@ -20,14 +20,7 @@ public class ColorsScene : MonoBehaviour
     void Start()
     {
         scene = SceneManager.GetActiveScene();
-
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(scene == SceneManager.GetSceneByName("Mundo 1"))
+        if (scene == SceneManager.GetSceneByName("Mundo 1"))
         {
             blue = true;
         }
@@ -47,9 +40,23 @@ public class ColorsScene : MonoBehaviour
         {
             purple = true;
         }
-        if (scene == SceneManager.GetSceneByName("Mundo 6"))
-        {
-            cian = true;
-        }
+        
+
+        Debug.Log(scene);
+
+        if(blue)
+            GameObject.FindWithTag("BluePower").SetActive(true); 
+        if(red)
+            GameObject.FindWithTag("RedPower").SetActive(true);
+        if (yellow)
+            GameObject.FindWithTag("YellowPower").SetActive(true);
+        if (green)
+            GameObject.FindWithTag("GreenPower").SetActive(true);
+        if (purple)
+            GameObject.FindWithTag("PurplePower").SetActive(true);
+
+
     }
+
+   
 }
