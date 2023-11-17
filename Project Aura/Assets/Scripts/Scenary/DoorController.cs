@@ -8,11 +8,7 @@ public class DoorController : MonoBehaviour
     public int scene;
     public GameObject interactionText;
 
-    private bool touch;
-    private void Update()
-    {
-        touch = false;
-    }
+    
     public void changeScene()
     {
         Debug.Log("Cambiando");
