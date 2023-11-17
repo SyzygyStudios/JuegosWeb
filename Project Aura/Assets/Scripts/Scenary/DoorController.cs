@@ -23,18 +23,17 @@ public class DoorController : MonoBehaviour
     public void apearText()
     {
         
-        if (touch == true)
+        
         Debug.Log("Texto");
         interactionText.SetActive(true);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Tocando");
-            touch = true;
+            Debug.Log("saliendo");
+            interactionText.SetActive(false);
         }
-          
     }
 }
