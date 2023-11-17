@@ -59,6 +59,9 @@ TagManager:
   - name: Floor
     uniqueID: 2167150013
     locked: 0
+  - name: Door
+    uniqueID: 2191094897
+    locked: 0
   - name: Player
     uniqueID: 1345915745
     locked: 0
