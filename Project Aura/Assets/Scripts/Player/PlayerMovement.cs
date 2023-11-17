@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Roll")]
     [SerializeField] private float rollForce;
     [SerializeField] private float rollTime;
-    private bool _isRolling;
+    [SerializeField] private bool _isRolling;
     private bool _canRoll;
     private bool _startRoll;
     
@@ -91,6 +92,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _startBombJump;
     [SerializeField] private bool landing;
     [SerializeField] private bool _lastGrounded;
+    private double _rollingTime;
+    private bool _touchingRoof;
+    private BoxCollider2D _boxCollider;
 
     void Start()
     {
@@ -99,6 +103,16 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        if (Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, 1f), 0, floorLayer))
+        {
+            _touchingRoof = true;
+            Debug.Log("Estoy tocando roof");
+        }
+        else if (!Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer))
+        {
+            _touchingRoof = false;
+        }
         
         //CORRER
         
@@ -132,7 +146,18 @@ public class PlayerMovement : MonoBehaviour
         if(_startRoll)
         {
             _startRoll = false;
-            StartCoroutine(Roll());
+            Roll();
+        }
+
+        if (_isRolling)
+        {
+            _rollingTime += Time.deltaTime;
+            if (_rollingTime > rollTime && !_touchingRoof)
+            {
+                _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y * 2);
+                _isRolling = false;
+                _rollingTime = 0;
+            }
         }
         
         //GRAVEDAD
@@ -262,6 +287,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
+        _boxCollider = GetComponent<BoxCollider2D>();
         _grounded = false;
         _canDash = true;
         _isDashing = false;
@@ -417,15 +443,12 @@ public class PlayerMovement : MonoBehaviour
             
     }
     
-    private IEnumerator Roll()
+    private void Roll()
     {
         _isRolling = true;
         _rb.totalForce = Vector2.zero;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
-        GetComponent<BoxCollider2D>().size /= 2;
-        yield return new WaitForSeconds(rollTime);
-        GetComponent<BoxCollider2D>().size *= 2;
-        _isRolling = false;
+        _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y/2);
     }
 
     private void BombJump()
@@ -461,7 +484,7 @@ public class PlayerMovement : MonoBehaviour
     
     private bool CanRoll()
     {
-        return _canRoll && _grounded && _activeColor == 3;
+        return _canRoll && _grounded && _activeColor == 3 && !_isRolling;
     }
     
     private bool CanBombJump()
@@ -618,10 +641,15 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        //if(collision.CompareTag("Door"))
-        //{
-            //SceneManager.LoadScene("Mundo_1.1");
-        //}
+        if(collision.CompareTag("Door"))
+        {
+        }
+        
+        if(collision.CompareTag("Star"))
+        {
+            _gameMetrics.CollectStart();
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
