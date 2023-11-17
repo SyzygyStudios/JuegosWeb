@@ -643,7 +643,12 @@ public class PlayerMovement : MonoBehaviour
         }
         if(collision.CompareTag("Door"))
         {
-            SceneManager.LoadScene("Mundo_1.1");
+        }
+        
+        if(collision.CompareTag("Star"))
+        {
+            _gameMetrics.CollectStart();
+            Destroy(collision.gameObject);
         }
     }
 
