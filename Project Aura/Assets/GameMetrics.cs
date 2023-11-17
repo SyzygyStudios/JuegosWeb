@@ -17,6 +17,7 @@ public class GameMetrics : MonoBehaviour
     private int _jumpsInCurrent;
     private int _starsInCurrent;
     private ChronometerController chronometer;
+    private bool[] _colorsUnlocked;
     private int _currentWorld;
     
     void Start()
@@ -24,6 +25,7 @@ public class GameMetrics : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         chronometer = FindObjectOfType<ChronometerController>();
         worlds = new WorldMetrics[6];
+        _colorsUnlocked = new bool[6];
     }
     
     public void CompleteLevel()
@@ -68,7 +70,11 @@ public class GameMetrics : MonoBehaviour
     {
         return worlds[i]._timeCompletion;
     }
-    
+
+    public void UnlockPower(int i)
+    {
+        _colorsUnlocked[i] = true;
+    }
 
     public void SaveData()
     {
