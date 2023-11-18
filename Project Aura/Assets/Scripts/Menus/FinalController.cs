@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class FinalController : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    private void OnCollisionEnter2D(Collision2D other)
-=======
     [SerializeField] private int world;
     [SerializeField] private GameObject canvas;
     [SerializeField] private ChronometerController chronometer;
@@ -28,17 +25,11 @@ public class FinalController : MonoBehaviour
     
 
     private void OnTriggerEnter2D(Collider2D other)
->>>>>>> Stashed changes
     {
         _gameMetrics.CompleteLevel();
         Debug.Log("Colisiono con" + other);
         if (other.CompareTag("Player"))
         {
-<<<<<<< Updated upstream
-            //Text.SetActive(true);
-
-            SceneManager.LoadScene("SelectLevel");
-=======
             canvas.SetActive(true);
             int _seconds = (int) chronometer.GetTimer();
             int _minutes = 0;
@@ -67,13 +58,11 @@ public class FinalController : MonoBehaviour
             stars.text = _gameMetrics.GetStarsWorld(world-1).ToString();
             jumps.text = _gameMetrics.GetJumpsWorld(world-1).ToString();
             chronometer.gameObject.SetActive(false);
->>>>>>> Stashed changes
         }
     }
 
     public void ReturnSelectLevel()
     {
-        _gameMetrics.UnlockPower(world);
         SceneManager.LoadScene("SelectLevel");
     }
 }

@@ -12,7 +12,7 @@ public class GameMetrics : MonoBehaviour
         public float _timeCompletion;
         
     }
-
+    
     private WorldMetrics[] worlds;
     private int _jumpsInCurrent;
     private int _starsInCurrent;
