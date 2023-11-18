@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollorController : MonoBehaviour
+public class ColorController : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer;
     private int _hoverColor;
     private Color _auxColor;
     private Color _finalColor;
     private Color _originalColor;
-    private Color _blue;
-    private Color _red;
-    private Color _green;
-    private Color _yellow;
-    private Color _cyan;
-    private Color _magenta;
+    [SerializeField] private Color _blue;
+    [SerializeField] private Color _red;
+    [SerializeField] private Color _green;
+    [SerializeField] private Color _yellow;
+    [SerializeField] private Color _cyan;
+    [SerializeField] private Color _magenta;
 
     private void Start()
     {
@@ -40,7 +40,7 @@ public class CollorController : MonoBehaviour
             if (_hoverColor >= 1 && _hoverColor <= 6)
             {
                 Debug.Log("Asigno el " + _hoverColor);
-                GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
+                gameObject.GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
             }
         }
     }
@@ -82,13 +82,14 @@ public class CollorController : MonoBehaviour
             _auxColor = _yellow;
             _hoverColor = 6;
         }
-        else if (other.CompareTag("Water"))
-        {
-            Debug.Log("Toco la cascada");
-            _auxColor = Color.white;
-            _finalColor = Color.white;
-            _hoverColor = 0;
-            GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
-        }
+    }
+
+    public void DeleteColor()
+    {
+        Debug.Log("Toco la cascada");
+        _auxColor = Color.white;
+        _finalColor = Color.white;
+        _hoverColor = 0;
+        GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
     }
 }

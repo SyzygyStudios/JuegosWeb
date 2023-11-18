@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorController : MonoBehaviour
+public class SelectorPowerController : MonoBehaviour
 {
     // Start is called before the first frame update
     private GameMetrics _gameMetrics;
