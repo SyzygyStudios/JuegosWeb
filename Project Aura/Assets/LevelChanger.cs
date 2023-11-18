@@ -9,13 +9,11 @@ public class LevelChanger : MonoBehaviour
     [SerializeField] private int level;
     [SerializeField] private int world;
     [SerializeField] private GameMetrics _gameMetrics;
-    private ChronometerController _chronometer;
     
     // Start is called before the first frame update
     void Start()
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
-        _chronometer = FindObjectOfType<ChronometerController>();
     }
 
     // Update is called once per frame
