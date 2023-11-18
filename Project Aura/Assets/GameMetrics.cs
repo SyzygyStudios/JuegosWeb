@@ -28,7 +28,7 @@ public class GameMetrics : MonoBehaviour
         _colorsUnlocked = new bool[6];
     }
     
-    public void CompleteLevel()
+    public void CompleteWorld()
     {
         worlds[_currentWorld]._timeCompletion = chronometer.GetTimer();
         worlds[_currentWorld]._jumpsMade = _jumpsInCurrent;

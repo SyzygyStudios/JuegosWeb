@@ -28,7 +28,7 @@ public class LevelChanger : MonoBehaviour
             if (level != 1 && world != 1)
             {
                 _gameMetrics.SetLevel(level -1);
-                _gameMetrics.CompleteLevel();
+                _gameMetrics.CompleteWorld();
                 _gameMetrics.SetLevel(level + 1);
             }
         }
