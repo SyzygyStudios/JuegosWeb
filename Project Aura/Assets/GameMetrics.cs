@@ -36,9 +36,9 @@ public class GameMetrics : MonoBehaviour
         worlds[_currentWorld]._completed = true;
     }
 
-    public void SetLevel(int lvl)
+    public void SetCurrentWorld(int world)
     {
-        _currentWorld = lvl;
+        _currentWorld = world;
     }
 
     public void AddJump()
@@ -51,9 +51,23 @@ public class GameMetrics : MonoBehaviour
         _starsInCurrent++;
     }
 
-    public bool GetCompletedWorld(int i)
+    public bool GetCompletedWorld(int j)
     {
-        return worlds[i]._completed;
+        return worlds[j]._completed;
+    }
+
+    public int GetLastCompletedWorld()
+    {
+        int i = 0;
+        foreach (WorldMetrics a in worlds)
+        {
+            if (a._completed)
+            {
+                i++;
+            }
+        }
+
+        return i;
     }
     
     public int GetJumpsWorld(int i)
@@ -74,6 +88,18 @@ public class GameMetrics : MonoBehaviour
     public void UnlockPower(int i)
     {
         _colorsUnlocked[i] = true;
+    }
+
+    public bool CheckPower(int i)
+    {
+        if (_colorsUnlocked[i] == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void SaveData()

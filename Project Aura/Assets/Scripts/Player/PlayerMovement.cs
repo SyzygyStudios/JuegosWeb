@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator animator;
     private GameMetrics _gameMetrics;
+    private bool _canMove;
     
 
     /// Variables que controlan el movimiento al correr
@@ -103,182 +104,187 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        if (Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, 1f), 0, floorLayer))
+        if (_canMove)
         {
-            _touchingRoof = true;
-            Debug.Log("Estoy tocando roof");
-        }
-        else if (!Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer))
-        {
-            _touchingRoof = false;
-        }
-        
-        //CORRER
-        
-        if(_horizontalInput!=0)
-        {
-            Run();
-            animator.SetBool("isRunning", true);
-        }
-        else
-        {
-            animator.SetBool("isRunning", false);
-        }
-        
-        //SALTAR
-
-        if(jumpBufferCounter>0f)
-        {
-            Jump();
-        }
-        
-        //DASH
-        
-        if(_startDash)
-        {
-            _startDash = false;
-            StartCoroutine(Dash());
-        }
-        
-        //RODAR
-        
-        if(_startRoll)
-        {
-            _startRoll = false;
-            Roll();
-        }
-
-        if (_isRolling)
-        {
-            _rollingTime += Time.deltaTime;
-            if (_rollingTime > rollTime && !_touchingRoof)
+            if (Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, 1f), 0, floorLayer))
             {
-                _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y * 2);
-                _isRolling = false;
-                _rollingTime = 0;
+                _touchingRoof = true;
+                Debug.Log("Estoy tocando roof");
+            }
+            else if (!Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer))
+            {
+                _touchingRoof = false;
+            }
+
+            //CORRER
+
+            if (_horizontalInput != 0)
+            {
+                Run();
+                animator.SetBool("isRunning", true);
+            }
+            else
+            {
+                animator.SetBool("isRunning", false);
+            }
+
+            //SALTAR
+
+            if (jumpBufferCounter > 0f)
+            {
+                Jump();
+            }
+
+            //DASH
+
+            if (_startDash)
+            {
+                _startDash = false;
+                StartCoroutine(Dash());
+            }
+
+            //RODAR
+
+            if (_startRoll)
+            {
+                _startRoll = false;
+                Roll();
+            }
+
+            if (_isRolling)
+            {
+                _rollingTime += Time.deltaTime;
+                if (_rollingTime > rollTime && !_touchingRoof)
+                {
+                    _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y * 2);
+                    _isRolling = false;
+                    _rollingTime = 0;
+                }
+            }
+
+            //GRAVEDAD
+
+            if (_startGravity)
+            {
+                _startGravity = false;
+                StartCoroutine(Gravity());
+            }
+
+            //SALTO BOMBA
+
+            if (_startBombJump)
+            {
+                _startBombJump = false;
+                BombJump();
+            }
+
+            //WALL JUMP
+
+            if (_startWallJumping)
+            {
+                _startWallJumping = false;
+                StartCoroutine(WallJump());
+            }
+
+            //DESLIZAR POR PARED
+
+            if (_isSliding && gravityScale > 0)
+            {
+                _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
+            }
+            else if (_isSliding && gravityScale < 0)
+            {
+                _rb.velocity = new Vector2(_rb.velocity.x, wallSlideSpeed);
+            }
+
+            //CONTROL DE GRAVEDAD AL CAER
+            if (_rb.velocity.y < 0 && !_isDashing && !_grounded)
+            {
+                _rb.gravityScale = gravityScale * fallGravityMultiplier;
+            }
+            else if (!_isDashing)
+            {
+                _rb.gravityScale = gravityScale;
+            }
+
+            //CONTROL DE ALTURA DE SALTO
+
+            if (gravitySign > 0)
+            {
+                if (_jumpCut && _rb.velocity.y > 0 && !_grounded)
+                {
+                    _rb.velocity -= (new Vector2(0,
+                        (_rb.velocity.y / jumpCutGravityMultiplier)));
+                }
+            }
+            else
+            {
+                if (_jumpCut && _rb.velocity.y < 0 && !_grounded)
+                {
+                    _rb.velocity -= (new Vector2(0,
+                        (_rb.velocity.y / jumpCutGravityMultiplier)));
+                }
             }
         }
-        
-        //GRAVEDAD
-        
-        if(_startGravity)
-        {
-            _startGravity = false;
-            StartCoroutine(Gravity());
-        }
-        
-        //SALTO BOMBA
-        
-        if(_startBombJump)
-        {
-            _startBombJump = false;
-            BombJump();
-        }
-        
-        //WALL JUMP
-        
-        if (_startWallJumping)
-        {
-            _startWallJumping = false;
-            StartCoroutine(WallJump());
-        }
-        
-        //DESLIZAR POR PARED
 
-        if (_isSliding && gravityScale>0)
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
-        }
-        else if (_isSliding && gravityScale<0)
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, wallSlideSpeed);
-        }
-        
-        //CONTROL DE GRAVEDAD AL CAER
-        if (_rb.velocity.y < 0 && !_isDashing && !_grounded)
-        {
-            _rb.gravityScale = gravityScale * fallGravityMultiplier;
-        }
-        else if (!_isDashing)
-        {
-            _rb.gravityScale = gravityScale;
-        }
-
-        //CONTROL DE ALTURA DE SALTO
-        
-        if (gravitySign > 0)
-        {
-            if (_jumpCut && _rb.velocity.y > 0 && !_grounded)
-            {
-                _rb.velocity -= (new Vector2(0,
-                    (_rb.velocity.y / jumpCutGravityMultiplier)));
-            }
-        }
-        else
-        {
-            if (_jumpCut && _rb.velocity.y < 0 && !_grounded)
-            {
-                _rb.velocity -= (new Vector2(0,
-                    (_rb.velocity.y / jumpCutGravityMultiplier)));
-            }
-        }
-        
     }
 
     void Update()
     {
-        if (CanRun())
+        if (_canMove)
         {
-            _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
-                ? Input.GetAxisRaw("Horizontal")
-                : joystick.Horizontal;
-        }
+            if (CanRun())
+            {
+                _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
+                    ? Input.GetAxisRaw("Horizontal")
+                    : joystick.Horizontal;
+            }
 
-        if(!_grounded)
-        {
-            coyoteTimeCounter-= Time.deltaTime;
-        }
+            if (!_grounded)
+            {
+                coyoteTimeCounter -= Time.deltaTime;
+            }
 
-        if (!_grounded && _isWallTouch && _horizontalInput!=0 && _activeColor == 6 )
-        {
-            _isSliding = true;
-        }
-        else
-        {
-            _isSliding = false;
-        }
+            if (!_grounded && _isWallTouch && _horizontalInput != 0 && _activeColor == 6)
+            {
+                _isSliding = true;
+            }
+            else
+            {
+                _isSliding = false;
+            }
 
-        if(Input.GetKeyDown("space") && CanJump())
-        {
-            ActivateJump();
-        }
-        
-        if(Input.GetKeyDown("space") && CanWallJump())
-        {
-            ActivateWallJump();
-        }
-        
-        if (Input.GetKeyDown("q"))
-        {
-            ActivateAbility();
-        }
-        
-        if(Input.GetKeyUp("space") && !_grounded)
-        {
-            ActivateJumpCut();
-        }
-        
+            if (Input.GetKeyDown("space") && CanJump())
+            {
+                ActivateJump();
+            }
 
-        GroundCheck();
-        WallCheck();
-        AnimationHandler();
-        
-        jumpBufferCounter -= Time.deltaTime;
-        abilityCooldownCounter += Time.deltaTime;
-        gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
-        _lastVelocity = _rb.velocity;
-        Flip();
+            if (Input.GetKeyDown("space") && CanWallJump())
+            {
+                ActivateWallJump();
+            }
+
+            if (Input.GetKeyDown("q"))
+            {
+                ActivateAbility();
+            }
+
+            if (Input.GetKeyUp("space") && !_grounded)
+            {
+                ActivateJumpCut();
+            }
+
+
+            GroundCheck();
+            WallCheck();
+            AnimationHandler();
+
+            jumpBufferCounter -= Time.deltaTime;
+            abilityCooldownCounter += Time.deltaTime;
+            gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
+            _lastVelocity = _rb.velocity;
+            Flip();
+        }
     }
     
     private void InitializeVariables()
@@ -288,6 +294,7 @@ public class PlayerMovement : MonoBehaviour
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
+        _canMove = true;
         _grounded = false;
         _canDash = true;
         _isDashing = false;
@@ -297,6 +304,10 @@ public class PlayerMovement : MonoBehaviour
         _startRoll = false;
         _changingWall = false;
         doubleJump = 2;
+        if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        {
+            DisableMovement();
+        }
     }
 
     public void ActivateJump()
@@ -658,6 +669,16 @@ public class PlayerMovement : MonoBehaviour
         {
             PreserveMomentum();
         }
+    }
+    
+    public void DisableMovement()
+    {
+        _canMove = false;
+    }
+
+    public void EnableMovement()
+    {
+        _canMove = true;
     }
     
 }

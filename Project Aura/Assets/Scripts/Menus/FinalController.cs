@@ -9,20 +9,27 @@ public class FinalController : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private int world;
-    [SerializeField] private GameMetrics _gameMetrics;
     [SerializeField] private TextMeshProUGUI minutes;
     [SerializeField] private TextMeshProUGUI seconds;
     [SerializeField] private Text jumps;
     [SerializeField] private Text stars;
+    private ChronometerController _chronometer;
+    private GameMetrics _gameMetrics;
+    private PlayerMovement _playerMovement;
 
     void Start()
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
+        _chronometer = FindObjectOfType<ChronometerController>();
+        _playerMovement = FindObjectOfType<PlayerMovement>();
     }
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.collider.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
+            _playerMovement.DisableMovement();
+            _chronometer.gameObject.SetActive(false);
+            _gameMetrics.SetCurrentWorld(world-1);
             _gameMetrics.CompleteWorld();
             canvas.gameObject.SetActive(true);
             int _seconds = (int) _gameMetrics.GetTimeWorld(world - 1);
@@ -51,13 +58,12 @@ public class FinalController : MonoBehaviour
             }
             jumps.text = _gameMetrics.GetJumpsWorld(world - 1).ToString();
             stars.text = _gameMetrics.GetStarsWorld(world - 1).ToString();
-            SceneManager.LoadScene("SelectLevel");
         }
     }
 
     public void ReturnSelector()
     {
-        SceneManager.LoadScene("SelectLevel");
         _gameMetrics.UnlockPower(world);
+        SceneManager.LoadScene("SelectLevel");
     }
 }
