@@ -29,6 +29,7 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("saliendo");
+            if (GameObject.FindGameObjectsWithTag("interactionText").Length != 0)
             interactionText.SetActive(false);
         }
     }
