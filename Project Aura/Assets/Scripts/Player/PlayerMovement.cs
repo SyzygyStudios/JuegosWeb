@@ -587,7 +587,10 @@ public class PlayerMovement : MonoBehaviour
         if (_activeColor == 0)
         {
             gravityScale = Mathf.Abs(gravityScale);
-            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+            if (gravityScale < 0)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 
