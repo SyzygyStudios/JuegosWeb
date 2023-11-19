@@ -573,15 +573,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 6
+      value: 3.2902846
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.5472336
+      value: -2.74
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.842767
+      value: -10.96
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -619,6 +619,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeverDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2045857758, guid: 1fcf5791c3f1ae24cb503cf7a4e2f5ea, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

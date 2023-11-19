@@ -136029,12 +136029,16 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.231563
+      objectReference: {fileID: 0}
+    - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.758942
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1329536
+      value: 1.1472
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -136072,6 +136076,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeverDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -999857714, guid: 815521415b42c524f9a0b1b1dbcdcfa0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -136199,12 +136207,16 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.4001164
+      objectReference: {fileID: 0}
+    - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0214844
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29.157383
+      value: 28.8628
       objectReference: {fileID: 0}
     - target: {fileID: 199336802010834479, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -136246,6 +136258,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -999857714, guid: 815521415b42c524f9a0b1b1dbcdcfa0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
