@@ -54,7 +54,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play() 
     {
-        //mainMenu.SetActive(false);
+        FindObjectOfType<PlayerMovement>().EnableMovement();
 
     }
 
@@ -70,10 +70,9 @@ public class MainMenuManager : MonoBehaviour
         //SceneManager.LoadScene("OptionsMenu");
     }
 
-    public void accept()
+    public void Accept()
     {
         PlayerPrefs.SetString("name", inputText.text);
-
         mainMenu.SetActive(true);
         canvaNick.SetActive(false);
         acceptBottom.SetActive(false);

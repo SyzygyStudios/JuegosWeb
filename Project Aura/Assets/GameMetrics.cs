@@ -17,6 +17,7 @@ public class GameMetrics : MonoBehaviour
     private int _jumpsInCurrent;
     private int _starsInCurrent;
     private ChronometerController chronometer;
+    private bool[] _colorsUnlocked;
     private int _currentWorld;
     
     void Start()
@@ -24,9 +25,10 @@ public class GameMetrics : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         chronometer = FindObjectOfType<ChronometerController>();
         worlds = new WorldMetrics[6];
+        _colorsUnlocked = new bool[6];
     }
     
-    public void CompleteLevel()
+    public void CompleteWorld()
     {
         worlds[_currentWorld]._timeCompletion = chronometer.GetTimer();
         worlds[_currentWorld]._jumpsMade = _jumpsInCurrent;
@@ -34,9 +36,9 @@ public class GameMetrics : MonoBehaviour
         worlds[_currentWorld]._completed = true;
     }
 
-    public void SetLevel(int lvl)
+    public void SetCurrentWorld(int world)
     {
-        _currentWorld = lvl;
+        _currentWorld = world;
     }
 
     public void AddJump()
@@ -49,9 +51,23 @@ public class GameMetrics : MonoBehaviour
         _starsInCurrent++;
     }
 
-    public bool GetCompletedWorld(int i)
+    public bool GetCompletedWorld(int j)
     {
-        return worlds[i]._completed;
+        return worlds[j]._completed;
+    }
+
+    public int GetLastCompletedWorld()
+    {
+        int i = 0;
+        foreach (WorldMetrics a in worlds)
+        {
+            if (a._completed)
+            {
+                i++;
+            }
+        }
+
+        return i;
     }
     
     public int GetJumpsWorld(int i)
@@ -68,7 +84,23 @@ public class GameMetrics : MonoBehaviour
     {
         return worlds[i]._timeCompletion;
     }
-    
+
+    public void UnlockPower(int i)
+    {
+        _colorsUnlocked[i] = true;
+    }
+
+    public bool CheckPower(int i)
+    {
+        if (_colorsUnlocked[i] == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public void SaveData()
     {
