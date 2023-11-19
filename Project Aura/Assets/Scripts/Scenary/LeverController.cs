@@ -9,6 +9,7 @@ public class LeverController : MonoBehaviour
     public void OpenDoor()
     {
         Debug.Log("Abro la puerta 2");
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         _ldc.Open();
     }
 }

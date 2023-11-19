@@ -27,7 +27,6 @@ public class MovingPlatform : MonoBehaviour
         _currentPos = transform.position;
         if (isMoving)
         {
-            Debug.Log(_movingRight);
             if (_movingRight)
             {
                 _rb.velocity = new Vector2(speed, 0f);
@@ -39,12 +38,10 @@ public class MovingPlatform : MonoBehaviour
 
             if (_currentPos.x >= _rightFinalPos)
             {
-                Debug.Log("Llegamos");
                 _movingRight = false;
             }
             else if (_currentPos.x <= _leftFinalPos)
             {
-                Debug.Log("Llegamos");
                 _movingRight = true;
             }
         }

@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 136688719}
   - component: {fileID: 136688718}
   - component: {fileID: 136688717}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Wall_2 (2)
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 1250854147}
   - component: {fileID: 1250854146}
   - component: {fileID: 1250854145}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Wall_2
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -1014,7 +1014,7 @@ GameObject:
   - component: {fileID: 1296923040}
   - component: {fileID: 1296923039}
   - component: {fileID: 1296923038}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Wall_2 (1)
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -1610,7 +1610,7 @@ GameObject:
   - component: {fileID: 2062955436}
   - component: {fileID: 2062955435}
   - component: {fileID: 2062955434}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Wall_1
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -2250,6 +2250,10 @@ PrefabInstance:
     - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Name
       value: LeverDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_TagString

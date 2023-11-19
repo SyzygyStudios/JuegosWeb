@@ -15,6 +15,7 @@ public class LeverDoorController : MonoBehaviour
         if (gameObject.CompareTag("Door"))
         {
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            Destroy(this.gameObject);
         }
     }
 }

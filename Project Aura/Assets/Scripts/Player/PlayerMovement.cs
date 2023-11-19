@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Vector2 wallJumpForce;
     [SerializeField] private Transform wallCheck;
-    private bool _isWallTouch;
+    [SerializeField] private bool _isWallTouch;
     private bool _startWallJumping;
     private bool _isWallJumping;
     private bool _isSliding;
@@ -548,9 +548,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallCheck()
     {
-        if (_isWallTouch != Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer))
+        if (_isWallTouch && !Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer))
         {
             StartCoroutine(WallCheckChange());
+        }
+        else
+        {
+            _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
         }
     }
 
