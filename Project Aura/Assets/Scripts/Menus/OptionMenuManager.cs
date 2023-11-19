@@ -18,13 +18,17 @@ public class OptionMenuManager : MonoBehaviour
 
     public Toggle toggle;
 
+    public GameObject opcionsButton;
+
     public GameObject opcionsMenu;
     public GameObject mainMenu;
 
 
     void Start()
     {
-        sliderVolume.value = PlayerPrefs.GetFloat("volumenAudio", 0.1f);
+        DontDestroyOnLoad(this.gameObject);
+
+        sliderVolume.value = PlayerPrefs.GetFloat("volumenAudio", 0.3f);
         AudioListener.volume = sliderVolume.value;
         imMute();
 
@@ -38,6 +42,22 @@ public class OptionMenuManager : MonoBehaviour
         else
         {
             toggle.isOn = false;
+        }
+
+
+        
+        //opcionsButton.SetActive(false);
+        
+        
+        
+    }
+
+    void Update()
+    {
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
+        {
+            if(!opcionsMenu.activeSelf)
+            opcionsButton.SetActive(true);
         }
     }
 
@@ -78,7 +98,23 @@ public class OptionMenuManager : MonoBehaviour
     public void Return()
     {
         opcionsMenu.SetActive(false);
-        mainMenu.SetActive(true);
+
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        {
+            mainMenu.SetActive(true);
+
+        }
+        else
+        {
+            opcionsButton.SetActive(true);
+        }
+
         //SceneManager.LoadScene("MainMenu");
+    }
+
+    public void activeMenu()
+    {
+        opcionsButton.SetActive(false);
+        opcionsMenu.SetActive(true);
     }
 }
