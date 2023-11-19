@@ -390,6 +390,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (doubleJump <= 2)
         {
+            Debug.Log("Doble salto");
             if (doubleJump == 1 && _activeColor != 1) return;
             _jumpCut = false;
             doubleJump = 0;
@@ -578,14 +579,16 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isMidAir", false);
         animator.SetBool("isAscending", false);
         animator.SetBool("isTakeingOf", false);
+
     }
-    
+
     private void AscendingAnimation()
     {
         animator.SetBool("isAscending", true);
         animator.SetBool("isMidAir", false);
         animator.SetBool("isFalling", false);
         animator.SetBool("isTakeingOf", false);
+
     }
     
     private void TakeOfAnimation()
@@ -599,6 +602,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isAscending", false);
         animator.SetBool("isFalling", false);
         animator.SetBool("isTakeingOf", false);
+
     }
     
     private void LandingAnimation()
@@ -609,6 +613,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isMidAir", false);
             animator.SetBool("isAscending", false);
             animator.SetBool("isFalling", false);
+ 
             animator.SetTrigger("isLanding");
             landing = false;
         }
