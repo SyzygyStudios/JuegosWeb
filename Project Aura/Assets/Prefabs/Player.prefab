@@ -743,7 +743,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  wallJumpForce: {x: 20, y: 40}
+  wallJumpForce: {x: 20, y: 60}
   wallCheck: {fileID: 4126645312261126430}
   dashForce: 70
   dashingTime: 0.18
