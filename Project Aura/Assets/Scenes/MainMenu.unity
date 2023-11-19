@@ -2394,6 +2394,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2355337528296248196, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
+      propertyPath: parallaxMulti
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2374895933472328647, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -2441,6 +2445,18 @@ PrefabInstance:
     - target: {fileID: 4952482081986383605, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
       propertyPath: m_Name
       value: Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 5056223032427630260, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
+      propertyPath: parallaxMulti
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6847436500014423880, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
+      propertyPath: parallaxMulti
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8612464166323614890, guid: a5f5b8eafe455bb48996c0a3e67328f7, type: 3}
+      propertyPath: parallaxMulti
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
