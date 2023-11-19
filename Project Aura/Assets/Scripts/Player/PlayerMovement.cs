@@ -419,6 +419,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Se ejecuta gravedad");
         gravityScale = -gravityScale;
+        transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         yield return new WaitForSeconds(1);
     }
 
@@ -520,15 +521,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void GroundCheck()
     {
-        if (gravitySign > 0)
-        {
-            _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
-        }
-        else
-        {
-            Debug.Log("Compruebo techo");
-            _grounded = Physics2D.OverlapBox(roofCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
-        }
+        _grounded = Physics2D.OverlapBox(floorCheck.position, new Vector2(0.5f, .1f), 0, floorLayer);
 
         if (!_lastGrounded && _grounded)
         {
