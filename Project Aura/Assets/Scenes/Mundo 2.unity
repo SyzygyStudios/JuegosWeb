@@ -191,6 +191,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5417230969790733702, guid: a57c50daca1f2104c9522cfc5dba1d40, type: 3}
+      propertyPath: m_text
+      value: Presiona E para coger un color. Cada color te otorga una habilidad de
+        movimiento distinta. Los colores se utilizan pulsando la tecla Q, a excepcion
+        del doble salto.
+      objectReference: {fileID: 0}
     - target: {fileID: 7594282370623074662, guid: a57c50daca1f2104c9522cfc5dba1d40, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -84958,7 +84964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1387749630899797669, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_Pivot.x
