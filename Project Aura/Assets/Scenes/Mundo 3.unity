@@ -1024,6 +1024,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5821956469837696787, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5821956469837696787, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1345915745
+      objectReference: {fileID: 0}
     - target: {fileID: 6110172007857457206, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Size.y
       value: 1.2260456
@@ -2074,6 +2082,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4231376742368059448, guid: 3b231c31a83369540a28cc980f1ba478, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6825672516027384142, guid: 3b231c31a83369540a28cc980f1ba478, type: 3}
+      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

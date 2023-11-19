@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Project Aura/Assets/Sprites/Plantas/Planta4.png.meta
 guid: 034bf82fd0db992498b03bea0f7ef783
-========
-guid: a390bc3c7c5fad548b257e888d0e1c7a
->>>>>>>> Ivan:Project Aura/Assets/Sprites/UI/Escenarios/mundo1/1_4.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -38,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -123,7 +119,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<<< HEAD:Project Aura/Assets/Sprites/Plantas/Planta4.png.meta
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -137,8 +132,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-========
->>>>>>>> Ivan:Project Aura/Assets/Sprites/UI/Escenarios/mundo1/1_4.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []
