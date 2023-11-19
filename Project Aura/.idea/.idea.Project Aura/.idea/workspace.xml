@@ -15,6 +15,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/ChronometerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/ControllButtons.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LevelText.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/BackgroundMusicManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/EffectsAudioManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -126,7 +127,7 @@
       <workItem from="1700220429368" duration="2810000" />
       <workItem from="1700323589571" duration="693000" />
       <workItem from="1700355762161" duration="581000" />
-      <workItem from="1700396871230" duration="13388000" />
+      <workItem from="1700396871230" duration="15794000" />
     </task>
     <servers />
   </component>

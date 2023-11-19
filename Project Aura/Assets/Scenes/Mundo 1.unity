@@ -89507,10 +89507,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControllButtons
       objectReference: {fileID: 0}
-    - target: {fileID: 1387749630899797669, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -89577,11 +89573,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1965
+      value: -915
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 612
+      value: 563
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -89675,7 +89671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e6584822580544f908caa87b8c80f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 1
+  sceneIndex: 2
 --- !u!4 &1945903628
 Transform:
   m_ObjectHideFlags: 0

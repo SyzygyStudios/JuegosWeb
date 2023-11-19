@@ -16,6 +16,7 @@ public class ColorController : MonoBehaviour
     [SerializeField] private Color _yellow;
     [SerializeField] private Color _cyan;
     [SerializeField] private Color _magenta;
+    private bool _asignColor;
 
     private void Start()
     {
@@ -36,49 +37,52 @@ public class ColorController : MonoBehaviour
         _spriteRenderer.color = _finalColor;
         if (Input.GetKeyDown("e"))
         {
+            _asignColor = true;
+        }
+        if(_asignColor)
+        {
+            _asignColor = false;
             _finalColor = _auxColor;
             if (_hoverColor >= 1 && _hoverColor <= 6)
             {
-                Debug.Log("Asigno el " + _hoverColor);
                 gameObject.GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
             }
         }
+    }
+
+    public void AssignColor()
+    {
+        _asignColor = true;
     }
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("BluePower"))
         {
-            Debug.Log("Toco el azul");
             _auxColor = _blue;
             _hoverColor = 1;
         }
         else if (other.CompareTag("RedPower"))
         {
-            Debug.Log("Toco el rojo");
             _auxColor = _red;
             _hoverColor = 2;
         }
         else if (other.CompareTag("GreenPower"))
         {
-            Debug.Log("Toco el verde");
             _auxColor = _green;
             _hoverColor = 3;
         }
         else if (other.CompareTag("CianPower"))
         {
-            Debug.Log("Toco el cian");
             _auxColor = _cyan;
             _hoverColor = 4;
         }
         else if (other.CompareTag("PurplePower"))
         {
-            Debug.Log("Toco el magenta");
             _auxColor = _magenta;
             _hoverColor = 5;
         }
         else if (other.CompareTag("YellowPower"))
         {
-            Debug.Log("Toco el amarillo");
             _auxColor = _yellow;
             _hoverColor = 6;
         }
@@ -86,7 +90,6 @@ public class ColorController : MonoBehaviour
 
     public void DeleteColor()
     {
-        Debug.Log("Toco la cascada");
         _auxColor = Color.white;
         _finalColor = Color.white;
         _hoverColor = 0;
