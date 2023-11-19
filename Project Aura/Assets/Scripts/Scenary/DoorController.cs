@@ -18,8 +18,6 @@ public class DoorController : MonoBehaviour
 
     public void apearText()
     {
-        
-        
         Debug.Log("Texto");
         interactionText.SetActive(true);
     }
