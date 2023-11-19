@@ -26,7 +26,8 @@ public class ParallaxController : MonoBehaviour
     {
         float deltaX = (cameraTransform.position.x - previousCameraPosition.x) * parallaxMulti;
         float moveAmount = cameraTransform.position.x * (1-parallaxMulti);
-        transform.Translate(new Vector3(deltaX, 0, 0));
+        float deltaY = (cameraTransform.position.y - previousCameraPosition.y) * parallaxMulti;
+        transform.Translate(new Vector3(deltaX, deltaY, 0));
         previousCameraPosition = cameraTransform.position;
 
         if (moveAmount > startPosition + spriteWidth)
