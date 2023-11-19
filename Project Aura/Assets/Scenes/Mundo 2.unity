@@ -4094,17 +4094,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
   m_PrefabInstance: {fileID: 1922290449}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1569436620 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8315735158625651213, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-  m_PrefabInstance: {fileID: 1922290449}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d4d07c440681b47bbc328e29aae362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1596895705 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9098319877308730854, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
@@ -84967,34 +84956,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControllButtons
       objectReference: {fileID: 0}
-    - target: {fileID: 1387749630899797669, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1818077206349299630, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 1818077206349299630, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 1818077206349299630, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2042330920374901641, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 2042330920374901641, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 2042330920374901641, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -85061,7 +85022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1965
+      value: -1005
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -85078,30 +85039,6 @@ PrefabInstance:
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5505914682433242749, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 5505914682433242749, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
-    - target: {fileID: 5505914682433242749, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7476556684517044285, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1569436620}
-    - target: {fileID: 7476556684517044285, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Interact
-      objectReference: {fileID: 0}
-    - target: {fileID: 7476556684517044285, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ControllButtons, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
