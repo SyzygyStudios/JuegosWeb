@@ -2428,6 +2428,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeverDoor_2
       objectReference: {fileID: 0}
+    - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_TagString
+      value: Door
+      objectReference: {fileID: 0}
     - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -124441,6 +124445,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeverDoor_1
       objectReference: {fileID: 0}
+    - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_TagString
+      value: Door
+      objectReference: {fileID: 0}
     - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -124721,6 +124729,10 @@ PrefabInstance:
     - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Name
       value: LeverDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_TagString
+      value: Door
       objectReference: {fileID: 0}
     - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Sprite

@@ -700,6 +700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeverDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 335910699310400359, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
+      propertyPath: m_TagString
+      value: Door
+      objectReference: {fileID: 0}
     - target: {fileID: 1121881496010404351, guid: 1ad886329dc577346bab2732e912c0f7, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1338,7 +1342,7 @@ GameObject:
   - component: {fileID: 864463526}
   m_Layer: 0
   m_Name: Agua
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1691,6 +1695,16 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 1
       m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 93, y: 18, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3242,8 +3256,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 9cb00f16844231a48854102e28272dbd, type: 2}
   - m_RefCount: 72
     m_Data: {fileID: 11400000, guid: 9a424978cafebbd4b95be7d8cd6e43a6, type: 2}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: f9799eff23ab6ce4c9c4619d07a9b324, type: 2}
   - m_RefCount: 27
     m_Data: {fileID: 11400000, guid: 70c102379f9f58246a49f16871e08071, type: 2}
   - m_RefCount: 27
@@ -3257,8 +3271,8 @@ Tilemap:
     m_Data: {fileID: -1013816083, guid: fb445c083c0748948b36050bee7b5ca6, type: 3}
   - m_RefCount: 72
     m_Data: {fileID: -177999075, guid: fb445c083c0748948b36050bee7b5ca6, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 478437120, guid: 1fcf5791c3f1ae24cb503cf7a4e2f5ea, type: 3}
   - m_RefCount: 27
     m_Data: {fileID: -1103350241, guid: fb445c083c0748948b36050bee7b5ca6, type: 3}
   - m_RefCount: 27
@@ -3268,7 +3282,7 @@ Tilemap:
   - m_RefCount: 12
     m_Data: {fileID: -227975278, guid: fb445c083c0748948b36050bee7b5ca6, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 182
+  - m_RefCount: 183
     m_Data:
       e00: 1
       e01: 0
@@ -3287,7 +3301,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 182
+  - m_RefCount: 183
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
