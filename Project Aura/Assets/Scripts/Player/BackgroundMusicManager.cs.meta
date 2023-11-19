@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Project Aura/Assets/Scripts/Player/BackgroundMusicManager.cs.meta
 guid: dcb12c5de58956543b638f4deafdf30a
+========
+guid: a7a0a1c5b8f1f644db6d3e2575424f15
+>>>>>>>> Ivan:Project Aura/Assets/SelectorPowerController.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

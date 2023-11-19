@@ -1,8 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Project Aura/Assets/Animations/Player/Dash.anim.meta
 guid: cbb6ca0a59102004d97f2bf1645efbbb
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
+========
+guid: 02fb84e00ef4fed488c1ae94705f70b0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+>>>>>>>> Ivan:Project Aura/Assets/Sprites/Tiles/Agua_0.asset.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

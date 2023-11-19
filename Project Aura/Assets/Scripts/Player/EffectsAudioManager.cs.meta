@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Project Aura/Assets/Scripts/Player/EffectsAudioManager.cs.meta
 guid: 38721686ae6f50a4e9de9087f81a06d5
+========
+guid: 4d6ac61833dfc6a4cb6969b1466e8013
+>>>>>>>> Ivan:Project Aura/Assets/WaterCollider.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
