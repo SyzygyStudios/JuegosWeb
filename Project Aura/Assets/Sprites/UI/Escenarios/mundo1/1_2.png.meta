@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Project Aura/Assets/Sprites/Plantas/Planta2.png.meta
-guid: c597ed3feb843684f99856f9721c616c
+<<<<<<<< HEAD:Project Aura/Assets/Sprites/UI/Escenarios/mundo2/2_2.png.meta
+guid: f9cd2740654995042b352a62e5cb4646
 ========
-guid: 8dae7485ef534f04f803aa39f3582076
->>>>>>>> Ivan:Project Aura/Assets/Sprites/UI/Escenarios/mundo1/1_2.png.meta
+guid: 52944811e9a6bed42bd87543d91c48d4
+>>>>>>>> origin/ivan2:Project Aura/Assets/Sprites/UI/Escenarios/mundo1/1_2.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -52,7 +52,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 350
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -116,22 +116,6 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-<<<<<<<< HEAD:Project Aura/Assets/Sprites/Plantas/Planta2.png.meta
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-========
->>>>>>>> Ivan:Project Aura/Assets/Sprites/UI/Escenarios/mundo1/1_2.png.meta
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
