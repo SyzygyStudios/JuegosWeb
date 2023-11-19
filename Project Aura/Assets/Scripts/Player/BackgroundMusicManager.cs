@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class BackgroundMusicManager : MonoBehaviour
 {
+    [SerializeField] private AudioClip hub;
     [SerializeField] private AudioClip world1;
     [SerializeField] private AudioClip world2;
     [SerializeField] private AudioClip world3;
@@ -17,6 +18,12 @@ public class BackgroundMusicManager : MonoBehaviour
     {
         switch (SceneManager.GetActiveScene().name)
         {
+            case "MainMenu":
+                PlayHub();
+                break;
+            case "SelectLevel":
+                PlayHub();
+                break;
             case "Mundo 1":
                 PlayWorld1();
                 break;
@@ -37,6 +44,12 @@ public class BackgroundMusicManager : MonoBehaviour
                 break;
             
         }
+    }
+    
+    public void PlayHub()
+    {
+        audioSource.clip = hub;
+        audioSource.Play();
     }
     
     public void PlayWorld1()

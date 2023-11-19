@@ -489,6 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb12c5de58956543b638f4deafdf30a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hub: {fileID: 8300000, guid: 991e8799f142e8f4ebf8835069c3c55b, type: 3}
   world1: {fileID: 8300000, guid: 380a6112c6d81e547a1063760a0a547c, type: 3}
   world2: {fileID: 8300000, guid: 4728fdb489ff5ae4b9bb91d66f809f07, type: 3}
   world3: {fileID: 8300000, guid: 0aeb5cfc2dd36014dbafce80a629cde5, type: 3}
@@ -589,7 +590,7 @@ Transform:
   - {fileID: 3322475236246846219}
   - {fileID: 3245763358877823}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -631,7 +632,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1345915745
   m_SortingLayer: 4
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: -163767424, guid: 27d0fa7b79a22ac40b40c30536247433, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -745,6 +746,7 @@ MonoBehaviour:
     m_Bits: 64
   wallJumpForce: {x: 20, y: 60}
   wallCheck: {fileID: 4126645312261126430}
+  _isWallTouch: 0
   dashForce: 70
   dashingTime: 0.18
   rollForce: 30
