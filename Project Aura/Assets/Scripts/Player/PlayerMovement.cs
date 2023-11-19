@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private GameMetrics _gameMetrics;
     private bool _canMove;
+    private BackgroundMusicManager _backgroundMusic;
+    private EffectsAudioManager _effectsAudio;
     
 
     /// Variables que controlan el movimiento al correr
@@ -96,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     private double _rollingTime;
     private bool _touchingRoof;
     private BoxCollider2D _boxCollider;
+    [SerializeField] private bool _isWalking;
 
     void Start()
     {
@@ -118,14 +121,19 @@ public class PlayerMovement : MonoBehaviour
 
             //CORRER
 
-            if (_horizontalInput != 0)
+            if (_horizontalInput != 0 && !_isBombJumping)
             {
                 Run();
+                if (_grounded)
+                {
+                    _effectsAudio.PlayWalk();
+                }
                 animator.SetBool("isRunning", true);
             }
             else
             {
                 animator.SetBool("isRunning", false);
+                _effectsAudio.StopWalk();
             }
 
             //SALTAR
@@ -198,11 +206,11 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //CONTROL DE GRAVEDAD AL CAER
-            if (_rb.velocity.y < 0 && !_isDashing && !_grounded)
+            if (_rb.velocity.y < 0 && !_grounded)
             {
                 _rb.gravityScale = gravityScale * fallGravityMultiplier;
             }
-            else if (!_isDashing)
+            else
             {
                 _rb.gravityScale = gravityScale;
             }
@@ -304,6 +312,8 @@ public class PlayerMovement : MonoBehaviour
         _startRoll = false;
         _changingWall = false;
         doubleJump = 2;
+        _backgroundMusic = gameObject.GetComponentInChildren<BackgroundMusicManager>();
+        _effectsAudio = gameObject.GetComponentInChildren<EffectsAudioManager>();
         if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
         {
             DisableMovement();
@@ -383,6 +393,7 @@ public class PlayerMovement : MonoBehaviour
             doubleJump--;
             Debug.Log("Voy a saltar");
             _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
+            _effectsAudio.PlayJump();
             _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
@@ -396,6 +407,7 @@ public class PlayerMovement : MonoBehaviour
             doubleJump = 0;
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
+            _effectsAudio.PlayJump();
             _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
@@ -438,20 +450,22 @@ public class PlayerMovement : MonoBehaviour
     {
         float prevGravityScale = gravityScale;
         gravityScale = 0;
-            _isDashing = true;
-            _tr.emitting = true;
-            var inputX = Input.GetAxisRaw("Horizontal");
-            _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
-            yield return new WaitForSeconds(dashingTime);
-            if (!_grounded)
-            {
-                Debug.Log("ESTOY EN EL AIRE");
-                _canDash = false;
-            }
+        _isDashing = true;
+        _tr.emitting = true;
+        var inputX = Input.GetAxisRaw("Horizontal");
+        DashAnimation();
+        _rb.velocity = Vector2.zero;
+        _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
+        yield return new WaitForSeconds(dashingTime);
+        if (!_grounded)
+        {
+            Debug.Log("ESTOY EN EL AIRE");
+            _canDash = false;
+        }
 
-            _tr.emitting = false;
-            gravityScale = prevGravityScale;
-            _isDashing = false;
+        _tr.emitting = false;
+        gravityScale = prevGravityScale;
+        _isDashing = false;
             
     }
     
@@ -578,6 +592,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isFalling", true);
         animator.SetBool("isMidAir", false);
         animator.SetBool("isAscending", false);
+        animator.SetBool("isRunning", false);
         animator.SetBool("isTakeingOf", false);
 
     }
@@ -605,6 +620,16 @@ public class PlayerMovement : MonoBehaviour
 
     }
     
+    private void DashAnimation()
+    {
+        animator.SetTrigger("isDashing");
+        animator.SetBool("isMidAir", false);
+        animator.SetBool("isAscending", false);
+        animator.SetBool("isFalling", false);
+        animator.SetBool("isTakeingOf", false);
+
+    }
+    
     private void LandingAnimation()
     {
         if (landing)
@@ -621,22 +646,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimationHandler()
     {
-        if (_rb.velocity.y > 0 && !_grounded)
+        if (_rb.velocity.y > 0 && !_grounded && !_isDashing)
         {
             AscendingAnimation();
         }
 
-        if (_rb.velocity.y < -2 && !_grounded)
+        if (_rb.velocity.y < -2 && !_grounded && !_isDashing)
         {
             FallingAnimation();
         }
 
-        if (_rb.velocity.y > -1 && _rb.velocity.y < 1 && !_grounded)
+        if (_rb.velocity.y > -1 && _rb.velocity.y < 1 && !_grounded && !_isDashing)
         {
             MidAirAnimation();
         }
 
-        if (_grounded)
+        if (_grounded && !_isDashing)
         {
             LandingAnimation();
         }
