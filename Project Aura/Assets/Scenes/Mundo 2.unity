@@ -193,8 +193,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5417230969790733702, guid: a57c50daca1f2104c9522cfc5dba1d40, type: 3}
       propertyPath: m_text
-      value: Presiona E para coger un color. Cada color te otorga una habilidad de
-        movimiento distinta. Los colores se utilizan pulsando la tecla Q, a excepcion
+      value: Presiona C para coger un color. Cada color te otorga una habilidad de
+        movimiento distinta. Los colores se utilizan pulsando la tecla B, a excepcion
         del doble salto.
       objectReference: {fileID: 0}
     - target: {fileID: 7594282370623074662, guid: a57c50daca1f2104c9522cfc5dba1d40, type: 3}

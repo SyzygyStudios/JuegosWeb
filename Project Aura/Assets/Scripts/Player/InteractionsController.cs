@@ -8,28 +8,41 @@ public class InteractionsController : MonoBehaviour
     private bool _doorContact;
 
     private Collider2D contactGameObject;
+    private bool _interactDoor;
+    private bool _interactLever;
 
-    
 
     void Update()
     {
+        if (Input.GetKeyDown("g"))
+        {
+            _interactDoor = true;
+        }
+        
         if (Input.GetKeyDown("e"))
+        {
+            _interactLever = true;
+        }
+        
+        if (_interactLever)
         {
             if (_leverContact)
             {
-                Debug.Log("Abro la puerta 1");
                 contactGameObject.gameObject.GetComponent<LeverController>().OpenDoor();
             }
 
+            _interactLever = false;
         }
 
-        if (Input.GetKeyDown("g"))
+        if (_interactDoor)
         {
             if (_doorContact)
             {
                
                 contactGameObject.gameObject.GetComponent<DoorController>().changeScene();
             }
+
+            _interactDoor = false;
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -48,6 +61,12 @@ public class InteractionsController : MonoBehaviour
             contactGameObject.gameObject.GetComponent<DoorController>().apearText();
         }
        
+    }
+
+    public void Interact()
+    {
+            _interactDoor = true;
+            _interactLever = true;
     }
 
     

@@ -421,7 +421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Presiona A, D para moverte y Espacio para saltar
+  m_text: Mueve el joystick para moverte y A para saltar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
   m_sharedMaterial: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
@@ -948,7 +948,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Presiona G '
+  m_text: Presiona C
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
   m_sharedMaterial: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}

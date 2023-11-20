@@ -489,7 +489,7 @@ public class PlayerMovement : MonoBehaviour
         return !_isDashing && !_isRolling && !_isBombJumping;
     }
 
-    private bool CanJump()
+    public bool CanJump()
     {
         return (!_isDashing && !_isRolling && doubleJump>0 && !_isWallJumping && !_isBombJumping && !_isSliding);
     }

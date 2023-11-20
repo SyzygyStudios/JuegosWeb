@@ -6,9 +6,11 @@ public class ControllButtons : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
     private ColorController _colorController;
+    private InteractionsController _interactionsController;
     
     void Start()
     {
+        _interactionsController = FindObjectOfType<InteractionsController>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
         _colorController = FindObjectOfType<ColorController>();
     }
@@ -16,7 +18,7 @@ public class ControllButtons : MonoBehaviour
     // Update is called once per frame
     public void Jump()
     {
-        _playerMovement.ActivateJump();
+        if(_playerMovement.CanJump()) _playerMovement.ActivateJump();
     }
     public void Ability()
     {
@@ -25,5 +27,6 @@ public class ControllButtons : MonoBehaviour
     public void Interact()
     {
         _colorController.AssignColor();
+        _interactionsController.Interact();
     }
 }
