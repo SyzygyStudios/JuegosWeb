@@ -101,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Joystick _joystick;
     [SerializeField] private bool _joystickActive;
     private bool _resetGravity;
+    private bool _hoverColor;
 
     void Start()
     {
@@ -283,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
                 ActivateWallJump();
             }
 
-            if (Input.GetKeyDown("q"))
+            if (Input.GetKeyDown("e") && !_hoverColor)
             {
                 ActivateAbility();
             }
@@ -309,6 +310,7 @@ public class PlayerMovement : MonoBehaviour
     private void InitializeVariables()
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
+        _hoverColor = false;
         animator = GetComponent<Animator>();
         _joystickActive = false;
         FindObjectOfType<PhoneController>().SetPlayer();
@@ -751,5 +753,9 @@ public class PlayerMovement : MonoBehaviour
     {
         _canMove = true;
     }
-    
+
+    public void SetHoverPower(bool p0)
+    {
+        _hoverColor = p0;
+    }
 }

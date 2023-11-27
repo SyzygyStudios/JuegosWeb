@@ -15,6 +15,7 @@ public class ChronometerController : MonoBehaviour
     private void Start()
     {
         _timeElapsed = 0;
+        FindObjectOfType<GameMetrics>().SetChronometer(this);
     }
 
     void Update()

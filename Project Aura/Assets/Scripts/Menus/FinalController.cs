@@ -13,10 +13,10 @@ public class FinalController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI seconds;
     [SerializeField] private Text jumps;
     [SerializeField] private Text stars;
-    private ChronometerController _chronometer;
-    private GameMetrics _gameMetrics;
-    private PlayerMovement _playerMovement;
-    private float _prevTime;
+    [SerializeField] private ChronometerController _chronometer;
+    [SerializeField] private GameMetrics _gameMetrics;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private float _prevTime;
 
     void Start()
     {

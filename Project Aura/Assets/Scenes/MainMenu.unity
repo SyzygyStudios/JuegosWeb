@@ -1384,10 +1384,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 91637663001982448, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1739693367518609547, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
       propertyPath: m_Name
       value: PhoneCanvas
@@ -1474,10 +1470,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3966090557417635716, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119007921862164458, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

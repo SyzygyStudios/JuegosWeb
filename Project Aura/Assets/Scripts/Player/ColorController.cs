@@ -59,32 +59,46 @@ public class ColorController : MonoBehaviour
         if(other.CompareTag("BluePower"))
         {
             _auxColor = _blue;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 1;
         }
         else if (other.CompareTag("RedPower"))
         {
             _auxColor = _red;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 2;
         }
         else if (other.CompareTag("GreenPower"))
         {
             _auxColor = _green;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 3;
         }
         else if (other.CompareTag("CianPower"))
         {
             _auxColor = _cyan;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 4;
         }
         else if (other.CompareTag("PurplePower"))
         {
             _auxColor = _magenta;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 5;
         }
         else if (other.CompareTag("YellowPower"))
         {
             _auxColor = _yellow;
+            if(_auxColor!= _finalColor) gameObject.GetComponent<PlayerMovement>().SetHoverPower(true);
             _hoverColor = 6;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("BluePower") || other.CompareTag("GreenPower") || other.CompareTag("CianPower") || other.CompareTag("PurplePower") || other.CompareTag("RedPower") || other.CompareTag("YellowPower"))
+        {
+            gameObject.GetComponent<PlayerMovement>().SetHoverPower(false);
         }
     }
 

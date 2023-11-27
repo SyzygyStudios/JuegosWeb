@@ -13,17 +13,16 @@ public class GameMetrics : MonoBehaviour
         
     }
 
-    private WorldMetrics[] worlds;
-    private int _jumpsInCurrent;
-    private int _starsInCurrent;
-    private ChronometerController chronometer;
-    private bool[] _colorsUnlocked;
-    private int _currentWorld;
+    [SerializeField] private WorldMetrics[] worlds;
+    [SerializeField]private int _jumpsInCurrent;
+    [SerializeField]private int _starsInCurrent;
+    [SerializeField]private ChronometerController chronometer;
+    [SerializeField]private bool[] _colorsUnlocked;
+    [SerializeField]private int _currentWorld;
     
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        chronometer = FindObjectOfType<ChronometerController>();
         worlds = new WorldMetrics[6];
         _colorsUnlocked = new bool[6];
     }
@@ -49,6 +48,11 @@ public class GameMetrics : MonoBehaviour
     public void CollectStart()
     {
         _starsInCurrent++;
+    }
+
+    public void SetChronometer(ChronometerController ch)
+    {
+        chronometer = ch;
     }
 
     public bool GetCompletedWorld(int j)
