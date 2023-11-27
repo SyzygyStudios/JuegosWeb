@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,6 +62,20 @@ public class InteractionsController : MonoBehaviour
             contactGameObject.gameObject.GetComponent<DoorController>().apearText();
         }
        
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Lever"))
+        {
+            _leverContact = false;
+        }
+
+        if (other.CompareTag("Door"))
+        {
+            contactGameObject = other;
+            _doorContact = false;
+        }
     }
 
     public void Interact()

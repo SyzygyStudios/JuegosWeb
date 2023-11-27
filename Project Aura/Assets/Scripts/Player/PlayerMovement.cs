@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash")]
     [SerializeField] private float dashForce;
     [SerializeField] private float dashingTime;
-    private bool _canDash;
+    private bool _resetDash;
     private bool _startDash;
     private bool _isDashing;
     
@@ -100,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _isWalking;
     [SerializeField] private Joystick _joystick;
     [SerializeField] private bool _joystickActive;
+    private bool _resetGravity;
 
     void Start()
     {
@@ -316,7 +317,7 @@ public class PlayerMovement : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider2D>();
         _canMove = true;
         _grounded = false;
-        _canDash = true;
+        _resetDash = true;
         _isDashing = false;
         _startDash = false;
         _canRoll = true;
@@ -443,6 +444,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Gravity()
     {
         Debug.Log("Se ejecuta gravedad");
+        _resetGravity = false;
         gravityScale = -gravityScale;
         transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         yield return new WaitForSeconds(1);
@@ -478,7 +480,7 @@ public class PlayerMovement : MonoBehaviour
         gravityScale = 0;
         _isDashing = true;
         _tr.emitting = true;
-        var inputX = Input.GetAxisRaw("Horizontal");
+        var inputX = transform.localScale.x;
         DashAnimation();
         _rb.velocity = Vector2.zero;
         _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
@@ -486,7 +488,7 @@ public class PlayerMovement : MonoBehaviour
         if (!_grounded)
         {
             Debug.Log("ESTOY EN EL AIRE");
-            _canDash = false;
+            _resetDash = false;
         }
 
         _tr.emitting = false;
@@ -521,7 +523,7 @@ public class PlayerMovement : MonoBehaviour
     
     private bool CanGravity()
     {
-        return _canDash && _activeColor == 5;
+        return _activeColor == 5 && _resetGravity;
     }
     
     private bool CanWallJump()
@@ -531,7 +533,7 @@ public class PlayerMovement : MonoBehaviour
     
     private bool CanDash()
     {
-        return _canDash && _activeColor == 2;
+        return _resetDash && _activeColor == 2;
     }
     
     private bool CanRoll()
@@ -556,8 +558,9 @@ public class PlayerMovement : MonoBehaviour
         if (!_lastGrounded && _grounded)
         {
             doubleJump = 2;
-            _canDash = true;
+            _resetDash = true;
             _jumpCut = false;
+            _resetGravity = true;
             airMove = false;
             coyoteTimeCounter = coyoteTime;
         }
@@ -584,7 +587,7 @@ public class PlayerMovement : MonoBehaviour
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
     }
     
-    private void PreserveMomentum()
+    public void PreserveMomentum()
     {
         _rb.velocity = new Vector2(_lastVelocity.x, _rb.velocity.y);
     }

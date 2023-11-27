@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class MovingPlatform : MonoBehaviour
     private float _leftFinalPos;
     private Rigidbody2D _rb;
     private bool _movingRight;
+    private PlayerMovement _playerMovement;
+    private bool _touchingPlayer;
     [SerializeField] private bool isMoving;
 
     void Start()
@@ -21,6 +24,7 @@ public class MovingPlatform : MonoBehaviour
         _currentPos = transform.position;
         _rightFinalPos = _currentPos.x + rightMovement;
         _leftFinalPos = _currentPos.x - leftMovement;
+        _playerMovement = FindObjectOfType<PlayerMovement>();
     }
     void FixedUpdate()
     {
@@ -54,5 +58,21 @@ public class MovingPlatform : MonoBehaviour
     public void SetMove(bool a)
     {
         isMoving = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Player"))
+        {
+            _touchingPlayer = true;
+        }
+    }
+    
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Player"))
+        {
+            _touchingPlayer = false;
+        }
     }
 }
