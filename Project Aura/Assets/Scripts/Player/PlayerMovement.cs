@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float acceleration;
     [SerializeField] private float decceleration;
-    [SerializeField] Joystick joystick;
     private float _horizontalInput, _horizontalMove;
     
     /// Variables que controlan el salto
@@ -99,6 +98,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _touchingRoof;
     private BoxCollider2D _boxCollider;
     [SerializeField] private bool _isWalking;
+    [SerializeField] private Joystick _joystick;
+    [SerializeField] private bool _joystickActive;
 
     void Start()
     {
@@ -243,9 +244,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (CanRun())
             {
-                _horizontalInput = Input.GetAxisRaw("Horizontal") != 0
-                    ? Input.GetAxisRaw("Horizontal")
-                    : joystick.Horizontal;
+                if (!_joystickActive)
+                {
+                    _horizontalInput = Input.GetAxisRaw("Horizontal");
+                }else if (_joystickActive)
+                {
+                    _horizontalInput = _joystick.Horizontal;
+                }
             }
 
             if (!_grounded)
@@ -299,6 +304,13 @@ public class PlayerMovement : MonoBehaviour
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
         animator = GetComponent<Animator>();
+        _joystickActive = false;
+        FindObjectOfType<PhoneController>().SetPlayer();
+        if (FindObjectOfType<PhoneController>().GetActive())
+        {
+            FindObjectOfType<PhoneController>().SetJoystick();
+            _joystickActive = true;
+        }
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -317,6 +329,19 @@ public class PlayerMovement : MonoBehaviour
         if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
         {
             DisableMovement();
+        }
+    }
+
+    public void SetJoystick(Joystick j, bool b)
+    {
+        if (b)
+        {
+            _joystickActive = true;
+            _joystick = j;
+        }
+        else
+        {
+            _joystickActive = false;
         }
     }
 
@@ -577,9 +602,10 @@ public class PlayerMovement : MonoBehaviour
     
     public void SetColor(int color)
     {
+        int prevColor = _activeColor;
         _activeColor = color;
         
-        if (_activeColor != 0)
+        if (_activeColor!=prevColor)
         {
             _effectsAudio.PlayPickPower();
         }

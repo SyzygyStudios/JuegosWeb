@@ -590,7 +590,7 @@ Transform:
   - {fileID: 3322475236246846219}
   - {fileID: 3245763358877823}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821956469837696787
 SpriteRenderer:
@@ -727,7 +727,6 @@ MonoBehaviour:
   speed: 20
   acceleration: 7
   decceleration: 7
-  joystick: {fileID: 0}
   jumpForce: 35
   airFrictionMultiplier: 0.75
   fallGravityMultiplier: 1.1
@@ -760,6 +759,8 @@ MonoBehaviour:
   landing: 0
   _lastGrounded: 0
   _isWalking: 0
+  _joystick: {fileID: 0}
+  _joystickActive: 0
 --- !u!96 &6252471641858354788
 TrailRenderer:
   serializedVersion: 3
@@ -938,7 +939,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.2876472}
+  m_Offset: {x: 0, y: -0.20016718}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -949,7 +950,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6277504, y: 0.9247056}
+  m_Size: {x: 0.6277504, y: 1.0996656}
   m_EdgeRadius: 0
 --- !u!114 &9025515253523952200
 MonoBehaviour:

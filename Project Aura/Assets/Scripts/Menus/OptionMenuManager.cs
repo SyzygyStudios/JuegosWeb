@@ -23,6 +23,8 @@ public class OptionMenuManager : MonoBehaviour
     public GameObject opcionsMenu;
     public GameObject mainMenu;
 
+    [SerializeField] private PhoneController _phoneController;
+
 
     void Start()
     {
@@ -116,5 +118,10 @@ public class OptionMenuManager : MonoBehaviour
     {
         opcionsButton.SetActive(false);
         opcionsMenu.SetActive(true);
+    }
+
+    public void ChangeMovil()
+    {
+        _phoneController.SetActiveMenu();
     }
 }

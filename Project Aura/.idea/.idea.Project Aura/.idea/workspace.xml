@@ -17,6 +17,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/ChronometerController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/ControllButtons.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LevelText.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PhoneController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/BackgroundMusicManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/EffectsAudioManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/TutorialText.cs" root0="FORCE_HIGHLIGHTING" />
@@ -128,7 +129,7 @@
       <workItem from="1700323589571" duration="693000" />
       <workItem from="1700355762161" duration="581000" />
       <workItem from="1700396871230" duration="17426000" />
-      <workItem from="1700483395399" duration="730000" />
+      <workItem from="1700483395399" duration="6399000" />
     </task>
     <servers />
   </component>

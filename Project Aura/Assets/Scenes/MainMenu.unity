@@ -421,7 +421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mueve el joystick para moverte y A para saltar
+  m_text: A y D para moverte. Espacio para saltar.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
   m_sharedMaterial: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
@@ -948,7 +948,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Presiona C
+  m_text: Presiona G
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
   m_sharedMaterial: {fileID: -2269727310777915711, guid: cc08e75ac8455c740a91a761a6a80bc4, type: 2}
@@ -1386,19 +1386,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 91637663001982448, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1739693367518609547, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
       propertyPath: m_Name
-      value: Main Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739693367518609547, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2185021942541028022, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      value: PhoneCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 3966090557417635716, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
       propertyPath: m_Pivot.x
@@ -1484,11 +1476,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9119007921862164458, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
+--- !u!114 &1218769973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2561060909353115078, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
+  m_PrefabInstance: {fileID: 1144421539}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dfe6efcdfc762249864e3ef27a027b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1314432094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,17 +1731,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448766708}
   m_CullTransparentMesh: 1
---- !u!114 &1547324680 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9119007921862164454, guid: 01e59c7357d141ac4871f520da84f9b7, type: 3}
-  m_PrefabInstance: {fileID: 1144421539}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1636984175
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,21 +2670,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: joystick
-      value: 
-      objectReference: {fileID: 1547324680}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5821956469837696787, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5821956469837696787, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1345915745
       objectReference: {fileID: 0}
     - target: {fileID: 6854628838149677694, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_RootOrder
@@ -2828,10 +2812,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasOpcions
       objectReference: {fileID: 0}
-    - target: {fileID: 983819044583577621, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1586001596425997800, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2916,34 +2896,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2035434705767310110, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3146103216164797132, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: mainMenu
       value: 
       objectReference: {fileID: 342272570}
-    - target: {fileID: 5344007658093270279, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5475463456512828910, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6935950330196995160, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 3146103216164797132, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: _phoneController
+      value: 
+      objectReference: {fileID: 1218769973}
     - target: {fileID: 8455705634629044227, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: mainMenu
       value: 
       objectReference: {fileID: 342272570}
-    - target: {fileID: 8866507837153984946, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

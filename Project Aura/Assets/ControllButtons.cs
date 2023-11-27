@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class ControllButtons : MonoBehaviour
 {
-    private PlayerMovement _playerMovement;
-    private ColorController _colorController;
-    private InteractionsController _interactionsController;
-    
-    void Start()
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private ColorController _colorController;
+    [SerializeField] private InteractionsController _interactionsController;
+    public void AssignVariables()
     {
         _interactionsController = FindObjectOfType<InteractionsController>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
