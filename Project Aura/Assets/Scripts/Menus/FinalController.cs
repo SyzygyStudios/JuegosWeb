@@ -37,7 +37,7 @@ public class FinalController : MonoBehaviour
             canvas.gameObject.SetActive(true);
             int _seconds = (int) _gameMetrics.GetTimeWorld(world - 1);
             int _minutes = 0;
-            while (_seconds > 60)
+            while (_seconds >= 60)
             {
                 _seconds -= 60;
                 _minutes += 1;
