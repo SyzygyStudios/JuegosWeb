@@ -42,7 +42,7 @@ public class ChronometerController : MonoBehaviour
     {
         int _seconds = (int) _timeElapsed;
         int _minutes = 0;
-        while (_seconds > 60)
+        while (_seconds >= 60)
         {
             _seconds -= 60;
             _minutes += 1;

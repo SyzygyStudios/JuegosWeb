@@ -130,6 +130,11 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _effectsAudio.PlayWalk();
                 }
+
+                if (!_grounded)
+                {
+                    _effectsAudio.StopWalk();
+                }
                 animator.SetBool("isRunning", true);
             }
             else

@@ -14,7 +14,7 @@ public class MovingPlatform : MonoBehaviour
     private Rigidbody2D _rb;
     private bool _movingRight;
     private PlayerMovement _playerMovement;
-    private bool _touchingPlayer;
+    //private bool _touchingPlayer;
     [SerializeField] private bool isMoving;
 
     void Start()
@@ -60,19 +60,19 @@ public class MovingPlatform : MonoBehaviour
         isMoving = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.collider.CompareTag("Player"))
-        {
-            _touchingPlayer = true;
-        }
-    }
-    
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.collider.CompareTag("Player"))
-        {
-            _touchingPlayer = false;
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D other)
+    //{
+    //    if (other.collider.CompareTag("Player"))
+    //    {
+    //        _touchingPlayer = true;
+    //    }
+    //}
+    //
+    //private void OnCollisionExit2D(Collision2D other)
+    //{
+    //    if (other.collider.CompareTag("Player"))
+    //    {
+    //        _touchingPlayer = false;
+    //    }
+    //}
 }

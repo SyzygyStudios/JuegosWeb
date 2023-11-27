@@ -16,6 +16,7 @@ public class FinalController : MonoBehaviour
     private ChronometerController _chronometer;
     private GameMetrics _gameMetrics;
     private PlayerMovement _playerMovement;
+    private float _prevTime;
 
     void Start()
     {
@@ -28,6 +29,8 @@ public class FinalController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _playerMovement.DisableMovement();
+            _prevTime = Time.timeScale;
+            Time.timeScale = 0;
             _chronometer.gameObject.SetActive(false);
             _gameMetrics.SetCurrentWorld(world-1);
             _gameMetrics.CompleteWorld();
@@ -63,6 +66,7 @@ public class FinalController : MonoBehaviour
 
     public void ReturnSelector()
     {
+        Time.timeScale = _prevTime;
         _gameMetrics.UnlockPower(world);
         SceneManager.LoadScene("SelectLevel");
     }
