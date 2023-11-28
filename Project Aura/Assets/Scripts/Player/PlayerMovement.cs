@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _lastGrounded;
     private double _rollingTime;
     private bool _touchingRoof;
-    private BoxCollider2D _boxCollider;
+    [SerializeField] private BoxCollider2D _boxCollider;
     [SerializeField] private bool _isWalking;
     [SerializeField] private Joystick _joystick;
     [SerializeField] private bool _joystickActive;
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
                 _rollingTime += Time.deltaTime;
                 if (_rollingTime > rollTime && !_touchingRoof)
                 {
-                    _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y * 2);
+                    _boxCollider.isTrigger = false;
                     _isRolling = false;
                     _rollingTime = 0;
                 }
@@ -300,6 +300,7 @@ public class PlayerMovement : MonoBehaviour
             
             animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
             animator.SetFloat("yVelocity", _rb.velocity.y);
+            animator.SetBool("isRolling", _isRolling);
 
             jumpBufferCounter -= Time.deltaTime;
             abilityCooldownCounter += Time.deltaTime;
@@ -323,7 +324,6 @@ public class PlayerMovement : MonoBehaviour
         }
         _tr = GetComponent<TrailRenderer>();
         _rb = GetComponent<Rigidbody2D>();
-        _boxCollider = GetComponent<BoxCollider2D>();
         _canMove = true;
         _grounded = false;
         _resetDash = true;
@@ -511,7 +511,7 @@ public class PlayerMovement : MonoBehaviour
         _isRolling = true;
         _rb.totalForce = Vector2.zero;
         _rb.velocity = new Vector2(_horizontalInput,0).normalized * rollForce;
-        _boxCollider.size = new Vector2(_boxCollider.size.x, _boxCollider.size.y/2);
+        _boxCollider.isTrigger = true;
     }
 
     private void BombJump()
