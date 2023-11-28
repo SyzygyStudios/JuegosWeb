@@ -297,7 +297,8 @@ public class PlayerMovement : MonoBehaviour
 
             GroundCheck();
             WallCheck();
-            AnimationHandler();
+            
+            animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
 
             jumpBufferCounter -= Time.deltaTime;
             abilityCooldownCounter += Time.deltaTime;
@@ -421,7 +422,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (coyoteTimeCounter > 0f)
         {
-            TakeOfAnimation();
             _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
@@ -488,7 +488,6 @@ public class PlayerMovement : MonoBehaviour
         _isDashing = true;
         _tr.emitting = true;
         var inputX = transform.localScale.x;
-        DashAnimation();
         _rb.velocity = Vector2.zero;
         _rb.velocity = new Vector2(inputX, 0).normalized * dashForce;
         yield return new WaitForSeconds(dashingTime);
@@ -627,86 +626,6 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             }
             gravityScale = Mathf.Abs(gravityScale);
-        }
-    }
-
-    private void FallingAnimation()
-    {
-        animator.SetBool("isFalling", true);
-        animator.SetBool("isMidAir", false);
-        animator.SetBool("isAscending", false);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isTakeingOf", false);
-
-    }
-
-    private void AscendingAnimation()
-    {
-        animator.SetBool("isAscending", true);
-        animator.SetBool("isMidAir", false);
-        animator.SetBool("isFalling", false);
-        animator.SetBool("isTakeingOf", false);
-
-    }
-    
-    private void TakeOfAnimation()
-    {
-        animator.SetBool("isTakeingOf", true);
-    }
-    
-    private void MidAirAnimation()
-    {
-        animator.SetBool("isMidAir", true);
-        animator.SetBool("isAscending", false);
-        animator.SetBool("isFalling", false);
-        animator.SetBool("isTakeingOf", false);
-
-    }
-    
-    private void DashAnimation()
-    {
-        animator.SetTrigger("isDashing");
-        animator.SetBool("isMidAir", false);
-        animator.SetBool("isAscending", false);
-        animator.SetBool("isFalling", false);
-        animator.SetBool("isTakeingOf", false);
-
-    }
-    
-    private void LandingAnimation()
-    {
-        if (landing)
-        {
-            animator.SetBool("isTakeingOf", false);
-            animator.SetBool("isMidAir", false);
-            animator.SetBool("isAscending", false);
-            animator.SetBool("isFalling", false);
- 
-            animator.SetTrigger("isLanding");
-            landing = false;
-        }
-    }
-
-    private void AnimationHandler()
-    {
-        if (_rb.velocity.y > 0 && !_grounded && !_isDashing)
-        {
-            AscendingAnimation();
-        }
-
-        if (_rb.velocity.y < -2 && !_grounded && !_isDashing)
-        {
-            FallingAnimation();
-        }
-
-        if (_rb.velocity.y > -1 && _rb.velocity.y < 1 && !_grounded && !_isDashing)
-        {
-            MidAirAnimation();
-        }
-
-        if (_grounded && !_isDashing)
-        {
-            LandingAnimation();
         }
     }
     
