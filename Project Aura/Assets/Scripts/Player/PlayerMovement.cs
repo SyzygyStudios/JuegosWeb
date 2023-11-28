@@ -299,6 +299,7 @@ public class PlayerMovement : MonoBehaviour
             WallCheck();
             
             animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
+            animator.SetFloat("yVelocity", _rb.velocity.y);
 
             jumpBufferCounter -= Time.deltaTime;
             abilityCooldownCounter += Time.deltaTime;
@@ -425,6 +426,7 @@ public class PlayerMovement : MonoBehaviour
             _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
+            if(_grounded) animator.SetTrigger("TakeOf");
             _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
             _gameMetrics.AddJump();
@@ -438,6 +440,7 @@ public class PlayerMovement : MonoBehaviour
             if (doubleJump == 1 && _activeColor != 1) return;
             _jumpCut = false;
             doubleJump = 0;
+            if(_grounded) animator.SetTrigger("TakeOf");
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
@@ -570,6 +573,8 @@ public class PlayerMovement : MonoBehaviour
             airMove = false;
             coyoteTimeCounter = coyoteTime;
         }
+        
+        animator.SetBool("isOnAir", !_grounded);
         _lastGrounded = _grounded;
     }
 
