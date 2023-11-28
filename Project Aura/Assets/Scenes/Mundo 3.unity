@@ -1100,6 +1100,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: _boxCollider
+      value: 
+      objectReference: {fileID: 994866645}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1998,6 +2002,11 @@ Transform:
 --- !u!1 &994866643 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+  m_PrefabInstance: {fileID: 650427291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &994866645 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6110172007857457206, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
   m_PrefabInstance: {fileID: 650427291}
   m_PrefabAsset: {fileID: 0}
 --- !u!61 &994866653
