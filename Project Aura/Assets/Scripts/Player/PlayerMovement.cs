@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float abilityCooldown;
     [SerializeField] private float gravityScale;
     [SerializeField] private bool _grounded;
-    private int _activeColor;
+    [SerializeField] private int _activeColor;
     private float abilityCooldownCounter;
     private Vector2 _lastVelocity;
     private bool airMove;
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpBufferCounter;
     [SerializeField] private Transform floorCheck;
     [SerializeField] private Transform roofCheck;
-    private int doubleJump;
+    [SerializeField] private int doubleJump;
     
     [Header("Wall Jump")]
     [SerializeField] private float wallSlideSpeed;
@@ -136,11 +136,9 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _effectsAudio.StopWalk();
                 }
-                animator.SetBool("isRunning", true);
             }
             else
             {
-                animator.SetBool("isRunning", false);
                 _effectsAudio.StopWalk();
             }
 
@@ -437,10 +435,11 @@ public class PlayerMovement : MonoBehaviour
         else if (doubleJump <= 2)
         {
             Debug.Log("Doble salto");
-            if (doubleJump == 1 && _activeColor != 1) return;
+            if (_activeColor != 1) return;
             _jumpCut = false;
             doubleJump = 0;
             if(_grounded) animator.SetTrigger("TakeOf");
+            else if(!_grounded) animator.SetTrigger("DoubleJump");
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
