@@ -518,6 +518,7 @@ public class PlayerMovement : MonoBehaviour
     private void BombJump()
     {
         _isBombJumping = true;
+        animator.SetBool("isBombJumping", true);
         _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
     }
 
@@ -638,18 +639,19 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision){
         
         //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
-        if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
-        {
-            Debug.Log("He colisionado con "+ collision.tag);
-            if (_isBombJumping)
-            {
-                _isBombJumping = false;
-                if(collision.CompareTag("ShatteredFloor"))
-                {
-                    collision.gameObject.GetComponent<ShatteredFloor>().Break();
-                }
-            }
-        }
+        //if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
+        //{
+        //    Debug.Log("He colisionado con "+ collision.tag);
+        //    if (_isBombJumping)
+        //    {
+        //        _isBombJumping = false;
+        //        animator.SetBool("isBombJumping", false);
+        //        if(collision.CompareTag("ShatteredFloor"))
+        //        {
+        //            collision.gameObject.GetComponent<ShatteredFloor>().Break();
+        //        }
+        //    }
+        //}
         if(collision.CompareTag("Door"))
         {
         }
@@ -666,6 +668,16 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
             PreserveMomentum();
+            Debug.Log("He colisionado con "+ collision.collider.tag);
+            if (_isBombJumping)
+            {
+                _isBombJumping = false;
+                animator.SetBool("isBombJumping", false);
+                if(collision.collider.CompareTag("ShatteredFloor"))
+                {
+                    collision.gameObject.GetComponent<ShatteredFloor>().Break();
+                }
+            }
         }
     }
     
