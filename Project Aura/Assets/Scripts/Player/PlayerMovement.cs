@@ -488,6 +488,7 @@ public class PlayerMovement : MonoBehaviour
         float prevGravityScale = gravityScale;
         gravityScale = 0;
         _isDashing = true;
+        animator.SetBool("isDashing", true);
         _tr.emitting = true;
         var inputX = transform.localScale.x;
         _rb.velocity = Vector2.zero;
@@ -502,6 +503,7 @@ public class PlayerMovement : MonoBehaviour
         _tr.emitting = false;
         gravityScale = prevGravityScale;
         _isDashing = false;
+        animator.SetBool("isDashing", false);
             
     }
     
