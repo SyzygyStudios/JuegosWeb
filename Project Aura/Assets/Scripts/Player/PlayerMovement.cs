@@ -94,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _startBombJump;
     [SerializeField] private bool landing;
     [SerializeField] private bool _lastGrounded;
+    [SerializeField] private float bombJumpEndAnimatiorDuration;
     private double _rollingTime;
     private bool _touchingRoof;
     [SerializeField] private BoxCollider2D _boxCollider;
@@ -599,6 +600,13 @@ public class PlayerMovement : MonoBehaviour
         _changingWall = false;
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
     }
+
+    private IEnumerator FinishBombJump()
+    {
+        yield return new WaitForSeconds(bombJumpEndAnimatiorDuration);
+        _isBombJumping = false;
+
+    }
     
     public void PreserveMomentum()
     {
@@ -671,8 +679,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("He colisionado con "+ collision.collider.tag);
             if (_isBombJumping)
             {
-                _isBombJumping = false;
                 animator.SetBool("isBombJumping", false);
+                StartCoroutine(FinishBombJump());
                 if(collision.collider.CompareTag("ShatteredFloor"))
                 {
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
