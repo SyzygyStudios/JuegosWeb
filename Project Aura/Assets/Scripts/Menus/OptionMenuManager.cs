@@ -8,20 +8,21 @@ using System;
 public class OptionMenuManager : MonoBehaviour
 {
 
-    public Slider sliderVolume;
-    public float ValueVolume;
-    public Image imageMute;
+    [SerializeField] private Slider sliderVolume;
+    [SerializeField] private float ValueVolume;
+    [SerializeField] private Image imageMute;
 
-    public Slider sliderShine;
-    public float ValueShine;
-    public Image panelShine;
+    [SerializeField] private Slider sliderShine;
+    [SerializeField] private float ValueShine;
+    [SerializeField] private Image panelShine;
 
-    public Toggle toggle;
+    [SerializeField] private Toggle toggle;
 
-    public GameObject opcionsButton;
+    [SerializeField] private GameObject opcionsButton;
+    [SerializeField] private GameObject selectButton;
 
-    public GameObject opcionsMenu;
-    public GameObject mainMenu;
+    [SerializeField] private GameObject opcionsMenu;
+    [SerializeField] private GameObject mainMenu;
 
     [SerializeField] private PhoneController _phoneController;
 
@@ -60,6 +61,11 @@ public class OptionMenuManager : MonoBehaviour
         {
             if(!opcionsMenu.activeSelf)
             opcionsButton.SetActive(true);
+        }
+
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu") && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("SelectLevel"))
+        {
+            selectButton.SetActive(true);
         }
     }
 
@@ -123,5 +129,11 @@ public class OptionMenuManager : MonoBehaviour
     public void ChangeMovil()
     {
         _phoneController.SetActiveMenu();
+    }
+
+    public void SelectorLevels()
+    {
+        opcionsMenu.SetActive(false);
+        SceneManager.LoadScene("SelectLevel");
     }
 }

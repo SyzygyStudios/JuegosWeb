@@ -2094,6 +2094,7 @@ MonoBehaviour:
   smoothTime: 0.55
   velocity: {x: 0, y: 0, z: 0}
   target: {fileID: 1961128410}
+  MainMenu: {fileID: 342272570}
 --- !u!1 &1672876974
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,6 +2805,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasOpcions
       objectReference: {fileID: 0}
+    - target: {fileID: 983819044583577621, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1586001596425997800, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2888,6 +2893,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2035434705767310110, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3146103216164797132, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: mainMenu
       value: 
@@ -2896,10 +2905,26 @@ PrefabInstance:
       propertyPath: _phoneController
       value: 
       objectReference: {fileID: 1218769973}
+    - target: {fileID: 5049561832391502820, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344007658093270279, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6935950330196995160, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8455705634629044227, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
       propertyPath: mainMenu
       value: 
       objectReference: {fileID: 342272570}
+    - target: {fileID: 8866507837153984946, guid: 467165bcb8e06454299903d5b02c4a4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

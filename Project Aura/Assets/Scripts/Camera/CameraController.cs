@@ -9,8 +9,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector3 velocity = Vector3.zero;
 
     [SerializeField] private Transform target;
+    
+
 
     bool movement = false;
+
+    [SerializeField] private GameObject MainMenu;
 
 
     private void Update()
@@ -19,7 +23,27 @@ public class CameraController : MonoBehaviour
         Vector3 targetPosition = target.position + offset;
 
         if (movement)
+        {
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+           Debug.Log("movieendome");
+            
+
+            
+        }
+
+       /* if (transform.position.x == target.position.x)
+        {
+            Debug.Log("termine");
+
+            MainMenu.SetActive(false);
+        }
+
+        Debug.Log("camera"+ transform.position);
+        Debug.Log("target" + target.position);
+       */
+
+
+
     }
 
     public void Play()

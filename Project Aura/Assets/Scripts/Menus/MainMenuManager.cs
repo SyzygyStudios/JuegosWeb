@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,8 @@ public class MainMenuManager : MonoBehaviour
     public GameObject opcionsMenu;
     public GameObject canvaNick;
     public GameObject acceptBottom;
-   
+
+    private Coroutine TimeCoroutine = null;
 
     private bool Bot = false;
     
@@ -46,17 +48,22 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-
-    }
-
 
     public void Play() 
     {
         FindObjectOfType<PlayerMovement>().EnableMovement();
 
+        StartCoroutine(TimeCoroutine());
+
+        IEnumerator TimeCoroutine()
+        {
+                yield return new WaitForSeconds(3);
+                mainMenu.SetActive(false);
+
+        }
+
     }
+
 
     public void Exit()
     {
