@@ -94,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _startBombJump;
     [SerializeField] private bool landing;
     [SerializeField] private bool _lastGrounded;
+    [SerializeField] private float bombJumpEndAnimatiorDuration;
     private double _rollingTime;
     private bool _touchingRoof;
     [SerializeField] private BoxCollider2D _boxCollider;
@@ -587,6 +588,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
+        
         animator.SetBool("isOnAir", !_grounded);
         _lastGrounded = _grounded;
     }
@@ -609,6 +611,13 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(checkTime);
         _changingWall = false;
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
+    }
+
+    private IEnumerator FinishBombJump()
+    {
+        yield return new WaitForSeconds(bombJumpEndAnimatiorDuration);
+        _isBombJumping = false;
+
     }
     
     public void PreserveMomentum()
