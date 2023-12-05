@@ -353,6 +353,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private IEnumerator FinishBombJump()
+    {
+        yield return new WaitForSeconds(wallJumpDuration);
+        _isBombJumping = false;
+    }
+
     public void ActivateJump()
     {
         jumpBufferCounter = jumpBuffer;
