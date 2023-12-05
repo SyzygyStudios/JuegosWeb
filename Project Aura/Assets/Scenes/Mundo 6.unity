@@ -411,6 +411,10 @@ PrefabInstance:
       propertyPath: wallLayer.m_Bits
       value: 192
       objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: bombJumpEndAnimatiorDuration
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
       value: Player
