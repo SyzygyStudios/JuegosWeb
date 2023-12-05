@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _isWallTouch;
     private bool _startWallJumping;
     private bool _isWallJumping;
-    private bool _isSliding;
+    [SerializeField] private bool _isSliding;
     private bool _changingWall;
     
     ///  Variables que controlan el dash y el rodar
@@ -354,6 +354,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private IEnumerator FinishBombJump()
+    {
+        yield return new WaitForSeconds(wallJumpDuration);
+        _isBombJumping = false;
+    }
+
     public void ActivateJump()
     {
         jumpBufferCounter = jumpBuffer;
@@ -575,7 +581,13 @@ public class PlayerMovement : MonoBehaviour
             _resetGravity = true;
             airMove = false;
             coyoteTimeCounter = coyoteTime;
+            if (_isBombJumping)
+            {
+                StartCoroutine(FinishBombJump());
+                animator.SetBool("isBombJumping", false);
+            }
         }
+        
         
         animator.SetBool("isOnAir", !_grounded);
         _lastGrounded = _grounded;
@@ -646,20 +658,16 @@ public class PlayerMovement : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D collision){
         
-        //SI TOCA EL SUELO LE DECIMOS QUE MANTENGA EL MOMENTUM, QUE NO SE FRENE AL CAER, TAMBIEN REINICIAMOS VARIABLES DE HABILIDADES
-        //if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
-        //{
-        //    Debug.Log("He colisionado con "+ collision.tag);
-        //    if (_isBombJumping)
-        //    {
-        //        _isBombJumping = false;
-        //        animator.SetBool("isBombJumping", false);
-        //        if(collision.CompareTag("ShatteredFloor"))
-        //        {
-        //            collision.gameObject.GetComponent<ShatteredFloor>().Break();
-        //        }
-        //    }
-        //}
+        if(collision.CompareTag("Floor") || collision.CompareTag("ShatteredFloor"))
+        {
+            if (_isBombJumping)
+            {
+                if(collision.CompareTag("ShatteredFloor"))
+                {
+                    collision.gameObject.GetComponent<ShatteredFloor>().Break();
+                }
+            }
+        }
         if(collision.CompareTag("Door"))
         {
         }
@@ -675,12 +683,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
+            Debug.Log("Toco suelo");
             PreserveMomentum();
-            Debug.Log("He colisionado con "+ collision.collider.tag);
             if (_isBombJumping)
             {
-                animator.SetBool("isBombJumping", false);
-                StartCoroutine(FinishBombJump());
                 if(collision.collider.CompareTag("ShatteredFloor"))
                 {
                     collision.gameObject.GetComponent<ShatteredFloor>().Break();
