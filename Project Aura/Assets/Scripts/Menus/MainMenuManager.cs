@@ -31,6 +31,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private AudioClip ButtomEffect;
     [SerializeField] private AudioSource audioSourceEffects;
 
+    [SerializeField] private Animator anim;
+
     private Coroutine TimeCoroutine = null;
 
     private bool Bot = false;
@@ -120,6 +122,8 @@ public class MainMenuManager : MonoBehaviour
 
         opcionsMenu.SetActive(true);
         mainMenu.SetActive(false);
+
+        anim.SetBool("isEntry", true);
         //SceneManager.LoadScene("OptionsMenu");
     }
 

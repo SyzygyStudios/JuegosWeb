@@ -29,6 +29,10 @@ public class OptionMenuManager : MonoBehaviour
     [SerializeField] private AudioClip ButtomEffect;
     [SerializeField] private AudioSource audioSourceEffects;
 
+    [SerializeField] private Animator anim;
+
+    private Coroutine TimeCoroutine = null;
+
 
     void Start()
     {
@@ -70,6 +74,8 @@ public class OptionMenuManager : MonoBehaviour
         {
             selectButton.SetActive(true);
         }
+
+
     }
 
     public void ChangeSliderVolume(float value)
@@ -114,17 +120,33 @@ public class OptionMenuManager : MonoBehaviour
         audioSourceEffects.Play();
         audioSourceEffects.mute = false;
 
-        opcionsMenu.SetActive(false);
+        anim.SetBool("isEntry", false);
 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        StartCoroutine(TimeCoroutine());
+
+        IEnumerator TimeCoroutine()
         {
-            mainMenu.SetActive(true);
+            yield return new WaitForSeconds(1);
+            opcionsMenu.SetActive(false);
+
+            if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+            {
+                mainMenu.SetActive(true);
+
+            }
+            else
+            {
+                opcionsButton.SetActive(true);
+            }
 
         }
-        else
-        {
-            opcionsButton.SetActive(true);
-        }
+        
+
+        
+
+        
+
+        
 
         //SceneManager.LoadScene("MainMenu");
     }
@@ -139,6 +161,8 @@ public class OptionMenuManager : MonoBehaviour
 
         opcionsButton.SetActive(false);
         opcionsMenu.SetActive(true);
+
+        anim.SetBool("isEntry",true);
     }
 
     public void ChangeMovil()
