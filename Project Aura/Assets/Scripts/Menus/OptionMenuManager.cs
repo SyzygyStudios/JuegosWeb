@@ -9,7 +9,7 @@ public class OptionMenuManager : MonoBehaviour
 {
 
     [SerializeField] private Slider sliderVolume;
-    [SerializeField] private float ValueVolume;
+    private float ValueVolume = 0.5f;
     [SerializeField] private Image imageMute;
 
     [SerializeField] private Slider sliderShine;
@@ -25,6 +25,9 @@ public class OptionMenuManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
 
     [SerializeField] private PhoneController _phoneController;
+
+    [SerializeField] private AudioClip ButtomEffect;
+    [SerializeField] private AudioSource audioSourceEffects;
 
 
     void Start()
@@ -105,6 +108,12 @@ public class OptionMenuManager : MonoBehaviour
 
     public void Return()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         opcionsMenu.SetActive(false);
 
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
@@ -122,17 +131,35 @@ public class OptionMenuManager : MonoBehaviour
 
     public void activeMenu()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         opcionsButton.SetActive(false);
         opcionsMenu.SetActive(true);
     }
 
     public void ChangeMovil()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         _phoneController.SetActiveMenu();
     }
 
     public void SelectorLevels()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         opcionsMenu.SetActive(false);
         SceneManager.LoadScene("SelectLevel");
     }

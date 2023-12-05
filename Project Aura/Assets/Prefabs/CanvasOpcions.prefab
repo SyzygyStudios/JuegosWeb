@@ -101,7 +101,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
+          m_FloatArgument: 50
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -448,6 +448,7 @@ GameObject:
   - component: {fileID: 6383696053960803080}
   - component: {fileID: 3493665948915097468}
   - component: {fileID: 8455705634629044227}
+  - component: {fileID: 8728976745885669588}
   m_Layer: 5
   m_Name: CanvasOpcions
   m_TagString: Untagged
@@ -471,7 +472,7 @@ RectTransform:
   - {fileID: 8098325836910081687}
   - {fileID: 2840092986229498244}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -554,7 +555,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderVolume: {fileID: 4458621540553560269}
-  ValueVolume: 20
   imageMute: {fileID: 2306881503001046519}
   sliderShine: {fileID: 6956894219889748575}
   ValueShine: 0
@@ -565,6 +565,104 @@ MonoBehaviour:
   opcionsMenu: {fileID: 5049561832391502820}
   mainMenu: {fileID: 0}
   _phoneController: {fileID: 0}
+  ButtomEffect: {fileID: 8300000, guid: 97eeb60fa7874e244b2f4aeb581a0aa3, type: 3}
+  audioSourceEffects: {fileID: 8728976745885669588}
+--- !u!82 &8728976745885669588
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810102159258166018}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &995149411268790006
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,7 +2011,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderVolume: {fileID: 4458621540553560269}
-  ValueVolume: 0
   imageMute: {fileID: 2306881503001046519}
   sliderShine: {fileID: 6956894219889748575}
   ValueShine: 0
@@ -1924,6 +2021,8 @@ MonoBehaviour:
   opcionsMenu: {fileID: 5049561832391502820}
   mainMenu: {fileID: 0}
   _phoneController: {fileID: 0}
+  ButtomEffect: {fileID: 0}
+  audioSourceEffects: {fileID: 0}
 --- !u!1 &5088722754371384289
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,29 +7,56 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public InputField inputText;
-    public Text Nick;
-    public Image Light;
+    [SerializeField] private InputField Age;
+    [SerializeField] private Text AgeText;
+    [SerializeField] private Image Light2;
+
+    [SerializeField] private GameObject SexCanvas;
+    [SerializeField] private Button Sexbottom1;
+    [SerializeField] private Button Sexbottom2;
+
+
+    [SerializeField] private InputField inputText;
+    [SerializeField] private Text Nick;
+    [SerializeField] private Image Light;
     
     
 
-    public GameObject mainMenu;
-    public GameObject opcionsMenu;
-    public GameObject canvaNick;
-    public GameObject acceptBottom;
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject opcionsMenu;
+    [SerializeField] private GameObject canvaNick;
+    [SerializeField] private GameObject acceptBottom;
+    [SerializeField] private GameObject CanvaAge;
+
+    [SerializeField] private AudioClip ButtomEffect;
+    [SerializeField] private AudioSource audioSourceEffects;
 
     private Coroutine TimeCoroutine = null;
 
     private bool Bot = false;
-    
+    private bool ButtomWomen = false;
+    private bool ButtomMen = false;
+
 
     private void Awake()
     {
         Light.color = Color.red;
+        Light2.color = Color.red;
     }
 
     private void Update()
     {
+  
+        if (AgeText.text.Length == 0)
+        {
+            Light2.color = Color.red;
+        }
+        else
+        {
+
+            Light2.color = Color.green;
+        }
+
         if (Nick.text.Length <= 2)
         {
             Light.color = Color.red;
@@ -37,20 +64,27 @@ public class MainMenuManager : MonoBehaviour
         }
 
         if (Nick.text.Length > 2)
-        {
-
+        {         
             Light.color = Color.green;
-            if(Bot == false)
+            if(Bot == false && Light2.color == Color.green && ButtomMen || ButtomWomen)
             {
                 acceptBottom.SetActive(true);
             }
             
         }
+
+
     }
 
 
     public void Play() 
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         FindObjectOfType<PlayerMovement>().EnableMovement();
 
         StartCoroutine(TimeCoroutine());
@@ -67,11 +101,23 @@ public class MainMenuManager : MonoBehaviour
 
     public void Exit()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         Application.Quit();
     }
 
     public void Options()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         opcionsMenu.SetActive(true);
         mainMenu.SetActive(false);
         //SceneManager.LoadScene("OptionsMenu");
@@ -79,13 +125,66 @@ public class MainMenuManager : MonoBehaviour
 
     public void Accept()
     {
+
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         PlayerPrefs.SetString("name", inputText.text);
+
+        PlayerPrefs.SetString("age", Age.text);
+
         mainMenu.SetActive(true);
         canvaNick.SetActive(false);
         acceptBottom.SetActive(false);
+        SexCanvas.SetActive(false);
+        CanvaAge.SetActive(false);
 
         Bot = true;
 
+    }
+
+    public void WomenCount()
+    {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
+        if (ButtomMen) 
+        {
+            ButtomWomen = true;
+            ButtomMen = false;
+        }
+        else
+        {
+            ButtomWomen = true;
+        }    
+    }
+
+    public void MenCount()
+    {
+
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
+
+        if (ButtomWomen)
+        {
+            ButtomMen = true;
+            ButtomWomen = false;
+
+        }
+        else
+        {
+            ButtomMen = true;
+        }
     }
 
 
