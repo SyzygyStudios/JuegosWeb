@@ -103,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _joystickActive;
     private bool _resetGravity;
     private bool _hoverColor;
+    private EffectsController _effectsController;
 
     void Start()
     {
@@ -300,7 +301,8 @@ public class PlayerMovement : MonoBehaviour
             animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
             animator.SetFloat("yVelocity", _rb.velocity.y);
             animator.SetBool("isRolling", _isRolling);
-
+            _effectsController.SetRoll(_isRolling);
+            
             jumpBufferCounter -= Time.deltaTime;
             abilityCooldownCounter += Time.deltaTime;
             gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
@@ -311,6 +313,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void InitializeVariables()
     {
+        _effectsController = GetComponentInChildren<EffectsController>();
         _gameMetrics = FindObjectOfType<GameMetrics>();
         _hoverColor = false;
         animator = GetComponent<Animator>();
@@ -431,8 +434,12 @@ public class PlayerMovement : MonoBehaviour
             _jumpCut = false;
             doubleJump--;
             Debug.Log("Voy a saltar");
-            if(_grounded) animator.SetTrigger("TakeOf");
-            _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
+            if (_grounded)
+            {
+                animator.SetTrigger("TakeOf");
+                _effectsController.CreateSmokeJumpEffect();
+            }
+        _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
             _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
@@ -446,7 +453,11 @@ public class PlayerMovement : MonoBehaviour
             _jumpCut = false;
             doubleJump = 0;
             if(_grounded) animator.SetTrigger("TakeOf");
-            else if(!_grounded) animator.SetTrigger("DoubleJump");
+            else if (!_grounded)
+            {
+                animator.SetTrigger("DoubleJump");
+                _effectsController.CreateDoubleJumpEffect();
+            }
             _rb.AddForce(Vector2.up * ((jumpForce - _rb.velocity.y) * gravitySign),
                 ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
@@ -461,6 +472,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Se ejecuta gravedad");
         _resetGravity = false;
+        _effectsController.StartGravityEffect();
         gravityScale = -gravityScale;
         transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         yield return new WaitForSeconds(1);
@@ -496,6 +508,7 @@ public class PlayerMovement : MonoBehaviour
         gravityScale = 0;
         _isDashing = true;
         animator.SetBool("isDashing", true);
+        _effectsController.StartDashEffect();
         _tr.emitting = true;
         var inputX = transform.localScale.x;
         _rb.velocity = Vector2.zero;
@@ -511,6 +524,7 @@ public class PlayerMovement : MonoBehaviour
         gravityScale = prevGravityScale;
         _isDashing = false;
         animator.SetBool("isDashing", false);
+        _effectsController.StopDashEffect();
             
     }
     
@@ -526,6 +540,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _isBombJumping = true;
         animator.SetBool("isBombJumping", true);
+        _effectsController.StartBombJumpEffect();
         _rb.velocity = new Vector2(0, -bombJumpVelocity * gravitySign);
     }
 
@@ -585,6 +600,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 StartCoroutine(FinishBombJump());
                 animator.SetBool("isBombJumping", false);
+                _effectsController.StopBombJumpEffect();
             }
         }
         
@@ -611,13 +627,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(checkTime);
         _changingWall = false;
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
-    }
-
-    private IEnumerator FinishBombJump()
-    {
-        yield return new WaitForSeconds(bombJumpEndAnimatiorDuration);
-        _isBombJumping = false;
-
     }
     
     public void PreserveMomentum()
@@ -684,6 +693,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
             Debug.Log("Toco suelo");
+            if(_grounded) _effectsController.CreateSmokeLandEffect();
             PreserveMomentum();
             if (_isBombJumping)
             {
