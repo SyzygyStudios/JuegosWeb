@@ -205,26 +205,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7499961470317037977, guid: 3f8f5ae9a1cd31f44add33acc80cd9c5, type: 3}
   m_PrefabInstance: {fileID: 69572258}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &77772774 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 394089257056700125, guid: 0cf88ea0c7405ce4b8b5a23c223d99ce, type: 3}
-  m_PrefabInstance: {fileID: 1867783279}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &77772779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77772774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4359765bc8487b6499107f491d3d2442, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cinemachineVirtualCamera: {fileID: 0}
-  ShakeIntensity: 3
-  ShakeTime: 0.2
 --- !u!1001 &102810557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63641,10 +63621,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 394089257056700125, guid: 0cf88ea0c7405ce4b8b5a23c223d99ce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 77772779}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cf88ea0c7405ce4b8b5a23c223d99ce, type: 3}
 --- !u!1001 &1876197107
 PrefabInstance:
