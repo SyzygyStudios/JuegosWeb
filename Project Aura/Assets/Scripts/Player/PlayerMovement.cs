@@ -613,12 +613,12 @@ public class PlayerMovement : MonoBehaviour
         _isWallTouch = Physics2D.OverlapBox(wallCheck.position, new Vector2(1f, .1f), 0, wallLayer);
     }
 
-    private IEnumerator FinishBombJump()
+    /*private IEnumerator FinishBombJump()
     {
         yield return new WaitForSeconds(bombJumpEndAnimatiorDuration);
         _isBombJumping = false;
 
-    }
+    }*/
     
     public void PreserveMomentum()
     {
