@@ -8,22 +8,30 @@ using System;
 public class OptionMenuManager : MonoBehaviour
 {
 
-    public Slider sliderVolume;
-    public float ValueVolume;
-    public Image imageMute;
+    [SerializeField] private Slider sliderVolume;
+    private float ValueVolume = 0.5f;
+    [SerializeField] private Image imageMute;
 
-    public Slider sliderShine;
-    public float ValueShine;
-    public Image panelShine;
+    [SerializeField] private Slider sliderShine;
+    [SerializeField] private float ValueShine;
+    [SerializeField] private Image panelShine;
 
-    public Toggle toggle;
+    [SerializeField] private Toggle toggle;
 
-    public GameObject opcionsButton;
+    [SerializeField] private GameObject opcionsButton;
+    [SerializeField] private GameObject selectButton;
 
-    public GameObject opcionsMenu;
-    public GameObject mainMenu;
+    [SerializeField] private GameObject opcionsMenu;
+    [SerializeField] private GameObject mainMenu;
 
     [SerializeField] private PhoneController _phoneController;
+
+    [SerializeField] private AudioClip ButtomEffect;
+    [SerializeField] private AudioSource audioSourceEffects;
+
+    [SerializeField] private Animator anim;
+
+    private Coroutine TimeCoroutine = null;
 
 
     void Start()
@@ -61,6 +69,13 @@ public class OptionMenuManager : MonoBehaviour
             if(!opcionsMenu.activeSelf)
             opcionsButton.SetActive(true);
         }
+
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu") && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("SelectLevel"))
+        {
+            selectButton.SetActive(true);
+        }
+
+
     }
 
     public void ChangeSliderVolume(float value)
@@ -99,29 +114,77 @@ public class OptionMenuManager : MonoBehaviour
 
     public void Return()
     {
-        opcionsMenu.SetActive(false);
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        anim.SetBool("isEntry", false);
+
+        StartCoroutine(TimeCoroutine());
+
+        IEnumerator TimeCoroutine()
         {
-            mainMenu.SetActive(true);
+            yield return new WaitForSeconds(1);
+            opcionsMenu.SetActive(false);
+
+            if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+            {
+                mainMenu.SetActive(true);
+
+            }
+            else
+            {
+                opcionsButton.SetActive(true);
+            }
 
         }
-        else
-        {
-            opcionsButton.SetActive(true);
-        }
+        
+
+        
+
+        
+
+        
 
         //SceneManager.LoadScene("MainMenu");
     }
 
     public void activeMenu()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         opcionsButton.SetActive(false);
         opcionsMenu.SetActive(true);
+
+        anim.SetBool("isEntry",true);
     }
 
     public void ChangeMovil()
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         _phoneController.SetActiveMenu();
+    }
+
+    public void SelectorLevels()
+    {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
+        opcionsMenu.SetActive(false);
+        SceneManager.LoadScene("SelectLevel");
     }
 }

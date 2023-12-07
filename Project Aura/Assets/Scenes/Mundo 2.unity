@@ -1089,9 +1089,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 555029729625037204, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: dashTransform
+      value: 
+      objectReference: {fileID: 1684094480}
+    - target: {fileID: 555029729625037204, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: rollTransform
+      value: 
+      objectReference: {fileID: 1115081007}
+    - target: {fileID: 555029729625037204, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: gravityTransform
+      value: 
+      objectReference: {fileID: 1949248973}
+    - target: {fileID: 555029729625037204, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: bombJumpTransform
+      value: 
+      objectReference: {fileID: 657330826}
     - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: joystick
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725720138314404003, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+      propertyPath: interactTimeAnimation
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4953809306714862941, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
       propertyPath: m_Name
@@ -1146,6 +1166,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+--- !u!4 &657330826 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2322250163565721410, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+  m_PrefabInstance: {fileID: 650427291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &660634356
 GameObject:
   m_ObjectHideFlags: 0
@@ -3597,6 +3622,11 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!4 &1115081007 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4488959830866923847, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+  m_PrefabInstance: {fileID: 650427291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1131752633
 GameObject:
   m_ObjectHideFlags: 0
@@ -4142,6 +4172,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4088032939825464475, guid: 082707a1ffc2beb4ea2fd22b5f24daa2, type: 3}
+      propertyPath: m_Size.x
+      value: 8.750977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088032939825464475, guid: 082707a1ffc2beb4ea2fd22b5f24daa2, type: 3}
+      propertyPath: m_Offset.x
+      value: 9.395172
+      objectReference: {fileID: 0}
     - target: {fileID: 6408875767100747206, guid: 082707a1ffc2beb4ea2fd22b5f24daa2, type: 3}
       propertyPath: m_Name
       value: Final
@@ -4413,6 +4451,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1684094480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 363438932150811606, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+  m_PrefabInstance: {fileID: 650427291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1748772133
 GameObject:
   m_ObjectHideFlags: 0
@@ -85082,6 +85125,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1949248973 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7867074055261504595, guid: acd7925e4c5bd8c0196e3a371cb467d5, type: 3}
+  m_PrefabInstance: {fileID: 650427291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1953532623
 PrefabInstance:
   m_ObjectHideFlags: 0
