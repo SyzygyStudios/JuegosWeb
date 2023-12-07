@@ -608,6 +608,7 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(FinishBombJump());
                 animator.SetBool("isBombJumping", false);
                 _effectsController.StopBombJumpEffect();
+                FindObjectOfType<CameraShake>().ShakeCamera();
             }
         }
         
