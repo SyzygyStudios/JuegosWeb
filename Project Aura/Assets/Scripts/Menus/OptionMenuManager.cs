@@ -98,6 +98,12 @@ public class OptionMenuManager : MonoBehaviour
 
     public void ActivateFullScreen(bool fullScreen)
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         Screen.fullScreen = fullScreen;
     }
 

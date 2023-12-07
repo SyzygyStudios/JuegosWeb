@@ -2011,7 +2011,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &5873402800051626789
 GameObject:
   m_ObjectHideFlags: 0
