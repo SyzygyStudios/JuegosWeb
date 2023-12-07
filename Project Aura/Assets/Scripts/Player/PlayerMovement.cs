@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _resetGravity;
     private bool _hoverColor;
     private EffectsController _effectsController;
+    private bool _isInMovingPlatform;
 
     void Start()
     {
@@ -300,6 +301,10 @@ public class PlayerMovement : MonoBehaviour
             WallCheck();
             
             animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
+            if (_isInMovingPlatform)
+            {
+                animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x) - 3f);
+            }
             animator.SetFloat("yVelocity", _rb.velocity.y);
             animator.SetBool("isRolling", _isRolling);
             _effectsController.SetRoll(_isRolling);
@@ -654,10 +659,13 @@ public class PlayerMovement : MonoBehaviour
         
         if (_activeColor!=prevColor)
         {
-            _effectsAudio.PlayPickPower();
-            animator.SetTrigger("Interact");
-            _effectsController.PickPower(_activeColor);
-            StartCoroutine(DisableMovementTime(interactTimeAnimation));
+            if (_activeColor != 0)
+            {
+                _effectsAudio.PlayPickPower();
+                animator.SetTrigger("Interact");
+                _effectsController.PickPower(_activeColor);
+                StartCoroutine(DisableMovementTime(interactTimeAnimation));
+            }
         }
 
         if (_activeColor == 0)
@@ -682,14 +690,23 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        if(collision.CompareTag("Door"))
+        if(collision.gameObject.GetComponent<MovingPlatform>())
         {
+            _isInMovingPlatform = true;
         }
         
         if(collision.CompareTag("Star"))
         {
             _gameMetrics.CollectStart();
             Destroy(collision.gameObject);
+        }
+    }
+    
+    void OnTriggerExit2D(Collider2D collision){
+        
+        if(collision.gameObject.GetComponent<MovingPlatform>())
+        {
+            _isInMovingPlatform = true;
         }
     }
 
