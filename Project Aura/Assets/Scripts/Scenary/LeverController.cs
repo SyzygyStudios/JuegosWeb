@@ -7,10 +7,18 @@ public class LeverController : MonoBehaviour
 {
     [SerializeField] private LeverDoorController _ldc;
 
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     public void OpenDoor()
     {
         Debug.Log("Abro la puerta 2");
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        anim.SetBool("isOpen", true);
+        //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         if(!_ldc.IsDestroyed()) _ldc.Open();
     }
 }
