@@ -1011,6 +1011,7 @@ MonoBehaviour:
   gravityScale: 9
   _grounded: 0
   _activeColor: 0
+  interactTimeAnimation: 0.4
   speed: 20
   acceleration: 7
   decceleration: 7

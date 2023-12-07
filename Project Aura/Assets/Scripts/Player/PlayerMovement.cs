@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityScale;
     [SerializeField] private bool _grounded;
     [SerializeField] private int _activeColor;
+    [SerializeField] private float interactTimeAnimation;
     private float abilityCooldownCounter;
     private Vector2 _lastVelocity;
     private bool airMove;
@@ -439,7 +440,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetTrigger("TakeOf");
                 _effectsController.CreateSmokeJumpEffect();
             }
-        _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.up * (jumpForce * gravitySign), ForceMode2D.Impulse);
             _effectsAudio.PlayJump();
             _gameMetrics.AddJump();
             coyoteTimeCounter = 0f;
@@ -596,6 +597,7 @@ public class PlayerMovement : MonoBehaviour
             _resetGravity = true;
             airMove = false;
             coyoteTimeCounter = coyoteTime;
+            _effectsController.CreateSmokeLandEffect();
             if (_isBombJumping)
             {
                 StartCoroutine(FinishBombJump());
@@ -653,6 +655,9 @@ public class PlayerMovement : MonoBehaviour
         if (_activeColor!=prevColor)
         {
             _effectsAudio.PlayPickPower();
+            animator.SetTrigger("Interact");
+            _effectsController.PickPower(_activeColor);
+            StartCoroutine(DisableMovementTime(interactTimeAnimation));
         }
 
         if (_activeColor == 0)
@@ -693,7 +698,6 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("ShatteredFloor"))
         {
             Debug.Log("Toco suelo");
-            if(_grounded) _effectsController.CreateSmokeLandEffect();
             PreserveMomentum();
             if (_isBombJumping)
             {
@@ -718,5 +722,12 @@ public class PlayerMovement : MonoBehaviour
     public void SetHoverPower(bool p0)
     {
         _hoverColor = p0;
+    }
+
+    private IEnumerator DisableMovementTime(float t)
+    {
+        DisableMovement();
+        yield return new WaitForSeconds(t);
+        EnableMovement();
     }
 }

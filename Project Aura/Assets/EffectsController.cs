@@ -42,6 +42,31 @@ public class EffectsController : MonoBehaviour
     {
         animator.SetBool("isDashing", false);
     }
+
+    public void PickPower(int i)
+    {
+        switch (i)
+        {
+            case 1:
+                animator.SetTrigger("PickBlue");
+                break;
+            case 2:
+                animator.SetTrigger("PickRed");
+                break;
+            case 3:
+                animator.SetTrigger("PickGreen");
+                break;
+            case 4:
+                animator.SetTrigger("PickCian");
+                break;
+            case 5:
+                animator.SetTrigger("PickPurple");
+                break;
+            case 6:
+                break;
+        }
+
+    }
     public void StartBombJumpEffect()
     {
         transform.position = bombJumpTransform.position;
