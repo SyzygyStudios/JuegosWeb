@@ -23,6 +23,8 @@ public class OptionMenuManager : MonoBehaviour
 
     [SerializeField] private GameObject opcionsMenu;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject AnimationMenu;
+
 
     [SerializeField] private PhoneController _phoneController;
 
@@ -32,6 +34,7 @@ public class OptionMenuManager : MonoBehaviour
     [SerializeField] private Animator anim;
 
     private Coroutine TimeCoroutine = null;
+
 
 
     void Start()
@@ -95,6 +98,12 @@ public class OptionMenuManager : MonoBehaviour
 
     public void ActivateFullScreen(bool fullScreen)
     {
+        audioSourceEffects.mute = true;
+        audioSourceEffects.loop = false;
+        audioSourceEffects.clip = ButtomEffect;
+        audioSourceEffects.Play();
+        audioSourceEffects.mute = false;
+
         Screen.fullScreen = fullScreen;
     }
 
@@ -120,7 +129,11 @@ public class OptionMenuManager : MonoBehaviour
         audioSourceEffects.Play();
         audioSourceEffects.mute = false;
 
+        
+
         anim.SetBool("isEntry", false);
+        
+
 
         StartCoroutine(TimeCoroutine());
 
@@ -163,6 +176,11 @@ public class OptionMenuManager : MonoBehaviour
         opcionsMenu.SetActive(true);
 
         anim.SetBool("isEntry",true);
+
+     
+
+
+
     }
 
     public void ChangeMovil()
