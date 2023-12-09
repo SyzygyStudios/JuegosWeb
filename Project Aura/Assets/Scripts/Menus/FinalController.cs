@@ -17,17 +17,24 @@ public class FinalController : MonoBehaviour
     [SerializeField] private GameMetrics _gameMetrics;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private float _prevTime;
+    [SerializeField] private Animator anim;
+
+
+
 
     void Start()
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
         _chronometer = FindObjectOfType<ChronometerController>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
+        
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
+            anim.SetBool("isStart",true);
+
             _playerMovement.DisableMovement();
             _prevTime = Time.timeScale;
             Time.timeScale = 0;
