@@ -20,7 +20,10 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player") && !other.isTrigger)
         {
             virtualCam.SetActive(false);
-            FindObjectOfType<CameraShake>().ChangeCamera();
+            if (FindObjectOfType<CameraShake>())
+            {
+                FindObjectOfType<CameraShake>().ChangeCamera();
+            }
         }
     }
 }
