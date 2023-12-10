@@ -17,6 +17,8 @@ TagManager:
   - Lever
   - Star
   - interactionText
+  - TextoMovil
+  - TextoPC
   layers:
   - Default
   - TransparentFX

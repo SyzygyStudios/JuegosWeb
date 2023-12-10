@@ -35,7 +35,7 @@ RectTransform:
   - {fileID: 9119007921862164459}
   - {fileID: 4247603474846987859}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -120,6 +120,8 @@ MonoBehaviour:
   controllButtons: {fileID: 91637663001982448}
   joystick: {fileID: 9119007921862164458}
   _playerMovement: {fileID: 0}
+  textoMovil: {fileID: 0}
+  textoPC: {fileID: 0}
 --- !u!1001 &1299228121457855317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -135,6 +137,10 @@ PrefabInstance:
     - target: {fileID: 1387749630899797669, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042330920374901641, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
+      propertyPath: m_text
+      value: C
       objectReference: {fileID: 0}
     - target: {fileID: 2951350672824057094, guid: 593d00aae75021a5fa27bce87e28cd56, type: 3}
       propertyPath: m_Pivot.x
