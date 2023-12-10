@@ -136,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
                     _effectsAudio.PlayWalk();
                 }
 
-                if (!_grounded)
+                if (!_grounded || _isRolling || _isBombJumping || _isDashing)
                 {
                     _effectsAudio.StopWalk();
                 }
@@ -295,26 +295,30 @@ public class PlayerMovement : MonoBehaviour
             {
                 ActivateJumpCut();
             }
-
-
-            GroundCheck();
-            WallCheck();
             
-            animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
-            if (_isInMovingPlatform)
-            {
-                animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x) - 3f);
-            }
-            animator.SetFloat("yVelocity", _rb.velocity.y);
-            animator.SetBool("isRolling", _isRolling);
-            _effectsController.SetRoll(_isRolling);
-            
-            jumpBufferCounter -= Time.deltaTime;
-            abilityCooldownCounter += Time.deltaTime;
-            gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
-            _lastVelocity = _rb.velocity;
-            Flip();
         }
+        GroundCheck();
+        WallCheck();
+            
+        animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x));
+        if (_isInMovingPlatform)
+        {
+            animator.SetFloat("xVelocity", Mathf.Abs(_rb.velocity.x) - 3f);
+        }
+        animator.SetFloat("yVelocity", _rb.velocity.y);
+        animator.SetBool("isRolling", _isRolling);
+        _effectsController.SetRoll(_isRolling);
+        if (!_canMove)
+        {
+            _effectsAudio.StopWalk();
+        }
+            
+        jumpBufferCounter -= Time.deltaTime;
+        abilityCooldownCounter += Time.deltaTime;
+        gravitySign = (_rb.gravityScale / Mathf.Abs(_rb.gravityScale));
+        _lastVelocity = _rb.velocity;
+        Flip();
+        
     }
     
     private void InitializeVariables()
@@ -699,8 +703,15 @@ public class PlayerMovement : MonoBehaviour
         if(collision.CompareTag("Star"))
         {
             _gameMetrics.CollectStart();
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Animator>().SetBool("isTake", true);
+            StartCoroutine(DestroyStar(collision.gameObject));
         }
+    }
+
+    private IEnumerator DestroyStar(GameObject a)
+    {
+        yield return new WaitForSeconds(1.05f);
+        Destroy(a);
     }
     
     void OnTriggerExit2D(Collider2D collision){

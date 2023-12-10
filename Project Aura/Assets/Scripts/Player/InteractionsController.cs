@@ -20,7 +20,7 @@ public class InteractionsController : MonoBehaviour
             _interactDoor = true;
         }
         
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("g"))
         {
             _interactLever = true;
         }

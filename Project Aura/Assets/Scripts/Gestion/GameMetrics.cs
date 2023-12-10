@@ -91,7 +91,10 @@ public class GameMetrics : MonoBehaviour
 
     public void UnlockPower(int i)
     {
-        _colorsUnlocked[i] = true;
+        for (int j = 0; j < i; j++)
+        {
+            _colorsUnlocked[j] = true;
+        }
     }
 
     public bool CheckPower(int i)

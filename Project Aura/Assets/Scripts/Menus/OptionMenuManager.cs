@@ -57,12 +57,14 @@ public class OptionMenuManager : MonoBehaviour
             toggle.isOn = false;
         }
 
+        _phoneController = FindObjectOfType<PhoneController>();
 
-        
+
+
         //opcionsButton.SetActive(false);
-        
-        
-        
+
+
+
     }
 
     void Update()

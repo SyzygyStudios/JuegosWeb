@@ -42,19 +42,19 @@ public class ColorController : MonoBehaviour
     void Update()
     {
         _spriteRenderer.color = _finalColor;
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("g"))
         {
             _asignColor = true;
         }
-        if(_asignColor)
+        if(_asignColor && _auxColor!= Color.white)
         {
-            _asignColor = false;
             _finalColor = _auxColor;
             if (_hoverColor >= 1 && _hoverColor <= 6)
             {
                 gameObject.GetComponent<PlayerMovement>().SetColor(color: _hoverColor);
             }
         }
+        _asignColor = false;
     }
 
     public void AssignColor()
@@ -105,7 +105,10 @@ public class ColorController : MonoBehaviour
     {
         if (other.CompareTag("BluePower") || other.CompareTag("GreenPower") || other.CompareTag("CianPower") || other.CompareTag("PurplePower") || other.CompareTag("RedPower") || other.CompareTag("YellowPower"))
         {
+            Debug.Log("He salido");
             gameObject.GetComponent<PlayerMovement>().SetHoverPower(false);
+            _hoverColor = 0;
+            _auxColor = Color.white;
         }
     }
 

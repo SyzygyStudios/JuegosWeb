@@ -8,9 +8,15 @@ public class PhoneController : MonoBehaviour
     [SerializeField] private GameObject controllButtons;
     [SerializeField] private GameObject joystick;
     [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private GameObject textoMovil;
+    [SerializeField] private GameObject textoPC;
+    bool activeMovil;
+    bool activePC;
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
+        activeMovil = false;
+        activePC = true;
     }
 
     public void SetActiveMenu()
@@ -19,6 +25,13 @@ public class PhoneController : MonoBehaviour
         SetJoystick();
         joystick.SetActive(!joystick.activeSelf);
         controllButtons.GetComponent<ControllButtons>().AssignVariables();
+        if (textoPC != null && textoMovil != null)
+        {
+            textoMovil.SetActive(!textoMovil.activeSelf);
+            textoPC.SetActive(!textoPC.activeSelf);
+            activeMovil = textoMovil.activeSelf;
+            activePC = textoPC.activeSelf;
+        }
     }
 
     public void SetPlayer()
@@ -34,5 +47,13 @@ public class PhoneController : MonoBehaviour
     public bool GetActive()
     {
         return joystick.activeSelf;
+    }
+
+    public void SetText()
+    {
+        textoMovil = GameObject.FindObjectOfType<TextoMovil>().gameObject;
+        textoPC = FindObjectOfType<TextoPC>().gameObject;
+        textoMovil.SetActive(activeMovil);
+        textoPC.SetActive(activePC);
     }
 }

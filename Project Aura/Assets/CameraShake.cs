@@ -13,16 +13,27 @@ public class CameraShake : MonoBehaviour
 
     private void Awake()
     {
-        _cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>().GetComponent<CinemachineVirtualCamera>();
-        _cbmcp = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        _cbmcp.m_AmplitudeGain = 0;
+        if (FindObjectOfType<CinemachineVirtualCamera>())
+        {
+            _cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>().GetComponent<CinemachineVirtualCamera>();
+        }
+        if (_cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>()) 
+        {
+            _cbmcp = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _cbmcp.m_AmplitudeGain = 0;
+        }
     }
 
-    public void ChangeCamera()
+    public void ChangeCamera(CinemachineVirtualCamera cinema)
     {
-        _cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>().GetComponent<CinemachineVirtualCamera>();
-        _cbmcp = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        _cbmcp.m_AmplitudeGain = 0;
+
+        _cinemachineVirtualCamera = cinema;
+
+        if (_cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>()) 
+        {
+            _cbmcp = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _cbmcp.m_AmplitudeGain = 0;
+        }
     }
 
     public void ShakeCamera()

@@ -19,6 +19,10 @@ public class LeverController : MonoBehaviour
         Debug.Log("Abro la puerta 2");
         anim.SetBool("isOpen", true);
         //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        if(!_ldc.IsDestroyed()) _ldc.Open();
+        if (!_ldc.IsDestroyed())
+        {
+            FindObjectOfType<CameraShake>().ShakeCamera();
+            _ldc.Open();
+        }
     }
 }

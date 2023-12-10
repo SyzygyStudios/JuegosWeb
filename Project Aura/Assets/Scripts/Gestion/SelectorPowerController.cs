@@ -16,23 +16,23 @@ public class SelectorPowerController : MonoBehaviour
     {
         _gameMetrics = FindObjectOfType<GameMetrics>();
         Debug.Log("HOLAAAAA");
-        if (_gameMetrics.GetCompletedWorld(0))
+        if (_gameMetrics.CheckPower(0))
         {
             blue.SetActive(true);
         }
-        if (_gameMetrics.GetCompletedWorld(1))
+        if (_gameMetrics.CheckPower(1))
         {
             red.SetActive(true);
         }
-        if (_gameMetrics.GetCompletedWorld(2))
+        if (_gameMetrics.CheckPower(2))
         {
             green.SetActive(true);
         }
-        if (_gameMetrics.GetCompletedWorld(3))
+        if (_gameMetrics.CheckPower(3))
         {
             yellow.SetActive(true);
         }
-        if (_gameMetrics.GetCompletedWorld(4))
+        if (_gameMetrics.CheckPower(4))
         {
             magenta.SetActive(true);
         }

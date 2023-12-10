@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LeverDoorController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class LeverDoorController : MonoBehaviour
 
         if (gameObject.CompareTag("Door"))
         {
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            gameObject.GetComponentInChildren<TilemapCollider2D>().enabled = false;
             Destroy(this.gameObject);
         }
     }
