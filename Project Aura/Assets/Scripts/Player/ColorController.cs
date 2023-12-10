@@ -42,7 +42,7 @@ public class ColorController : MonoBehaviour
     void Update()
     {
         _spriteRenderer.color = _finalColor;
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("g"))
         {
             _asignColor = true;
         }

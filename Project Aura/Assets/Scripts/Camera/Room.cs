@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -12,6 +13,10 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player") && !other.isTrigger)
         {
             virtualCam.SetActive(true);
+            if (FindObjectOfType<CameraShake>())
+            {
+                FindObjectOfType<CameraShake>().ChangeCamera(GetComponentInChildren<CinemachineVirtualCamera>());
+            }
         }
     }
     
@@ -20,10 +25,6 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player") && !other.isTrigger)
         {
             virtualCam.SetActive(false);
-            if (FindObjectOfType<CameraShake>())
-            {
-                FindObjectOfType<CameraShake>().ChangeCamera();
-            }
         }
     }
 }

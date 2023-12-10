@@ -24,12 +24,10 @@ public class CameraShake : MonoBehaviour
         }
     }
 
-    public void ChangeCamera()
+    public void ChangeCamera(CinemachineVirtualCamera cinema)
     {
-        if (FindObjectOfType<CinemachineVirtualCamera>())
-        {
-            _cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>().GetComponent<CinemachineVirtualCamera>();
-        }
+
+        _cinemachineVirtualCamera = cinema;
 
         if (_cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>()) 
         {
