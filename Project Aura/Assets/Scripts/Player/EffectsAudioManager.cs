@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EffectsAudioManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class EffectsAudioManager : MonoBehaviour
             audioSourceMovement.loop = true;
             audioSourceMovement.clip = walk;
             audioSourceMovement.Play();
+            audioSourceMovement.pitch = 1 + Random.Range(-0.05f, 0.05f);
             audioSourceMovement.mute = false;
         }
     }
@@ -38,6 +40,7 @@ public class EffectsAudioManager : MonoBehaviour
         audioSourceEffects.loop = false;
         audioSourceEffects.clip = pickingPower;
         audioSourceEffects.Play();
+        audioSourceMovement.pitch = 1 + Random.Range(-0.05f, 0.05f);
         audioSourceEffects.mute = false;
     }
     
@@ -57,6 +60,7 @@ public class EffectsAudioManager : MonoBehaviour
         audioSourceMovement.loop = false;
         audioSourceMovement.clip = jump;
         audioSourceMovement.Play();
+        audioSourceMovement.pitch = 1 + Random.Range(-0.05f, 0.05f);
         audioSourceMovement.mute = false;
     }
 
@@ -67,6 +71,7 @@ public class EffectsAudioManager : MonoBehaviour
         audioSourceMovement.loop = false;
         audioSourceMovement.clip = land;
         audioSourceMovement.Play();
+        audioSourceMovement.pitch = 1 + Random.Range(-0.05f, 0.05f);
         audioSourceMovement.mute = false;
     }
 }
