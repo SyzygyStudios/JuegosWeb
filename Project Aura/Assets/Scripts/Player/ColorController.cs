@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class ColorController : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class ColorController : MonoBehaviour
     [SerializeField] private Color _yellow;
     [SerializeField] private Color _cyan;
     [SerializeField] private Color _magenta;
+
+    //[SerializeField] private Animator _anim;
+
     private bool _asignColor;
 
     private void Start()
@@ -30,6 +35,8 @@ public class ColorController : MonoBehaviour
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         _originalColor = _spriteRenderer.color;
         _finalColor = _originalColor;
+
+
     }
 
     void Update()
