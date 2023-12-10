@@ -2,7 +2,7 @@
 Juegos para Web y Redes Sociales
 
 ## GDD
-Este es nuestro gdd para la entrega 2
+Este es nuestro gdd para la entrega 3
 
 
-[GDD Aura.pdf](https://github.com/SyzygyStudios/JuegosWeb/files/13404803/GDD.Aura.pdf)
+[GDD.Aura.pdf](https://github.com/SyzygyStudios/JuegosWeb/files/13629242/GDD.Aura.pdf)
