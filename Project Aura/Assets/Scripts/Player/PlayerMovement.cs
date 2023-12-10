@@ -704,6 +704,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _gameMetrics.CollectStart();
             collision.gameObject.GetComponent<Animator>().SetBool("isTake", true);
+            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(DestroyStar(collision.gameObject));
         }
     }
