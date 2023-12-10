@@ -19,8 +19,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private InputField inputText;
     [SerializeField] private Text Nick;
     [SerializeField] private Image Light;
-    
-    
+
+    [SerializeField] private Toggle toggleW;
+    [SerializeField] private Toggle toggleM;
+
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject opcionsMenu;
@@ -52,6 +54,7 @@ public class MainMenuManager : MonoBehaviour
         if (AgeText.text.Length == 0)
         {
             Light2.color = Color.red;
+            acceptBottom.SetActive(false);
         }
         else
         {
@@ -157,16 +160,16 @@ public class MainMenuManager : MonoBehaviour
         audioSourceEffects.clip = ButtomEffect;
         audioSourceEffects.Play();
         audioSourceEffects.mute = false;
+        toggleW.isOn = true;
+        toggleM.isOn = false;
+       
 
-        if (ButtomMen) 
-        {
-            ButtomWomen = true;
-            ButtomMen = false;
-        }
-        else
-        {
-            ButtomWomen = true;
-        }    
+        ButtomWomen = true;
+        ButtomMen = false;
+
+        Debug.Log(ButtomMen);
+        Debug.Log(ButtomWomen);
+
     }
 
     public void MenCount()
@@ -177,18 +180,16 @@ public class MainMenuManager : MonoBehaviour
         audioSourceEffects.clip = ButtomEffect;
         audioSourceEffects.Play();
         audioSourceEffects.mute = false;
+        toggleM.isOn = true;
+        toggleW.isOn = false;
+        
 
+        ButtomMen = true;
+        ButtomWomen = false;
 
-        if (ButtomWomen)
-        {
-            ButtomMen = true;
-            ButtomWomen = false;
+        Debug.Log(ButtomMen);
+        Debug.Log(ButtomWomen);
 
-        }
-        else
-        {
-            ButtomMen = true;
-        }
     }
 
 
