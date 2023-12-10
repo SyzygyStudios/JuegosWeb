@@ -37,7 +37,7 @@ public class FinalController : MonoBehaviour
 
             _playerMovement.DisableMovement();
             _prevTime = Time.timeScale;
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
             _chronometer.gameObject.SetActive(false);
             _gameMetrics.SetCurrentWorld(world-1);
             _gameMetrics.CompleteWorld();
