@@ -50,6 +50,12 @@ public class MainMenuManager : MonoBehaviour
 
     private void Update()
     {
+        float width = (float)Screen.width;
+        float height = (float)Screen.height;
+        float scale =  width / height;
+        float originalScale = 16f / 9f;
+        float multiplier = originalScale / scale;
+        transform.localScale = new Vector3(0.0185f / multiplier, 0.0185f / multiplier, 1);
   
         if (AgeText.text.Length == 0)
         {
