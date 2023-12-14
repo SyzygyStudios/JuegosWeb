@@ -5,4 +5,5 @@ Juegos para Web y Redes Sociales
 Este es nuestro gdd para la entrega 3
 
 
-[GDD Aura.pdf](https://github.com/SyzygyStudios/JuegosWeb/files/13651169/GDD.Aura.pdf)
+[GDD Aura.pdf](https://github.com/SyzygyStudios/JuegosWeb/files/13678830/GDD.Aura.pdf)
+
