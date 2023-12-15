@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameMetrics : MonoBehaviour
 {
+    string nombre;
+    string edad;
+    int genero;
     struct WorldMetrics
     {
         public bool _completed;
@@ -33,6 +36,7 @@ public class GameMetrics : MonoBehaviour
         worlds[_currentWorld]._jumpsMade = _jumpsInCurrent;
         worlds[_currentWorld]._starsCollected = _starsInCurrent;
         worlds[_currentWorld]._completed = true;
+        GetComponent<DatabaseManager>().SaveData(_currentWorld);
     }
 
     public void SetCurrentWorld(int world)
@@ -124,5 +128,27 @@ public class GameMetrics : MonoBehaviour
             worlds[i]._starsCollected = data._startsCollected[i];
             worlds[i]._timeCompletion = data._timeCompletion[i];
         }
+    }
+
+    public void LoadPlayer(string s, string i, int j)
+    {
+        nombre = s;
+        edad = i;
+        genero = j;
+    }
+
+    public string GetName()
+    {
+        return nombre;
+    }
+
+    public string GetAge()
+    {
+        return edad;
+    }
+
+    public int GetGender()
+    {
+        return genero;
     }
 }

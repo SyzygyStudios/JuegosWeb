@@ -154,6 +154,14 @@ public class MainMenuManager : MonoBehaviour
         acceptBottom.SetActive(false);
         SexCanvas.SetActive(false);
         CanvaAge.SetActive(false);
+        if (toggleM.isOn)
+        {
+            FindObjectOfType<GameMetrics>().LoadPlayer(name, Age.text, 0);
+        }
+        else
+        {
+            FindObjectOfType<GameMetrics>().LoadPlayer(name, Age.text, 1);
+        }
 
         Bot = true;
 
