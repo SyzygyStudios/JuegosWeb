@@ -18,12 +18,14 @@ public class FinalController : MonoBehaviour
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private float _prevTime;
     [SerializeField] private Animator anim;
+    private bool collide;
 
 
 
 
     void Start()
     {
+        collide = false;
         _gameMetrics = FindObjectOfType<GameMetrics>();
         _chronometer = FindObjectOfType<ChronometerController>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
@@ -39,8 +41,12 @@ public class FinalController : MonoBehaviour
             _prevTime = Time.timeScale;
             //Time.timeScale = 0;
             _chronometer.gameObject.SetActive(false);
-            _gameMetrics.SetCurrentWorld(world-1);
-            _gameMetrics.CompleteWorld();
+            if (collide == false)
+            {
+                _gameMetrics.SetCurrentWorld(world - 1);
+                _gameMetrics.CompleteWorld();
+                collide = true;
+            }
             canvas.gameObject.SetActive(true);
             int _seconds = (int) _gameMetrics.GetTimeWorld(world - 1);
             int _minutes = 0;
